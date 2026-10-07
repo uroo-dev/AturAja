@@ -945,28 +945,34 @@
     </div>
   </div>
 
-  <!-- FLOATING CURVED BOTTOM NAVIGATION BAR WITH CENTER BLUE FAB (Mobile View) -->
+  <!-- FLOATING CURVED BOTTOM NAVIGATION BAR WITH CENTER DPS FAB (Mobile View) -->
   <nav class="curved-bottom-nav" aria-label="Bottom Navigation">
+    <!-- Item 1: Home (Aktif - Indikator Titik) -->
     <button data-nav-target="dashboard" class="bottom-nav-btn active">
       <i class="fa-solid fa-house text-base"></i>
       <span>Home</span>
     </button>
+
+    <!-- Item 2: Search -->
     <button data-nav-target="todo" class="bottom-nav-btn">
       <i class="fa-solid fa-magnifying-glass text-base"></i>
       <span>Search</span>
     </button>
 
-    <!-- Center Floating Action Button (FAB Logo) -->
+    <!-- Item 3: Center Floating Action Button (FAB Logo DPS) -->
     <button onclick="window.app.toggleQuickActionModal()" class="center-fab-btn" title="Quick Action (DPS FAB)">
-      <i class="fa-solid fa-bolt text-lg"></i>
+      <img src="assets/logo.svg" alt="DPS Logo" class="w-7 h-7 object-contain drop-shadow">
     </button>
 
-    <button data-nav-target="finance" class="bottom-nav-btn">
-      <i class="fa-regular fa-heart text-base"></i>
-      <span>Favorit</span>
+    <!-- Item 4: Favorites / Bookmark -->
+    <button data-nav-target="projects" class="bottom-nav-btn">
+      <i class="fa-solid fa-bookmark text-base"></i>
+      <span>Favorites</span>
     </button>
+
+    <!-- Item 5: Profile -->
     <button data-nav-target="settings" class="bottom-nav-btn">
-      <i class="fa-regular fa-user text-base"></i>
+      <i class="fa-solid fa-user text-base"></i>
       <span>Profile</span>
     </button>
   </nav>
