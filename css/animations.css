@@ -1,0 +1,84 @@
+/* Animations, Spring Physics & Micro-interactions */
+
+/* Paper Grain Noise Texture (Analog Human Feel) */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.55;
+}
+
+/* Keyframes */
+@keyframes fadeInSlideUp {
+  0% { opacity: 0; transform: translateY(12px) scale(0.99); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(var(--primary-rgb), 0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes popScale {
+  0% { transform: scale(0.92); opacity: 0; }
+  60% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* Transitions */
+.fade-in {
+  animation: fadeInSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pop-in {
+  animation: popScale 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Button Micro-interactions (Every interactive element MUST have spring feedback) */
+.btn, .btn-icon, .toggle-btn, .color-dot, .nav-item, .card-interactive {
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.22s ease, 
+              background-color 0.2s ease, 
+              border-color 0.2s ease, 
+              color 0.2s ease;
+  transform-origin: center;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.015);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.975);
+}
+
+/* Card Subtle Lift & Slight Human Tilt */
+.card-lift {
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.32s ease,
+              border-color 0.2s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-3px) scale(1.005);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Loading Spinner */
+.spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}

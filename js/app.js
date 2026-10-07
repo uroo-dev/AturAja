@@ -1,20 +1,18 @@
 /**
- * App Main Controller - Tab Navigation, Quick Action Floating Modal, Service Worker Registration & Shortcuts
+ * StudentFlow Main App Controller
  */
 
 class App {
-  constructor() {
-    this.currentTab = 'dashboard';
-  }
+  constructor() {}
 
   init() {
     this.registerServiceWorker();
     this.bindNavigation();
     this.bindKeyboardShortcuts();
     this.bindQuickActions();
-    this.checkInitialNotificationPermission();
 
-    // Initialize modules
+    // Initialize all modules
+    if (window.router) window.router.init();
     if (window.dashboardModule) window.dashboardModule.init();
     if (window.todoModule) window.todoModule.init();
     if (window.scheduleModule) window.scheduleModule.init();
@@ -23,128 +21,67 @@ class App {
     if (window.pomodoroModule) window.pomodoroModule.init();
     if (window.habitsModule) window.habitsModule.init();
     if (window.settingsModule) window.settingsModule.init();
-
-    // Default tab
-    this.switchTab('dashboard');
+    if (window.notifications) window.notifications.init();
   }
 
   registerServiceWorker() {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
-          .then((reg) => {
-            console.log('ServiceWorker registered with scope:', reg.scope);
-          })
-          .catch((err) => {
-            console.warn('ServiceWorker registration failed:', err);
-          });
+          .then((reg) => console.log('StudentFlow SW registered:', reg.scope))
+          .catch((err) => console.warn('StudentFlow SW registration failed:', err));
       });
-    }
-  }
-
-  checkInitialNotificationPermission() {
-    if ('Notification' in window && Notification.permission === 'default') {
-      setTimeout(() => {
-        const notifBanner = document.getElementById('notif-permission-banner');
-        if (notifBanner) notifBanner.classList.remove('hidden');
-      }, 2500);
     }
   }
 
   bindNavigation() {
-    // Sidebar nav items & Bottom bar nav items
-    const navItems = document.querySelectorAll('[data-nav-target]');
-    navItems.forEach(item => {
+    document.querySelectorAll('[data-nav-target]').forEach(item => {
       item.addEventListener('click', (e) => {
         e.preventDefault();
         const target = item.getAttribute('data-nav-target');
-        this.switchTab(target);
+        window.router.navigate(target);
       });
     });
   }
 
-  switchTab(tabId) {
-    this.currentTab = tabId;
-
-    // Update nav links styling
-    const allNavLinks = document.querySelectorAll('[data-nav-target]');
-    allNavLinks.forEach(link => {
-      const target = link.getAttribute('data-nav-target');
-      if (target === tabId) {
-        link.classList.add('active-nav');
-        link.classList.remove('inactive-nav');
-      } else {
-        link.classList.remove('active-nav');
-        link.classList.add('inactive-nav');
-      }
-    });
-
-    // Show/hide tab panels
-    const tabPanels = document.querySelectorAll('.tab-panel');
-    tabPanels.forEach(panel => {
-      if (panel.id === `tab-${tabId}`) {
-        panel.classList.remove('hidden');
-        panel.classList.add('fade-in');
-      } else {
-        panel.classList.add('hidden');
-        panel.classList.remove('fade-in');
-      }
-    });
-
-    // Refresh charts if needed on tab switch
-    if (tabId === 'dashboard' && window.dashboardModule) {
-      window.dashboardModule.render();
-    } else if (tabId === 'finance' && window.financeModule) {
-      window.financeModule.render();
-    } else if (tabId === 'projects' && window.projectsModule) {
-      window.projectsModule.render();
-    } else if (tabId === 'schedule' && window.scheduleModule) {
-      window.scheduleModule.render();
-    } else if (tabId === 'todo' && window.todoModule) {
-      window.todoModule.render();
-    }
-
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   bindKeyboardShortcuts() {
     window.addEventListener('keydown', (e) => {
-      // Escape key closes modals
       if (e.key === 'Escape') {
         this.closeAllModals();
         return;
       }
 
-      // Alt+N or Ctrl+K for quick actions modal
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         this.toggleQuickActionModal();
       }
 
-      // Alt+1 to Alt+6 for fast tab switching
-      if (e.altKey && e.key >= '1' && e.key <= '6') {
-        const tabs = ['dashboard', 'todo', 'schedule', 'projects', 'finance', 'focus'];
-        const idx = parseInt(e.key) - 1;
-        if (tabs[idx]) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        if (window.state.undo()) {
           e.preventDefault();
-          this.switchTab(tabs[idx]);
+          Utils.showToast('Aksi terakhir berhasil dibatalkan (Undo).', { type: 'success' });
+        }
+      }
+
+      if (e.altKey && e.key >= '1' && e.key <= '7') {
+        const routes = ['dashboard', 'todo', 'schedule', 'projects', 'finance', 'focus', 'settings'];
+        const idx = parseInt(e.key) - 1;
+        if (routes[idx]) {
+          e.preventDefault();
+          window.router.navigate(routes[idx]);
         }
       }
     });
   }
 
   bindQuickActions() {
-    const quickFab = document.getElementById('quick-action-fab');
-    if (quickFab) {
-      quickFab.addEventListener('click', () => this.toggleQuickActionModal());
-    }
+    const fab = document.getElementById('quick-action-fab');
+    if (fab) fab.addEventListener('click', () => this.toggleQuickActionModal());
   }
 
   toggleQuickActionModal() {
     const modal = document.getElementById('quick-action-modal');
     if (!modal) return;
-
     if (modal.classList.contains('hidden')) {
       modal.classList.remove('hidden');
       modal.classList.add('flex');
@@ -155,14 +92,13 @@ class App {
   }
 
   closeAllModals() {
-    document.querySelectorAll('.modal-overlay').forEach(modal => {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.classList.add('hidden');
+      m.classList.remove('flex');
     });
   }
 }
 
-// Global bootstrap
 document.addEventListener('DOMContentLoaded', () => {
   window.app = new App();
   window.app.init();

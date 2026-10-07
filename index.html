@@ -1,22 +1,28 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id" data-theme="dark" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Student Life Manager</title>
-  <meta name="description" content="Aplikasi produktivitas all-in-one siswa kelas 12: Manajemen Proyek Coding, Belajar TKA, Jadwal Waktu & Keuangan">
-  <meta name="theme-color" content="#0b0f19">
+  <title>StudentFlow — Production Ready Student Life Manager</title>
+  <meta name="description" content="Manajemen Produktivitas Siswa Kelas 12: Coding, TKA Saintek/Soshum, Jadwal & Keuangan">
+  <meta name="theme-color" content="#0C0F17">
 
   <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="icon" type="image/png" href="assets/icon.png">
 
-  <!-- Fonts & Icons -->
+  <!-- Google Fonts: Inter, Merriweather, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Chart.js & Confetti CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -27,899 +33,894 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
+            serif: ['Merriweather', 'serif'],
             mono: ['JetBrains Mono', 'monospace']
-          },
-          colors: {
-            brand: {
-              50: '#eff6ff',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8'
-            }
           }
         }
       }
     }
   </script>
 
-  <!-- External CDNs -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
-  <!-- Custom Styles -->
+  <!-- Custom Stylesheets (Modular) -->
+  <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-slate-950 text-slate-100 flex min-h-screen">
+<body class="bg-[#0C0F17] text-slate-100 min-h-screen">
 
   <!-- Toast Notification Container -->
-  <div id="toast-container"></div>
+  <div id="toast-container" aria-live="polite"></div>
 
-  <!-- Sidebar (Desktop View) -->
-  <aside class="hidden lg:flex flex-col w-64 bg-slate-900/90 border-r border-slate-800/80 p-4 fixed top-0 bottom-0 left-0 z-30 backdrop-blur-xl">
-    <!-- Brand Logo -->
-    <div class="flex items-center gap-3 px-2 py-3 mb-6">
-      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-400 p-0.5 shadow-lg shadow-blue-500/20 flex items-center justify-center">
-        <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-blue-400 font-bold text-lg">
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
-      </div>
-      <div>
-        <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
-          StudentLife <span class="text-[10px] font-mono bg-blue-500/20 text-blue-400 px-1.5 py-0.2 rounded">12th</span>
-        </h1>
-        <p class="text-[11px] text-slate-400 font-medium">Coding & TKA Balance</p>
-      </div>
-    </div>
-
-    <!-- Navigation Menu -->
-    <nav class="flex-1 space-y-1">
-      <button data-nav-target="dashboard" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold active-nav transition-all text-left">
-        <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
-        <span>Dashboard</span>
-      </button>
-
-      <button data-nav-target="todo" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold inactive-nav transition-all text-left">
-        <i class="fa-solid fa-list-check w-5 text-center text-base"></i>
-        <span>To-Do List</span>
-      </button>
-
-      <button data-nav-target="schedule" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold inactive-nav transition-all text-left">
-        <i class="fa-regular fa-calendar-days w-5 text-center text-base"></i>
-        <span>Jadwal (Time Block)</span>
-      </button>
-
-      <button data-nav-target="projects" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold inactive-nav transition-all text-left">
-        <i class="fa-solid fa-folder-kanban w-5 text-center text-base"></i>
-        <span>Proyek (Kanban)</span>
-      </button>
-
-      <button data-nav-target="finance" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold inactive-nav transition-all text-left">
-        <i class="fa-solid fa-wallet w-5 text-center text-base"></i>
-        <span>Keuangan</span>
-      </button>
-
-      <button data-nav-target="focus" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold inactive-nav transition-all text-left">
-        <i class="fa-solid fa-stopwatch w-5 text-center text-base"></i>
-        <span>Fokus & Pomodoro</span>
-      </button>
-
-      <button data-nav-target="settings" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold inactive-nav transition-all text-left">
-        <i class="fa-solid fa-sliders w-5 text-center text-base"></i>
-        <span>Pengaturan</span>
-      </button>
-    </nav>
-
-    <!-- Bottom Quick Info & Sync Status -->
-    <div class="pt-4 border-t border-slate-800/80 space-y-3">
-      <div id="autosave-badge" class="text-[11px] text-slate-400 font-mono transition-opacity flex items-center gap-1.5 px-2">
-        <i class="fa-solid fa-cloud-arrow-up text-emerald-400"></i> LocalStorage Aktif
-      </div>
-      <button onclick="window.storage.exportJSON()" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 flex items-center justify-center gap-2 transition-colors">
-        <i class="fa-solid fa-download"></i>
-        <span>Backup Data (JSON)</span>
-      </button>
-    </div>
-  </aside>
-
-  <!-- Main Content Area -->
-  <div class="flex-1 flex flex-col min-w-0 lg:pl-64 pb-24 lg:pb-10">
+  <div class="app-wrapper flex">
     
-    <!-- Top Bar -->
-    <header class="h-16 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-20 px-4 sm:px-6 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="lg:hidden flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white text-sm font-bold">
+    <!-- Sidebar (Desktop View) -->
+    <aside class="sidebar fixed top-0 bottom-0 left-0 w-64 bg-slate-900/90 border-r border-slate-800/80 p-4 z-40 hidden lg:flex flex-col backdrop-blur-xl">
+      <!-- Brand Logo & Student Profile Preview -->
+      <div class="flex items-center gap-3 px-2 py-3 mb-4">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-amber-500 p-0.5 shadow-lg shadow-indigo-500/25 flex items-center justify-center">
+          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-indigo-400 font-bold text-lg">
             <i class="fa-solid fa-graduation-cap"></i>
           </div>
-          <span class="font-bold text-sm tracking-tight">StudentLife</span>
         </div>
-        <div class="hidden sm:block text-xs font-medium text-slate-400">
-          <span class="text-slate-200 font-semibold">Persiapan UTBK/TKA 2025</span> • Portfolio Coding Kelas 12
+        <div class="min-w-0 flex-1">
+          <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
+            StudentFlow <span class="text-[9px] font-mono bg-indigo-500/20 text-indigo-400 px-1.5 py-0.2 rounded font-bold">12th</span>
+          </h1>
+          <p class="text-[11px] text-slate-400 font-medium truncate" id="header-user-name">Arka Pratama</p>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
-        <button onclick="window.notifications.requestPermission()" class="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors text-xs flex items-center gap-1.5" title="Izin Notifikasi">
-          <i class="fa-regular fa-bell text-blue-400"></i>
-          <span class="hidden md:inline">Notifikasi</span>
+      <!-- Navigation Links -->
+      <nav class="flex-1 space-y-1" aria-label="Main Navigation">
+        <button data-nav-target="dashboard" class="nav-link active">
+          <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
+          <span>Dashboard</span>
         </button>
 
-        <button onclick="window.app.toggleQuickActionModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-lg shadow-blue-500/20 flex items-center gap-1.5 transition-all">
-          <i class="fa-solid fa-plus"></i>
-          <span>Buat Cepat</span>
+        <button data-nav-target="todo" class="nav-link">
+          <i class="fa-solid fa-list-check w-5 text-center text-base"></i>
+          <span>To-Do List</span>
+        </button>
+
+        <button data-nav-target="schedule" class="nav-link">
+          <i class="fa-regular fa-calendar-days w-5 text-center text-base"></i>
+          <span>Jadwal (Time Block)</span>
+        </button>
+
+        <button data-nav-target="projects" class="nav-link">
+          <i class="fa-solid fa-folder-kanban w-5 text-center text-base"></i>
+          <span>Proyek (Kanban)</span>
+        </button>
+
+        <button data-nav-target="finance" class="nav-link">
+          <i class="fa-solid fa-wallet w-5 text-center text-base"></i>
+          <span>Keuangan</span>
+        </button>
+
+        <button data-nav-target="focus" class="nav-link">
+          <i class="fa-solid fa-stopwatch w-5 text-center text-base"></i>
+          <span>Fokus & Pomodoro</span>
+        </button>
+
+        <button data-nav-target="settings" class="nav-link">
+          <i class="fa-solid fa-sliders w-5 text-center text-base"></i>
+          <span>Profil & Pengaturan</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="pt-4 border-t border-slate-800/80 space-y-2.5">
+        <div id="autosave-badge" class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5 px-2">
+          <i class="fa-solid fa-cloud-arrow-up text-emerald-400"></i> LocalStorage Aktif
+        </div>
+        <button onclick="window.backupModule.exportJSON()" class="btn btn-secondary w-full py-2 text-xs font-semibold">
+          <i class="fa-solid fa-download mr-1.5"></i> Backup JSON
         </button>
       </div>
-    </header>
+    </aside>
 
-    <!-- Notification Permission Banner (Conditional) -->
-    <div id="notif-permission-banner" class="hidden mx-4 sm:mx-6 mt-4 p-3.5 bg-gradient-to-r from-blue-900/40 to-indigo-900/40 border border-blue-500/30 rounded-2xl flex items-center justify-between gap-3 text-xs">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm">
-          <i class="fa-solid fa-bell-ring"></i>
-        </div>
-        <div>
-          <strong class="text-white">Aktifkan Notifikasi Pengingat!</strong>
-          <p class="text-slate-300">Dapatkan pengingat tugas 30 menit sebelum tenggat, ringkasan jam 07:00 & 20:30.</p>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <button onclick="window.notifications.requestPermission(); document.getElementById('notif-permission-banner').classList.add('hidden');" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold">Aktifkan</button>
-        <button onclick="document.getElementById('notif-permission-banner').classList.add('hidden')" class="p-1.5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>
-
-    <!-- Main Dynamic Content Wrapper -->
-    <main class="p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
-
-      <!-- TAB 1: DASHBOARD -->
-      <section id="tab-dashboard" class="tab-panel space-y-6">
-        <!-- Greeting Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 p-6 rounded-3xl border border-slate-800 shadow-xl">
-          <div>
-            <div class="flex items-center gap-2 text-xs font-semibold text-blue-400 mb-1">
-              <i class="fa-solid fa-sparkles"></i> Dashboard Produktivitas
+    <!-- Main Content Container -->
+    <div class="main-content flex-1 flex flex-col min-w-0">
+      
+      <!-- Top Navigation Bar -->
+      <header class="topbar sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-md h-16">
+        <div class="flex items-center gap-3">
+          <div class="lg:hidden flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
+              <i class="fa-solid fa-graduation-cap"></i>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Halo, Pejuang Kelas 12! 👋</h2>
-            <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-              Fokus seimbang antara target skor TKA impian dan penyelesaian project coding portfolio.
-            </p>
+            <span class="font-bold text-sm tracking-tight text-white">StudentFlow</span>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="window.app.switchTab('focus')" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-all">
-              <i class="fa-solid fa-play"></i>
-              <span>Mulai Sesi Fokus</span>
+          <div class="hidden sm:block text-xs font-medium text-slate-400">
+            <span class="text-slate-200 font-semibold">Target UTBK/TKA 2025</span> • Portfolio Coding Kelas 12
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <!-- Notification Request Button -->
+          <button onclick="window.notifications.requestPermission()" class="btn btn-ghost btn-sm text-xs font-semibold text-slate-300" title="Izin Notifikasi">
+            <i class="fa-regular fa-bell text-indigo-400"></i>
+            <span class="hidden md:inline ml-1">Notifikasi</span>
+          </button>
+
+          <!-- User Avatar Profile Icon (Header) -->
+          <button onclick="window.router.navigate('settings')" class="flex items-center gap-2 p-1 rounded-xl hover:bg-slate-800 transition-colors" title="Buka Profil">
+            <img id="header-user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full border border-indigo-500/40 object-cover bg-indigo-900">
+          </button>
+
+          <!-- Quick Add Button -->
+          <button onclick="window.app.toggleQuickActionModal()" class="btn btn-primary btn-sm text-xs font-bold shadow-lg shadow-indigo-600/30">
+            <i class="fa-solid fa-plus mr-1"></i> Buat Cepat
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Dynamic Pages Container -->
+      <main class="page-container p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+
+        <!-- PAGE 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-panel space-y-6">
+          
+          <!-- Hero Banner & Rotating Quote -->
+          <div class="card bg-gradient-to-r from-slate-900 via-slate-850 to-indigo-950 p-6 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
+            <div class="relative z-10 space-y-2">
+              <div class="flex items-center gap-2 text-xs font-bold text-indigo-400">
+                <i class="fa-solid fa-sparkles"></i> Dashboard Produktivitas
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Selamat Datang di StudentFlow! 🚀</h2>
+              <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800/80 max-w-2xl mt-3">
+                <p id="dash-quote-text" class="text-xs sm:text-sm font-serif italic text-slate-200">
+                  "Disiplin adalah jembatan antara target dan pencapaian nyata."
+                </p>
+                <span id="dash-quote-author" class="text-[11px] font-mono text-indigo-400 font-semibold block mt-1">
+                  — Jim Rohn
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Active Timeblock -->
+          <div class="card p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
+                <i class="fa-regular fa-clock"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Jadwal Sedang Berlangsung</span>
+                <div id="dash-current-timeblock" class="text-sm font-semibold text-white">Memuat jadwal...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Core Metric Stat Cards -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('todo')">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium">Tugas Aktif</span>
+                <div class="w-8 h-8 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-sm">
+                  <i class="fa-solid fa-list-check"></i>
+                </div>
+              </div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="dash-pending-todos">0</div>
+              <span class="text-[11px] text-indigo-400 hover:underline mt-1 inline-block">To-Do List &rarr;</span>
+            </div>
+
+            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('projects')">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium">Proyek In-Progress</span>
+                <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
+                  <i class="fa-solid fa-folder-open"></i>
+                </div>
+              </div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="dash-active-projects">0</div>
+              <span class="text-[11px] text-amber-400 hover:underline mt-1 inline-block">Kanban Board &rarr;</span>
+            </div>
+
+            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('focus')">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium">Jam Fokus</span>
+                <div class="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-sm">
+                  <i class="fa-solid fa-brain"></i>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-xl sm:text-2xl font-extrabold text-purple-400 font-mono" id="dash-study-hours">0h</span>
+                <span class="text-[10px] text-slate-400 font-bold">TKA</span>
+                <span class="text-slate-600">/</span>
+                <span class="text-xl sm:text-2xl font-extrabold text-indigo-400 font-mono" id="dash-code-hours">0h</span>
+                <span class="text-[10px] text-slate-400 font-bold">Code</span>
+              </div>
+              <span class="text-[11px] text-purple-400 hover:underline mt-1 inline-block">Mulai Timer &rarr;</span>
+            </div>
+
+            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('finance')">
+              <div class="flex items-center justify-between text-slate-400 mb-2">
+                <span class="text-xs font-medium">Pengeluaran Hari Ini</span>
+                <div class="w-8 h-8 rounded-xl bg-rose-500/15 text-rose-400 flex items-center justify-center text-sm">
+                  <i class="fa-solid fa-receipt"></i>
+                </div>
+              </div>
+              <div class="text-lg sm:text-2xl font-extrabold text-rose-400 font-mono truncate" id="dash-today-expenses">Rp 0</div>
+              <span class="text-[11px] text-rose-400 hover:underline mt-1 inline-block">Keuangan &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Daily Habits Quick View -->
+          <div class="card p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                <i class="fa-solid fa-fire text-amber-400"></i> Habit & Daily Streaks
+              </h3>
+              <button onclick="window.habitsModule.openModal()" class="text-xs text-indigo-400 hover:underline">+ Habit Baru</button>
+            </div>
+            <div id="dash-habits-quick"></div>
+          </div>
+
+          <!-- 2 Columns: Deadlines & Category Composition -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card p-5 space-y-4">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                  <i class="fa-regular fa-clock text-rose-400"></i> Deadline Mendatang
+                </h3>
+                <button onclick="window.router.navigate('todo')" class="text-xs text-indigo-400 hover:underline">Semua Tugas</button>
+              </div>
+              <div id="dash-upcoming-deadlines"></div>
+            </div>
+
+            <div class="card p-5 space-y-4">
+              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-3 border-b border-slate-800">
+                <i class="fa-solid fa-chart-pie text-indigo-400"></i> Komposisi Tugas
+              </h3>
+              <div class="h-60 relative">
+                <canvas id="chart-dash-tasks"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deep Work Stats Bar Chart -->
+          <div class="card p-5 space-y-4">
+            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-3 border-b border-slate-800">
+              <i class="fa-solid fa-bolt text-amber-400"></i> Alokasi Waktu Belajar TKA vs Coding
+            </h3>
+            <div class="h-56 relative">
+              <canvas id="chart-dash-focus"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAGE 2: TO-DO LIST SYSTEM -->
+        <section id="tab-todo" class="tab-panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-indigo-400"></i> To-Do List System
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Kelola tugas harian, checklist subtasks, reminder & prioritas.</p>
+            </div>
+            <button onclick="window.todoModule.openModal()" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i>
+              <span>Tambah Tugas</span>
             </button>
           </div>
-        </div>
 
-        <!-- Live Status: Current Time Block -->
-        <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
-              <i class="fa-regular fa-clock"></i>
+          <!-- Stat Summary Chips -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="card p-3.5 text-center">
+              <span class="text-xs text-slate-400">Total Tugas</span>
+              <div class="text-xl font-bold font-mono text-slate-100 mt-0.5" id="todo-stat-total">0</div>
             </div>
+            <div class="card p-3.5 text-center">
+              <span class="text-xs text-amber-400">Belum Selesai</span>
+              <div class="text-xl font-bold font-mono text-amber-400 mt-0.5" id="todo-stat-pending">0</div>
+            </div>
+            <div class="card p-3.5 text-center">
+              <span class="text-xs text-emerald-400">Selesai</span>
+              <div class="text-xl font-bold font-mono text-emerald-400 mt-0.5" id="todo-stat-completed">0</div>
+            </div>
+            <div class="card p-3.5 text-center">
+              <span class="text-xs text-rose-400">Tenggat Hari Ini</span>
+              <div class="text-xl font-bold font-mono text-rose-400 mt-0.5" id="todo-stat-today">0</div>
+            </div>
+          </div>
+
+          <!-- Filters & Search Toolbar -->
+          <div class="card p-4 space-y-3">
+            <div class="flex flex-col md:flex-row gap-3">
+              <div class="flex-1 relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                <input type="text" id="todo-search" placeholder="Cari tugas, deskripsi, atau checklist..." class="input pl-9">
+              </div>
+              <select id="todo-priority-filter" class="input md:w-48">
+                <option value="all">Semua Prioritas</option>
+                <option value="high">Prioritas Tinggi</option>
+                <option value="medium">Prioritas Sedang</option>
+                <option value="low">Prioritas Rendah</option>
+              </select>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <button data-category="all" class="todo-cat-filter active btn btn-sm btn-secondary [&.active]:btn-primary">Semua</button>
+                <button data-category="TKA" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-purple-600 [&.active]:text-white">TKA</button>
+                <button data-category="Coding" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-indigo-600 [&.active]:text-white">Coding</button>
+                <button data-category="School" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-emerald-600 [&.active]:text-white">Sekolah</button>
+                <button data-category="Personal" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-amber-600 [&.active]:text-white">Personal</button>
+                <button data-category="Finance" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-pink-600 [&.active]:text-white">Finance</button>
+              </div>
+
+              <div class="flex items-center bg-slate-800/80 p-0.5 rounded-xl text-xs">
+                <button data-status="all" class="todo-status-tab active px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Semua</button>
+                <button data-status="active" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Aktif</button>
+                <button data-status="today" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Hari Ini</button>
+                <button data-status="overdue" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Terlewat</button>
+                <button data-status="completed" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Selesai</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Todo List Render Container -->
+          <div id="todo-list-container"></div>
+        </section>
+
+        <!-- PAGE 3: TIME BLOCKING SCHEDULER -->
+        <section id="tab-schedule" class="tab-panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Jadwal Sedang Berlangsung</span>
-              <div id="dash-current-timeblock" class="text-sm font-semibold text-white">Memuat jadwal...</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Metric Stat Cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <!-- Pending Todos -->
-          <div class="bg-slate-900/70 rounded-2xl p-4 sm:p-5 border border-slate-800/80 hover:border-slate-700 transition-all cursor-pointer" onclick="window.app.switchTab('todo')">
-            <div class="flex items-center justify-between text-slate-400 mb-2">
-              <span class="text-xs font-medium">Tugas Aktif</span>
-              <div class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-list-check"></i>
-              </div>
-            </div>
-            <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="dash-pending-todos">0</div>
-            <span class="text-[11px] text-blue-400 hover:underline mt-1 inline-block">Buka To-Do List &rarr;</span>
-          </div>
-
-          <!-- Active Projects -->
-          <div class="bg-slate-900/70 rounded-2xl p-4 sm:p-5 border border-slate-800/80 hover:border-slate-700 transition-all cursor-pointer" onclick="window.app.switchTab('projects')">
-            <div class="flex items-center justify-between text-slate-400 mb-2">
-              <span class="text-xs font-medium">Proyek In-Progress</span>
-              <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-folder-open"></i>
-              </div>
-            </div>
-            <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="dash-active-projects">0</div>
-            <span class="text-[11px] text-amber-400 hover:underline mt-1 inline-block">Buka Kanban Board &rarr;</span>
-          </div>
-
-          <!-- Study & Code Hours -->
-          <div class="bg-slate-900/70 rounded-2xl p-4 sm:p-5 border border-slate-800/80 hover:border-slate-700 transition-all cursor-pointer" onclick="window.app.switchTab('focus')">
-            <div class="flex items-center justify-between text-slate-400 mb-2">
-              <span class="text-xs font-medium">Total Jam Fokus</span>
-              <div class="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-brain"></i>
-              </div>
+              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <i class="fa-regular fa-calendar-days text-indigo-400"></i> Time Blocking Scheduler
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Timeline harian visual (04:00 - 23:00), template jadwal, & deteksi konflik.</p>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-xl sm:text-2xl font-extrabold text-purple-400 font-mono" id="dash-study-hours">0h</span>
-              <span class="text-xs text-slate-500 font-bold">TKA</span>
-              <span class="text-slate-600">/</span>
-              <span class="text-xl sm:text-2xl font-extrabold text-blue-400 font-mono" id="dash-code-hours">0h</span>
-              <span class="text-xs text-slate-500 font-bold">Code</span>
-            </div>
-            <span class="text-[11px] text-purple-400 hover:underline mt-1 inline-block">Buka Timer &rarr;</span>
-          </div>
-
-          <!-- Today's Expenses -->
-          <div class="bg-slate-900/70 rounded-2xl p-4 sm:p-5 border border-slate-800/80 hover:border-slate-700 transition-all cursor-pointer" onclick="window.app.switchTab('finance')">
-            <div class="flex items-center justify-between text-slate-400 mb-2">
-              <span class="text-xs font-medium">Pengeluaran Hari Ini</span>
-              <div class="w-8 h-8 rounded-xl bg-rose-500/15 text-rose-400 flex items-center justify-center text-sm">
-                <i class="fa-solid fa-receipt"></i>
-              </div>
-            </div>
-            <div class="text-lg sm:text-2xl font-extrabold text-rose-400 font-mono truncate" id="dash-today-expenses">Rp 0</div>
-            <span class="text-[11px] text-rose-400 hover:underline mt-1 inline-block">Buka Keuangan &rarr;</span>
-          </div>
-        </div>
-
-        <!-- Habits Quick View -->
-        <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800/80 space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-              <i class="fa-solid fa-fire text-amber-400"></i> Habit & Daily Streaks
-            </h3>
-            <button onclick="window.habitsModule.openModal()" class="text-xs text-blue-400 hover:underline">+ Habit</button>
-          </div>
-          <div id="dash-habits-quick"></div>
-        </div>
-
-        <!-- Grid 2 Column: Upcoming Deadlines & Task Categories -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Upcoming Deadlines -->
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800/80 space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-regular fa-clock text-rose-400"></i> Deadline Mendatang
-              </h3>
-              <button onclick="window.app.switchTab('todo')" class="text-xs text-blue-400 hover:underline">Semua Tugas</button>
-            </div>
-            <div id="dash-upcoming-deadlines"></div>
-          </div>
-
-          <!-- Charts -->
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800/80 space-y-4">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-3 border-b border-slate-800">
-              <i class="fa-solid fa-chart-pie text-indigo-400"></i> Komposisi Tugas per Kategori
-            </h3>
-            <div class="h-60 relative">
-              <canvas id="chart-dash-tasks"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Deep Work Stats Bar Chart -->
-        <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800/80 space-y-4">
-          <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-3 border-b border-slate-800">
-            <i class="fa-solid fa-bolt text-amber-400"></i> Alokasi Waktu Belajar TKA vs Coding
-          </h3>
-          <div class="h-56 relative">
-            <canvas id="chart-dash-focus"></canvas>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 2: TO-DO LIST SYSTEM -->
-      <section id="tab-todo" class="tab-panel hidden space-y-6">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <i class="fa-solid fa-list-check text-blue-400"></i> To-Do List System
-            </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Kelola tugas harian, checklist subtasks, reminder & prioritas.</p>
-          </div>
-          <button onclick="window.todoModule.openModal()" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-plus"></i>
-            <span>Tambah Tugas</span>
-          </button>
-        </div>
-
-        <!-- Stat summary chips -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 text-center">
-            <span class="text-xs text-slate-400">Total Tugas</span>
-            <div class="text-xl font-bold font-mono text-slate-100 mt-0.5" id="todo-stat-total">0</div>
-          </div>
-          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 text-center">
-            <span class="text-xs text-amber-400">Belum Selesai</span>
-            <div class="text-xl font-bold font-mono text-amber-400 mt-0.5" id="todo-stat-pending">0</div>
-          </div>
-          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 text-center">
-            <span class="text-xs text-emerald-400">Selesai</span>
-            <div class="text-xl font-bold font-mono text-emerald-400 mt-0.5" id="todo-stat-completed">0</div>
-          </div>
-          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800 text-center">
-            <span class="text-xs text-rose-400">Tenggat Hari Ini</span>
-            <div class="text-xl font-bold font-mono text-rose-400 mt-0.5" id="todo-stat-today">0</div>
-          </div>
-        </div>
-
-        <!-- Filter & Search Toolbar -->
-        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800 space-y-3">
-          <div class="flex flex-col md:flex-row gap-3">
-            <!-- Search bar -->
-            <div class="flex-1 relative">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-              <input type="text" id="todo-search" placeholder="Cari tugas, deskripsi, atau checklist..." 
-                     class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl pl-9 pr-4 py-2.5 focus:ring-1 focus:ring-blue-500 focus:outline-none">
-            </div>
-
-            <!-- Priority filter -->
-            <select id="todo-priority-filter" class="bg-slate-800 border border-slate-700 text-slate-300 text-xs rounded-xl px-3 py-2.5 focus:ring-1 focus:ring-blue-500">
-              <option value="all">Semua Prioritas</option>
-              <option value="high">Prioritas Tinggi</option>
-              <option value="medium">Prioritas Sedang</option>
-              <option value="low">Prioritas Rendah</option>
-            </select>
-          </div>
-
-          <!-- Category Chips & Status Tabs -->
-          <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
-            <!-- Category filter chips -->
-            <div class="flex flex-wrap items-center gap-1.5">
-              <button data-category="all" class="todo-cat-filter active px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-blue-600 [&.active]:text-white">Semua</button>
-              <button data-category="TKA" class="todo-cat-filter px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-purple-600 [&.active]:text-white">TKA</button>
-              <button data-category="Coding" class="todo-cat-filter px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-blue-600 [&.active]:text-white">Coding</button>
-              <button data-category="School" class="todo-cat-filter px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-emerald-600 [&.active]:text-white">Sekolah</button>
-              <button data-category="Personal" class="todo-cat-filter px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-amber-600 [&.active]:text-white">Personal</button>
-              <button data-category="Finance" class="todo-cat-filter px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-pink-600 [&.active]:text-white">Finance</button>
-            </div>
-
-            <!-- Status Tabs -->
-            <div class="flex items-center bg-slate-800/80 p-0.5 rounded-xl text-xs">
-              <button data-status="all" class="todo-status-tab active px-3 py-1 rounded-lg font-medium text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Semua</button>
-              <button data-status="active" class="todo-status-tab px-3 py-1 rounded-lg font-medium text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Aktif</button>
-              <button data-status="today" class="todo-status-tab px-3 py-1 rounded-lg font-medium text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Hari Ini</button>
-              <button data-status="overdue" class="todo-status-tab px-3 py-1 rounded-lg font-medium text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Terlewat</button>
-              <button data-status="completed" class="todo-status-tab px-3 py-1 rounded-lg font-medium text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Selesai</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Task List Container -->
-        <div id="todo-list-container"></div>
-      </section>
-
-      <!-- TAB 3: TIME BLOCKING SCHEDULER -->
-      <section id="tab-schedule" class="tab-panel hidden space-y-6">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <i class="fa-regular fa-calendar-days text-indigo-400"></i> Time Blocking Scheduler
-            </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Timeline harian visual (04:00 - 23:00), template jadwal, & deteksi konflik.</p>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <button onclick="window.scheduleModule.printSchedule()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors">
-              <i class="fa-solid fa-print"></i>
-              <span>Cetak / PDF</span>
-            </button>
-            <button onclick="window.scheduleModule.openModal()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/20 flex items-center gap-1.5 transition-all">
-              <i class="fa-solid fa-plus"></i>
-              <span>Tambah Blok</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Schedule Controls Bar -->
-        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
-          <!-- Date Navigation -->
-          <div class="flex items-center gap-2">
-            <button id="schedule-prev-day" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors">
-              <i class="fa-solid fa-chevron-left text-xs"></i>
-            </button>
-            <input type="date" id="schedule-date-picker" class="bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3 py-2 focus:ring-1 focus:ring-blue-500">
-            <button id="schedule-next-day" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors">
-              <i class="fa-solid fa-chevron-right text-xs"></i>
-            </button>
-            <button id="schedule-today-btn" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium">Hari Ini</button>
-          </div>
-
-          <!-- Date Title -->
-          <h3 id="schedule-current-date-title" class="text-sm font-bold text-slate-200"></h3>
-
-          <!-- View Mode & Templates -->
-          <div class="flex items-center gap-2">
-            <!-- Templates dropdown -->
-            <div class="relative group">
-              <button class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center gap-1.5">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
-                <span>Terapkan Template</span>
-                <i class="fa-solid fa-chevron-down text-[10px]"></i>
+              <button onclick="window.scheduleModule.printSchedule()" class="btn btn-secondary text-xs">
+                <i class="fa-solid fa-print"></i> Cetak / PDF
               </button>
-              <div class="hidden group-hover:block absolute right-0 top-full mt-1 w-44 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl p-1 z-30">
-                <button onclick="window.scheduleModule.applyTemplate('weekday')" class="w-full text-left px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700 flex items-center gap-2">
-                  <i class="fa-solid fa-briefcase text-blue-400"></i> Hari Sekolah (Weekday)
+              <button onclick="window.scheduleModule.openModal()" class="btn btn-primary text-xs">
+                <i class="fa-solid fa-plus"></i> Tambah Blok
+              </button>
+            </div>
+          </div>
+
+          <!-- Schedule Controls Bar -->
+          <div class="card p-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+              <button id="schedule-prev-day" class="btn-icon"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+              <input type="date" id="schedule-date-picker" class="input w-auto py-1.5 text-xs">
+              <button id="schedule-next-day" class="btn-icon"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+              <button id="schedule-today-btn" class="btn btn-sm btn-secondary">Hari Ini</button>
+            </div>
+
+            <h3 id="schedule-current-date-title" class="text-sm font-bold text-slate-200"></h3>
+
+            <div class="flex items-center gap-2">
+              <!-- Templates dropdown -->
+              <div class="relative group">
+                <button class="btn btn-sm btn-secondary flex items-center gap-1.5">
+                  <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Template <i class="fa-solid fa-chevron-down text-[10px]"></i>
                 </button>
-                <button onclick="window.scheduleModule.applyTemplate('weekend')" class="w-full text-left px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700 flex items-center gap-2">
-                  <i class="fa-solid fa-gamepad text-emerald-400"></i> Akhir Pekan (Weekend)
-                </button>
-                <button onclick="window.scheduleModule.applyTemplate('exam')" class="w-full text-left px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700 flex items-center gap-2">
-                  <i class="fa-solid fa-file-signature text-purple-400"></i> Minggu Try Out / Ujian
-                </button>
-                <div class="border-t border-slate-700 my-1"></div>
-                <button onclick="window.scheduleModule.duplicatePreviousDay()" class="w-full text-left px-3 py-2 rounded-lg text-xs text-slate-200 hover:bg-slate-700 flex items-center gap-2">
-                  <i class="fa-solid fa-copy text-amber-400"></i> Duplikat Hari Kemarin
-                </button>
+                <div class="hidden group-hover:block absolute right-0 top-full mt-1 w-48 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-1 z-30">
+                  <button onclick="window.scheduleModule.applyTemplate('weekday')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-briefcase text-indigo-400"></i> Hari Sekolah (Weekday)
+                  </button>
+                  <button onclick="window.scheduleModule.applyTemplate('weekend')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad text-emerald-400"></i> Akhir Pekan (Weekend)
+                  </button>
+                  <button onclick="window.scheduleModule.applyTemplate('exam')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-file-signature text-purple-400"></i> Minggu Try Out / Ujian
+                  </button>
+                  <div class="border-t border-slate-800 my-1"></div>
+                  <button onclick="window.scheduleModule.duplicatePreviousDay()" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-copy text-amber-400"></i> Duplikat Hari Kemarin
+                  </button>
+                </div>
+              </div>
+
+              <!-- Daily / Weekly View Toggle -->
+              <div class="flex items-center bg-slate-800 p-0.5 rounded-xl text-xs">
+                <button id="schedule-view-daily" class="active px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-indigo-600 [&.active]:text-white font-semibold">Harian</button>
+                <button id="schedule-view-weekly" class="px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-indigo-600 [&.active]:text-white font-semibold">Mingguan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schedule Timeline Container -->
+          <div id="schedule-content-container"></div>
+        </section>
+
+        <!-- PAGE 4: PROJECT TRACKER (KANBAN) -->
+        <section id="tab-projects" class="tab-panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-folder-kanban text-emerald-400"></i> Project Tracker (Kanban)
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Pantau milestone project coding & target belajar dengan WIP Limit Warning.</p>
+            </div>
+            <button onclick="window.projectsModule.openModal()" class="btn btn-primary bg-emerald-600 hover:bg-emerald-500">
+              <i class="fa-solid fa-plus"></i>
+              <span>Proyek Baru</span>
+            </button>
+          </div>
+
+          <div id="project-wip-alert"></div>
+
+          <div class="card p-4 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <label class="text-xs text-slate-400 font-medium">Kategori:</label>
+              <select id="project-filter-category" class="input w-auto py-1.5 text-xs">
+                <option value="all">Semua Kategori</option>
+                <option value="Coding">Coding</option>
+                <option value="TKA">TKA</option>
+                <option value="School">Sekolah</option>
+                <option value="Personal">Personal</option>
+              </select>
+            </div>
+
+            <div class="flex items-center bg-slate-800 p-0.5 rounded-xl text-xs">
+              <button id="project-view-active" class="active px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-emerald-600 [&.active]:text-white font-semibold">Aktif</button>
+              <button id="project-view-archived" class="px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-emerald-600 [&.active]:text-white font-semibold">Arsip</button>
+            </div>
+          </div>
+
+          <div id="kanban-board-container"></div>
+        </section>
+
+        <!-- PAGE 5: FINANCE TRACKER -->
+        <section id="tab-finance" class="tab-panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-wallet text-pink-400"></i> Finance Tracker
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Catat uang saku, pengeluaran belajar/coding, limit anggaran & tabungan impian.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="window.financeModule.exportCSV()" class="btn btn-secondary text-xs">
+                <i class="fa-solid fa-file-csv text-emerald-400"></i> Export CSV
+              </button>
+              <button onclick="window.financeModule.openTransactionModal()" class="btn btn-primary bg-pink-600 hover:bg-pink-500 text-xs">
+                <i class="fa-solid fa-plus"></i> Catat Transaksi
+              </button>
+            </div>
+          </div>
+
+          <div class="card p-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400 font-medium">Bulan:</span>
+              <input type="month" id="finance-month-picker" class="input w-auto py-1.5 text-xs">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="card p-5">
+              <div class="flex items-center justify-between text-slate-400 mb-1">
+                <span class="text-xs font-medium">Total Pemasukan</span>
+                <i class="fa-solid fa-arrow-down text-emerald-400"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-bold font-mono text-emerald-400" id="finance-stat-income">Rp 0</div>
+            </div>
+
+            <div class="card p-5">
+              <div class="flex items-center justify-between text-slate-400 mb-1">
+                <span class="text-xs font-medium">Total Pengeluaran</span>
+                <i class="fa-solid fa-arrow-up text-rose-400"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-bold font-mono text-rose-400" id="finance-stat-expense">Rp 0</div>
+            </div>
+
+            <div class="card p-5">
+              <div class="flex items-center justify-between text-slate-400 mb-1">
+                <span class="text-xs font-medium">Sisa Tabungan / Saldo</span>
+                <i class="fa-solid fa-piggy-bank text-indigo-400"></i>
+              </div>
+              <div class="text-xl sm:text-2xl font-bold font-mono text-indigo-400" id="finance-stat-savings">Rp 0</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card p-5 space-y-4">
+              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
+                <i class="fa-solid fa-chart-pie text-amber-400"></i> Batas Anggaran Bulanan
+              </h3>
+              <div id="finance-budgets-container" class="space-y-3"></div>
+            </div>
+
+            <div class="card p-5 space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                  <i class="fa-solid fa-bullseye text-emerald-400"></i> Target Tabungan Impian
+                </h3>
+                <button onclick="window.financeModule.openGoalModal()" class="text-xs text-indigo-400 hover:underline">+ Target</button>
+              </div>
+              <div id="finance-goals-container" class="space-y-3"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card p-5 space-y-4">
+              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
+                <i class="fa-solid fa-chart-pie text-pink-400"></i> Proporsi Pengeluaran
+              </h3>
+              <div class="h-60 relative">
+                <canvas id="chart-finance-categories"></canvas>
               </div>
             </div>
 
-            <!-- Daily / Weekly Toggle -->
-            <div class="flex items-center bg-slate-800 p-0.5 rounded-xl text-xs">
-              <button id="schedule-view-daily" class="active px-3 py-1.5 rounded-lg font-medium text-slate-400 [&.active]:bg-indigo-600 [&.active]:text-white">Harian</button>
-              <button id="schedule-view-weekly" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 [&.active]:bg-indigo-600 [&.active]:text-white">Mingguan</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Schedule Content Area -->
-        <div id="schedule-content-container"></div>
-      </section>
-
-      <!-- TAB 4: PROJECT TRACKER (KANBAN) -->
-      <section id="tab-projects" class="tab-panel hidden space-y-6">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <i class="fa-solid fa-folder-kanban text-emerald-400"></i> Project Tracker (Kanban)
-            </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Pantau milestone project coding & target belajar dengan WIP Limit Warning.</p>
-          </div>
-          <button onclick="window.projectsModule.openModal()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all">
-            <i class="fa-solid fa-plus"></i>
-            <span>Proyek Baru</span>
-          </button>
-        </div>
-
-        <!-- WIP Limit Alert Banner Placeholder -->
-        <div id="project-wip-alert"></div>
-
-        <!-- Filter bar -->
-        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <label class="text-xs text-slate-400 font-medium">Kategori:</label>
-            <select id="project-filter-category" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
-              <option value="all">Semua Kategori</option>
-              <option value="Coding">Coding</option>
-              <option value="TKA">TKA</option>
-              <option value="School">Sekolah</option>
-              <option value="Personal">Personal</option>
-            </select>
-          </div>
-
-          <div class="flex items-center bg-slate-800 p-0.5 rounded-xl text-xs">
-            <button id="project-view-active" class="active px-3 py-1.5 rounded-lg font-medium text-slate-400 [&.active]:bg-emerald-600 [&.active]:text-white">Aktif</button>
-            <button id="project-view-archived" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 [&.active]:bg-emerald-600 [&.active]:text-white">Arsip</button>
-          </div>
-        </div>
-
-        <!-- Kanban Board Columns Container -->
-        <div id="kanban-board-container"></div>
-      </section>
-
-      <!-- TAB 5: FINANCE TRACKER -->
-      <section id="tab-finance" class="tab-panel hidden space-y-6">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <i class="fa-solid fa-wallet text-pink-400"></i> Finance Tracker
-            </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Catat uang saku, pengeluaran belajar/coding, limit anggaran & tabungan impian.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="window.financeModule.exportCSV()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 transition-colors">
-              <i class="fa-solid fa-file-csv text-emerald-400"></i>
-              <span>Export CSV</span>
-            </button>
-            <button onclick="window.financeModule.openTransactionModal()" class="px-4 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold shadow-lg shadow-pink-600/20 flex items-center gap-2 transition-all">
-              <i class="fa-solid fa-plus"></i>
-              <span>Catat Transaksi</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Month Filter & Overview Cards -->
-        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400 font-medium">Bulan:</span>
-            <input type="month" id="finance-month-picker" class="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-1.5">
-          </div>
-        </div>
-
-        <!-- 3 Stats Cards (Income, Expense, Net Savings) -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800">
-            <div class="flex items-center justify-between text-slate-400 mb-1">
-              <span class="text-xs font-medium">Total Pemasukan</span>
-              <i class="fa-solid fa-arrow-down text-emerald-400"></i>
-            </div>
-            <div class="text-xl sm:text-2xl font-bold font-mono text-emerald-400" id="finance-stat-income">Rp 0</div>
-          </div>
-
-          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800">
-            <div class="flex items-center justify-between text-slate-400 mb-1">
-              <span class="text-xs font-medium">Total Pengeluaran</span>
-              <i class="fa-solid fa-arrow-up text-rose-400"></i>
-            </div>
-            <div class="text-xl sm:text-2xl font-bold font-mono text-rose-400" id="finance-stat-expense">Rp 0</div>
-          </div>
-
-          <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800">
-            <div class="flex items-center justify-between text-slate-400 mb-1">
-              <span class="text-xs font-medium">Sisa Tabungan / Saldo</span>
-              <i class="fa-solid fa-piggy-bank text-blue-400"></i>
-            </div>
-            <div class="text-xl sm:text-2xl font-bold font-mono text-blue-400" id="finance-stat-savings">Rp 0</div>
-          </div>
-        </div>
-
-        <!-- Grid: Budgets & Financial Goals -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Monthly Budget Limits -->
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-              <i class="fa-solid fa-chart-pie text-amber-400"></i> Batas Anggaran Bulanan
-            </h3>
-            <div id="finance-budgets-container" class="space-y-3"></div>
-          </div>
-
-          <!-- Financial Goals -->
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800 space-y-4">
-            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-bullseye text-emerald-400"></i> Target Tabungan Impian
+            <div class="card p-5 space-y-4">
+              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
+                <i class="fa-solid fa-chart-column text-indigo-400"></i> Tren 6 Bulan Terakhir
               </h3>
-              <button onclick="window.financeModule.openGoalModal()" class="text-xs text-blue-400 hover:underline">+ Target</button>
-            </div>
-            <div id="finance-goals-container" class="space-y-3"></div>
-          </div>
-        </div>
-
-        <!-- Charts: Category Breakdown & Trend -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-              <i class="fa-solid fa-chart-pie text-pink-400"></i> Proporsi Pengeluaran Bulan Ini
-            </h3>
-            <div class="h-60 relative">
-              <canvas id="chart-finance-categories"></canvas>
+              <div class="h-60 relative">
+                <canvas id="chart-finance-trend"></canvas>
+              </div>
             </div>
           </div>
 
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-              <i class="fa-solid fa-chart-column text-blue-400"></i> Tren 6 Bulan Terakhir
-            </h3>
-            <div class="h-60 relative">
-              <canvas id="chart-finance-trend"></canvas>
+          <div class="card p-5 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                <i class="fa-solid fa-receipt text-indigo-400"></i> Riwayat Transaksi
+              </h3>
+              <select id="finance-type-filter" class="input w-auto py-1.5 text-xs">
+                <option value="all">Semua Tipe</option>
+                <option value="income">Pemasukan Saja</option>
+                <option value="expense">Pengeluaran Saja</option>
+              </select>
             </div>
+            <div id="finance-transactions-container"></div>
           </div>
-        </div>
+        </section>
 
-        <!-- Transactions List -->
-        <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-              <i class="fa-solid fa-receipt text-blue-400"></i> Riwayat Transaksi
-            </h3>
-            <select id="finance-type-filter" class="bg-slate-800 border border-slate-700 text-slate-300 text-xs rounded-xl px-3 py-1.5">
-              <option value="all">Semua Tipe</option>
-              <option value="income">Pemasukan Saja</option>
-              <option value="expense">Pengeluaran Saja</option>
-            </select>
-          </div>
-          <div id="finance-transactions-container"></div>
-        </div>
-      </section>
-
-      <!-- TAB 6: FOCUS & POMODORO TIMER -->
-      <section id="tab-focus" class="tab-panel hidden space-y-6">
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <!-- PAGE 6: FOCUS & POMODORO TIMER -->
+        <section id="tab-focus" class="tab-panel hidden space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
               <i class="fa-solid fa-stopwatch text-indigo-400"></i> Focus Timer (Pomodoro)
             </h2>
             <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Deep focus untuk belajar soal TKA atau sprint coding tanpa distraksi.</p>
           </div>
-        </div>
 
-        <!-- Big Focus Box -->
-        <div class="bg-gradient-to-b from-slate-900 to-indigo-950/60 rounded-3xl p-8 border border-slate-800 text-center max-w-xl mx-auto space-y-6 shadow-2xl">
-          <!-- Modes -->
-          <div class="flex items-center justify-center gap-2 flex-wrap">
-            <button data-mode="pomodoro" class="pomodoro-mode-btn active px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-indigo-600 [&.active]:text-white transition-all">
-              Pomodoro (25m)
-            </button>
-            <button data-mode="deepWork" class="pomodoro-mode-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-indigo-600 [&.active]:text-white transition-all">
-              Deep Work (50m)
-            </button>
-            <button data-mode="shortBreak" class="pomodoro-mode-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-indigo-600 [&.active]:text-white transition-all">
-              Short Break (5m)
-            </button>
-            <button data-mode="longBreak" class="pomodoro-mode-btn px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 [&.active]:bg-indigo-600 [&.active]:text-white transition-all">
-              Long Break (15m)
-            </button>
-          </div>
-
-          <!-- Focus Target Tag -->
-          <div class="flex items-center justify-center gap-2">
-            <span class="text-xs text-slate-400">Target Fokus:</span>
-            <button data-tag="TKA" class="pomodoro-tag-btn active px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 [&.active]:bg-purple-600 [&.active]:text-white">
-              <i class="fa-solid fa-book-open mr-1"></i> Belajar TKA
-            </button>
-            <button data-tag="Coding" class="pomodoro-tag-btn px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 [&.active]:bg-blue-600 [&.active]:text-white">
-              <i class="fa-solid fa-code mr-1"></i> Coding Sprint
-            </button>
-          </div>
-
-          <!-- Timer Clock Display -->
-          <div class="py-6">
-            <div id="pomodoro-timer-display" class="text-6xl sm:text-7xl font-extrabold font-mono text-white tracking-wider">
-              25:00
+          <div class="card bg-gradient-to-b from-slate-900 to-indigo-950/60 p-8 text-center max-w-xl mx-auto space-y-6 shadow-2xl rounded-3xl">
+            <div class="flex items-center justify-center gap-2 flex-wrap">
+              <button data-mode="pomodoro" class="pomodoro-mode-btn active btn btn-sm btn-secondary [&.active]:btn-primary">Pomodoro (25m)</button>
+              <button data-mode="deepWork" class="pomodoro-mode-btn btn btn-sm btn-secondary [&.active]:btn-primary">Deep Work (50m)</button>
+              <button data-mode="shortBreak" class="pomodoro-mode-btn btn btn-sm btn-secondary [&.active]:btn-primary">Short Break (5m)</button>
+              <button data-mode="longBreak" class="pomodoro-mode-btn btn btn-sm btn-secondary [&.active]:btn-primary">Long Break (15m)</button>
             </div>
-            <!-- Progress Bar -->
-            <div class="w-full bg-slate-800 rounded-full h-2 mt-6 overflow-hidden max-w-md mx-auto">
-              <div id="pomodoro-progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-400 h-2 rounded-full transition-all duration-1000" style="width: 0%;"></div>
+
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-xs text-slate-400">Target Fokus:</span>
+              <button data-tag="TKA" class="pomodoro-tag-btn active btn btn-sm btn-secondary [&.active]:bg-purple-600 [&.active]:text-white">
+                <i class="fa-solid fa-book-open mr-1"></i> Belajar TKA
+              </button>
+              <button data-tag="Coding" class="pomodoro-tag-btn btn btn-sm btn-secondary [&.active]:bg-indigo-600 [&.active]:text-white">
+                <i class="fa-solid fa-code mr-1"></i> Coding Sprint
+              </button>
+            </div>
+
+            <div class="py-4">
+              <div id="pomodoro-timer-display" class="text-6xl sm:text-7xl font-extrabold font-mono text-white tracking-wider">
+                25:00
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 mt-6 overflow-hidden max-w-md mx-auto">
+                <div id="pomodoro-progress-bar" class="bg-gradient-to-r from-indigo-500 to-amber-400 h-2 rounded-full transition-all duration-1000" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-3">
+              <button id="pomodoro-start-btn" class="btn btn-primary btn-lg shadow-xl shadow-indigo-600/30">
+                <i class="fa-solid fa-play"></i> Mulai Fokus
+              </button>
+              <button id="pomodoro-pause-btn" class="hidden btn btn-lg bg-amber-600 hover:bg-amber-500 text-white shadow-xl shadow-amber-600/30">
+                <i class="fa-solid fa-pause"></i> Jeda
+              </button>
+              <button id="pomodoro-reset-btn" class="btn-icon w-12 h-12 text-base">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="flex items-center justify-center gap-3">
-            <button id="pomodoro-start-btn" class="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 flex items-center gap-2 transition-all transform hover:scale-105">
-              <i class="fa-solid fa-play"></i> Mulai Fokus
-            </button>
-            <button id="pomodoro-pause-btn" class="hidden px-8 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm shadow-xl shadow-amber-600/30 flex items-center gap-2 transition-all">
-              <i class="fa-solid fa-pause"></i> Jeda
-            </button>
-            <button id="pomodoro-reset-btn" class="p-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors">
-              <i class="fa-solid fa-rotate-right"></i>
-            </button>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <div class="card p-4 text-center">
+              <span class="text-xs text-slate-400">Sesi Selesai</span>
+              <div class="text-2xl font-bold font-mono text-indigo-400 mt-1" id="pomo-stat-sessions">0</div>
+            </div>
+            <div class="card p-4 text-center">
+              <span class="text-xs text-purple-400">Total Waktu TKA</span>
+              <div class="text-2xl font-bold font-mono text-purple-400 mt-1" id="pomo-stat-study">0h</div>
+            </div>
+            <div class="card p-4 text-center">
+              <span class="text-xs text-indigo-400">Total Waktu Coding</span>
+              <div class="text-2xl font-bold font-mono text-indigo-400 mt-1" id="pomo-stat-coding">0h</div>
+            </div>
           </div>
-        </div>
 
-        <!-- Focus Statistics -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 text-center">
-            <span class="text-xs text-slate-400">Sesi Selesai</span>
-            <div class="text-2xl font-bold font-mono text-indigo-400 mt-1" id="pomo-stat-sessions">0</div>
+          <!-- Habits Tracker Section -->
+          <div class="card p-6 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div>
+                <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                  <i class="fa-solid fa-fire text-amber-400"></i> Kebiasaan Harian & Daily Streaks
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Pertahankan konsistensi harian untuk hasil maksimal UTBK dan keahlian koding.</p>
+              </div>
+              <button onclick="window.habitsModule.openModal()" class="btn btn-sm btn-secondary">
+                + Tambah Habit
+              </button>
+            </div>
+            <div id="habits-list-container"></div>
           </div>
-          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 text-center">
-            <span class="text-xs text-purple-400">Total Waktu TKA</span>
-            <div class="text-2xl font-bold font-mono text-purple-400 mt-1" id="pomo-stat-study">0h</div>
-          </div>
-          <div class="bg-slate-900/80 rounded-2xl p-4 border border-slate-800 text-center">
-            <span class="text-xs text-blue-400">Total Waktu Coding</span>
-            <div class="text-2xl font-bold font-mono text-blue-400 mt-1" id="pomo-stat-coding">0h</div>
-          </div>
-        </div>
+        </section>
 
-        <!-- Habit Tracker Section -->
-        <div class="bg-slate-900/60 rounded-3xl p-6 border border-slate-800 space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <div>
-              <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                <i class="fa-solid fa-fire text-amber-400"></i> Kebiasaan Harian & Daily Streaks
+        <!-- PAGE 7: USER PROFILE & SETTINGS (EDITABLE EVERYTHING) -->
+        <section id="tab-settings" class="tab-panel hidden space-y-6">
+          <header class="page-header">
+            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-indigo-400"></i> ⚙️ Settings & User Profile
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Customize StudentFlow to your needs (Semua bidang dapat diedit bebas).</p>
+          </header>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- 1. Profile Section -->
+            <div class="card space-y-4">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
+                <i class="fa-solid fa-user-gear text-indigo-400"></i> 👤 User Profile
               </h3>
-              <p class="text-xs text-slate-400 mt-0.5">Pertahankan konsistensi harian untuk hasil maksimal UTBK dan keahlian koding.</p>
-            </div>
-            <button onclick="window.habitsModule.openModal()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200">
-              + Tambah Habit
-            </button>
-          </div>
-          <div id="habits-list-container"></div>
-        </div>
-      </section>
+              <form id="profile-form" class="space-y-3.5">
+                <div class="flex items-center gap-4 p-3 bg-slate-900/60 rounded-2xl border border-slate-800">
+                  <img id="avatar-preview" src="" alt="Avatar Preview" class="w-16 h-16 rounded-2xl border-2 border-indigo-500/50 object-cover bg-slate-800">
+                  <div>
+                    <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('avatar-input').click()">
+                      📷 Ubah Foto Profil
+                    </button>
+                    <p class="text-[11px] text-slate-400 mt-1">Maksimal 2MB (Tersimpan di LocalStorage).</p>
+                  </div>
+                </div>
 
-      <!-- TAB 7: SETTINGS & DATA MANAGEMENT -->
-      <section id="tab-settings" class="tab-panel hidden space-y-6">
-        <!-- Header -->
-        <div>
-          <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <i class="fa-solid fa-sliders text-blue-400"></i> Pengaturan & Manajemen Data
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Kustomisasi tema, jadwal notifikasi, warna kategori, dan backup data.</p>
-        </div>
+                <div class="form-group">
+                  <label for="user-name">Nama Siswa *</label>
+                  <input type="text" id="user-name" class="input" required placeholder="Nama Lengkap">
+                </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- App Preferences -->
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-              <i class="fa-solid fa-palette text-blue-400"></i> Tampilan & Preferensi
-            </h3>
-            <div class="space-y-3">
-              <div>
-                <label class="block text-xs text-slate-300 font-semibold mb-1">Tema Tampilan</label>
-                <select id="setting-theme-select" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
-                  <option value="dark">Mode Gelap (Dark Mode - Default)</option>
-                  <option value="light">Mode Terang (Light Mode)</option>
-                </select>
-              </div>
+                <div class="form-group">
+                  <label for="user-email">Email (Opsional)</label>
+                  <input type="email" id="user-email" class="input" placeholder="email@example.com">
+                </div>
 
-              <div class="pt-2">
-                <label class="block text-xs text-slate-300 font-semibold mb-2">Warna Tag Kategori</label>
-                <div id="setting-category-colors-container"></div>
-              </div>
-            </div>
-          </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="form-group">
+                    <label for="user-school">Sekolah SMA/SMK</label>
+                    <input type="text" id="user-school" class="input" placeholder="SMA Negeri 1">
+                  </div>
+                  <div class="form-group">
+                    <label for="user-grade">Tingkat Kelas</label>
+                    <select id="user-grade" class="input">
+                      <option value="10">Kelas 10 (Fase E)</option>
+                      <option value="11">Kelas 11 (Fase F)</option>
+                      <option value="12" selected>Kelas 12 (Pejuang UTBK)</option>
+                    </select>
+                  </div>
+                </div>
 
-          <!-- Notification Settings -->
-          <div class="bg-slate-900/60 rounded-3xl p-5 border border-slate-800 space-y-4">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-              <i class="fa-regular fa-bell text-amber-400"></i> Waktu Notifikasi & Pengingat
-            </h3>
-            <div class="space-y-3">
-              <div>
-                <label class="block text-xs text-slate-300 font-semibold mb-1">Pengingat Briefing Pagi (Morning Summary)</label>
-                <input type="time" id="setting-morning-time" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
-              </div>
-
-              <div>
-                <label class="block text-xs text-slate-300 font-semibold mb-1">Pengingat Evaluasi Malam (Evening Review)</label>
-                <input type="time" id="setting-evening-time" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
-              </div>
-
-              <div>
-                <label class="block text-xs text-slate-300 font-semibold mb-1">Pemberitahuan Tugas Sebelum Tenggat (Menit)</label>
-                <input type="number" id="setting-due-offset" min="5" max="180" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
-              </div>
-
-              <div class="flex items-center justify-between pt-2">
-                <button type="button" onclick="window.settingsModule.saveNotificationPreferences()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all">
-                  Simpan Waktu Notifikasi
+                <button type="submit" class="btn btn-primary w-full">
+                  💾 Simpan Perubahan Profil
                 </button>
-                <button type="button" id="setting-test-notif-btn" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium">
-                  Uji Notifikasi
+              </form>
+            </div>
+
+            <!-- 2. Appearance & Palette -->
+            <div class="card space-y-4">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
+                <i class="fa-solid fa-palette text-amber-400"></i> 🎨 Appearance & Themes
+              </h3>
+              
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-2">Tema Tampilan</label>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button class="theme-toggle-btn active btn btn-secondary text-xs" data-theme="dark">
+                      🌙 Mode Gelap (Dark)
+                    </button>
+                    <button class="theme-toggle-btn btn btn-secondary text-xs" data-theme="light">
+                      ☀️ Mode Terang (Light)
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-2">Warna Aksen Utama (Accent Color)</label>
+                  <div class="flex items-center gap-3">
+                    <input type="color" id="accent-color" value="#4F46E5" class="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer">
+                    <div class="color-presets flex items-center gap-2">
+                      <button class="color-dot" data-color="#4F46E5" style="background:#4F46E5" title="Indigo"></button>
+                      <button class="color-dot" data-color="#F97316" style="background:#F97316" title="Coral Orange"></button>
+                      <button class="color-dot" data-color="#10B981" style="background:#10B981" title="Emerald Green"></button>
+                      <button class="color-dot" data-color="#8B5CF6" style="background:#8B5CF6" title="Purple"></button>
+                      <button class="color-dot" data-color="#EC4899" style="background:#EC4899" title="Pink"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Notifications & Sounds -->
+                <div class="pt-3 border-t border-slate-800 space-y-3">
+                  <h4 class="text-xs font-bold text-slate-300">🔔 Notifikasi & Suara</h4>
+                  <label class="toggle-label">
+                    <span class="text-xs text-slate-300">Aktifkan Notifikasi Browser</span>
+                    <input type="checkbox" id="notifications-toggle" class="toggle-input">
+                    <span class="toggle-slider"></span>
+                  </label>
+
+                  <label class="toggle-label">
+                    <span class="text-xs text-slate-300">Efek Suara Alarm & Konfeti (Web Audio)</span>
+                    <input type="checkbox" id="sound-toggle" class="toggle-input" checked>
+                    <span class="toggle-slider"></span>
+                  </label>
+
+                  <button type="button" id="test-notification-btn" class="btn btn-sm btn-secondary w-full">
+                    🔔 Uji Notifikasi & Suara
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Daily Schedule Defaults -->
+            <div class="card space-y-4">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
+                <i class="fa-regular fa-calendar-check text-emerald-400"></i> 📅 Daily Schedule & Goals
+              </h3>
+              <div class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="form-group">
+                    <label for="wake-time">Jam Bangun Pagi</label>
+                    <input type="time" id="wake-time" class="input">
+                  </div>
+                  <div class="form-group">
+                    <label for="sleep-time">Jam Tidur Malam</label>
+                    <input type="time" id="sleep-time" class="input">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="form-group">
+                    <label for="coding-hours">Target Coding Harian (Jam)</label>
+                    <input type="number" id="coding-hours" class="input" step="0.5" min="0" max="12">
+                  </div>
+                  <div class="form-group">
+                    <label for="study-hours">Target Belajar TKA Mingguan (Jam)</label>
+                    <input type="number" id="study-hours" class="input" min="0" max="100">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Data Management & Backup -->
+            <div class="card space-y-4">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
+                <i class="fa-solid fa-database text-blue-400"></i> 💾 Data Backup & Restore
+              </h3>
+              <p class="text-xs text-slate-400">
+                Data Anda tersimpan 100% aman di peramban (LocalStorage) tanpa server. Selalu unduh file JSON untuk cadangan berkala.
+              </p>
+
+              <div class="flex flex-wrap gap-2 pt-2">
+                <button id="export-data-btn" class="btn btn-secondary text-xs flex-1">
+                  📥 Export JSON
+                </button>
+                <button id="import-data-btn" class="btn btn-secondary text-xs flex-1">
+                  📤 Import JSON
+                </button>
+                <input type="file" id="import-file" accept=".json" class="hidden">
+              </div>
+
+              <div class="pt-3 border-t border-slate-800">
+                <button id="reset-all-btn" class="btn btn-danger w-full text-xs">
+                  🗑️ Reset Semua Data Bawaan
                 </button>
               </div>
             </div>
+
           </div>
-        </div>
+        </section>
 
-        <!-- Data Backup & Reset Box -->
-        <div class="bg-slate-900/60 rounded-3xl p-6 border border-slate-800 space-y-4">
-          <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-            <i class="fa-solid fa-database text-emerald-400"></i> Backup, Restore & Reset Data
-          </h3>
-          <p class="text-xs text-slate-400">
-            Aplikasi ini berjalan 100% di browser Anda menggunakan LocalStorage tanpa server. Selalu unduh backup JSON secara berkala agar tidak kehilangan data.
-          </p>
-
-          <div class="flex flex-wrap items-center gap-3 pt-2">
-            <button id="setting-export-btn" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-emerald-600/20 transition-all">
-              <i class="fa-solid fa-file-export"></i>
-              <span>Export / Download Data JSON</span>
-            </button>
-
-            <label class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors">
-              <i class="fa-solid fa-file-import text-blue-400"></i>
-              <span>Import Data JSON</span>
-              <input type="file" id="setting-import-file" accept=".json" class="hidden">
-            </label>
-
-            <button id="setting-reset-btn" class="px-4 py-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 text-xs font-bold flex items-center gap-2 ml-auto transition-colors">
-              <i class="fa-solid fa-trash-arrow-up"></i>
-              <span>Reset Semua Data Bawaan</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-    </main>
+      </main>
+    </div>
   </div>
 
-  <!-- Bottom Navigation Bar (Mobile View) -->
-  <nav id="bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 flex items-center justify-around px-2 z-40">
-    <button data-nav-target="dashboard" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 active-nav transition-colors min-h-[44px]">
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="bottom-nav" aria-label="Mobile Navigation">
+    <button data-nav-target="dashboard" class="bottom-nav-item active">
       <i class="fa-solid fa-chart-pie text-base"></i>
-      <span class="text-[10px] mt-1">Home</span>
+      <span>Home</span>
     </button>
-    <button data-nav-target="todo" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 inactive-nav transition-colors min-h-[44px]">
+    <button data-nav-target="todo" class="bottom-nav-item">
       <i class="fa-solid fa-list-check text-base"></i>
-      <span class="text-[10px] mt-1">Todo</span>
+      <span>Todo</span>
     </button>
-    <button data-nav-target="schedule" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 inactive-nav transition-colors min-h-[44px]">
+    <button data-nav-target="schedule" class="bottom-nav-item">
       <i class="fa-regular fa-calendar-days text-base"></i>
-      <span class="text-[10px] mt-1">Jadwal</span>
+      <span>Jadwal</span>
     </button>
-    <button data-nav-target="projects" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 inactive-nav transition-colors min-h-[44px]">
+    <button data-nav-target="projects" class="bottom-nav-item">
       <i class="fa-solid fa-folder-kanban text-base"></i>
-      <span class="text-[10px] mt-1">Proyek</span>
+      <span>Proyek</span>
     </button>
-    <button data-nav-target="finance" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 inactive-nav transition-colors min-h-[44px]">
+    <button data-nav-target="finance" class="bottom-nav-item">
       <i class="fa-solid fa-wallet text-base"></i>
-      <span class="text-[10px] mt-1">Finance</span>
+      <span>Finance</span>
     </button>
-    <button data-nav-target="focus" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 inactive-nav transition-colors min-h-[44px]">
+    <button data-nav-target="focus" class="bottom-nav-item">
       <i class="fa-solid fa-stopwatch text-base"></i>
-      <span class="text-[10px] mt-1">Fokus</span>
+      <span>Fokus</span>
+    </button>
+    <button data-nav-target="settings" class="bottom-nav-item">
+      <i class="fa-solid fa-sliders text-base"></i>
+      <span>Profil</span>
     </button>
   </nav>
 
-  <!-- Floating Action Button (FAB) for Fast Add on Mobile & Desktop -->
-  <button id="quick-action-fab" class="fixed bottom-20 lg:bottom-6 right-6 w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-2xl shadow-blue-500/40 flex items-center justify-center text-xl z-40 transition-all transform hover:scale-110 active:scale-95 no-print" title="Menu Cepat">
+  <!-- Floating Action Button (FAB) -->
+  <button id="quick-action-fab" class="fixed bottom-20 lg:bottom-6 right-6 w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-2xl shadow-indigo-600/40 flex items-center justify-center text-xl z-40 transition-all transform hover:scale-110 active:scale-95 no-print" title="Menu Cepat (Ctrl+K)">
     <i class="fa-solid fa-plus"></i>
   </button>
 
-  <!-- ALL MODALS -->
+  <!-- MODALS -->
 
   <!-- Quick Action Modal -->
   <div id="quick-action-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div class="modal max-w-sm space-y-4">
+      <div class="modal-header">
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-bolt text-amber-400"></i> Buat Cepat
+          <i class="fa-solid fa-bolt text-amber-400"></i> Buat Cepat (Quick Action)
         </h3>
-        <button onclick="window.app.toggleQuickActionModal()" class="text-slate-400 hover:text-white p-1">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button onclick="window.app.toggleQuickActionModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
       <div class="space-y-2">
-        <button onclick="window.app.toggleQuickActionModal(); window.todoModule.openModal()" class="w-full text-left p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 flex items-center gap-3 transition-colors text-xs font-semibold text-slate-200">
-          <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm"><i class="fa-solid fa-list-check"></i></div>
-          <span>Tambah Tugas Baru (To-Do)</span>
+        <button onclick="window.app.toggleQuickActionModal(); window.todoModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
+          <i class="fa-solid fa-list-check text-indigo-400 w-5"></i> Tambah Tugas (To-Do)
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.scheduleModule.openModal()" class="w-full text-left p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 flex items-center gap-3 transition-colors text-xs font-semibold text-slate-200">
-          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm"><i class="fa-regular fa-clock"></i></div>
-          <span>Tambah Blok Waktu Jadwal</span>
+        <button onclick="window.app.toggleQuickActionModal(); window.scheduleModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
+          <i class="fa-regular fa-clock text-amber-400 w-5"></i> Tambah Blok Waktu
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.projectsModule.openModal()" class="w-full text-left p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 flex items-center gap-3 transition-colors text-xs font-semibold text-slate-200">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-sm"><i class="fa-solid fa-folder-plus"></i></div>
-          <span>Buat Proyek Baru (Kanban)</span>
+        <button onclick="window.app.toggleQuickActionModal(); window.projectsModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
+          <i class="fa-solid fa-folder-plus text-emerald-400 w-5"></i> Buat Proyek Baru
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.financeModule.openTransactionModal()" class="w-full text-left p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 flex items-center gap-3 transition-colors text-xs font-semibold text-slate-200">
-          <div class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-sm"><i class="fa-solid fa-receipt"></i></div>
-          <span>Catat Pemasukan / Pengeluaran</span>
+        <button onclick="window.app.toggleQuickActionModal(); window.financeModule.openTransactionModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
+          <i class="fa-solid fa-receipt text-pink-400 w-5"></i> Catat Transaksi Keuangan
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.app.switchTab('focus'); window.pomodoroModule.start()" class="w-full text-left p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 flex items-center gap-3 transition-colors text-xs font-semibold text-slate-200">
-          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-sm"><i class="fa-solid fa-play"></i></div>
-          <span>Mulai Timer Fokus Langsung</span>
+        <button onclick="window.app.toggleQuickActionModal(); window.router.navigate('focus'); window.pomodoroModule.start()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
+          <i class="fa-solid fa-play text-purple-400 w-5"></i> Mulai Timer Fokus Langsung
         </button>
       </div>
     </div>
   </div>
 
-  <!-- TODO MODAL -->
+  <!-- Todo Modal -->
   <div id="todo-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div class="modal max-w-lg space-y-4">
+      <div class="modal-header">
         <h3 id="todo-modal-title" class="text-sm font-bold text-white">Tambah Tugas Baru</h3>
-        <button onclick="window.todoModule.closeModal()" class="text-slate-400 hover:text-white p-1">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        <button onclick="window.todoModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
       <form id="todo-form" onsubmit="window.todoModule.handleFormSubmit(event)" class="space-y-3.5">
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Judul Tugas *</label>
-          <input type="text" id="todo-input-title" required placeholder="Contoh: Latihan 20 Soal Fisika / Coding API Auth" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2.5 focus:ring-1 focus:ring-blue-500">
+        <div class="form-group">
+          <label for="todo-input-title">Judul Tugas *</label>
+          <input type="text" id="todo-input-title" required placeholder="Contoh: Latihan 20 Soal Fisika / Coding REST API" class="input">
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Deskripsi / Catatan Tambahan</label>
-          <textarea id="todo-input-description" rows="2" placeholder="Catatan detail atau referensi..." 
-                    class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2 focus:ring-1 focus:ring-blue-500"></textarea>
+        <div class="form-group">
+          <label for="todo-input-description">Deskripsi / Catatan Tambahan</label>
+          <textarea id="todo-input-description" rows="2" placeholder="Catatan detail pengerjaan..." class="input"></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Kategori</label>
-            <select id="todo-input-category" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
-              <option value="TKA">TKA (UTBK / Saintek / Soshum)</option>
+          <div class="form-group">
+            <label for="todo-input-category">Kategori</label>
+            <select id="todo-input-category" class="input">
+              <option value="TKA">TKA (UTBK Saintek/Soshum)</option>
               <option value="Coding">Coding / Development</option>
               <option value="School">School (Sekolah)</option>
               <option value="Personal">Personal / Routine</option>
@@ -927,28 +928,28 @@
             </select>
           </div>
 
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Prioritas</label>
-            <select id="todo-input-priority" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
-              <option value="High">Tinggi (High)</option>
-              <option value="Medium">Sedang (Medium)</option>
-              <option value="Low">Rendah (Low)</option>
+          <div class="form-group">
+            <label for="todo-input-priority">Prioritas</label>
+            <select id="todo-input-priority" class="input">
+              <option value="high">Tinggi (High)</option>
+              <option value="medium">Sedang (Medium)</option>
+              <option value="low">Rendah (Low)</option>
             </select>
           </div>
         </div>
 
         <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Tenggat Tanggal</label>
-            <input type="date" id="todo-input-duedate" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="todo-input-duedate">Tenggat Tanggal</label>
+            <input type="date" id="todo-input-duedate" class="input">
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Tenggat Jam</label>
-            <input type="time" id="todo-input-duetime" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="todo-input-duetime">Tenggat Jam</label>
+            <input type="time" id="todo-input-duetime" class="input">
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Pengulangan</label>
-            <select id="todo-input-recurring" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="todo-input-recurring">Pengulangan</label>
+            <select id="todo-input-recurring" class="input">
               <option value="none">Tidak</option>
               <option value="daily">Harian</option>
               <option value="weekly">Mingguan</option>
@@ -957,45 +958,44 @@
           </div>
         </div>
 
-        <!-- Subtasks Editor -->
+        <!-- Subtasks Checklist -->
         <div class="pt-2 border-t border-slate-800">
           <div class="flex items-center justify-between mb-2">
-            <label class="text-xs text-slate-300 font-semibold flex items-center gap-1.5">
-              <i class="fa-solid fa-list-check text-blue-400"></i> Subtasks / Checklist
+            <label class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-list-check text-indigo-400"></i> Subtasks / Checklist
             </label>
-            <button type="button" onclick="window.todoModule.addSubtaskField()" class="text-[11px] text-blue-400 hover:underline">
+            <button type="button" onclick="window.todoModule.addSubtaskField()" class="text-[11px] text-indigo-400 hover:underline font-semibold">
               + Tambah Langkah
             </button>
           </div>
-          <div id="todo-modal-subtasks-container" class="space-y-2 max-h-40 overflow-y-auto"></div>
+          <div id="todo-modal-subtasks-container" class="space-y-2 max-h-36 overflow-y-auto"></div>
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="window.todoModule.closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Batal</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-500/20">Simpan Tugas</button>
+        <div class="modal-footer">
+          <button type="button" onclick="window.todoModule.closeModal()" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Tugas</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- SCHEDULE MODAL -->
+  <!-- Schedule Block Modal -->
   <div id="schedule-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div class="modal max-w-md space-y-4">
+      <div class="modal-header">
         <h3 id="schedule-modal-title" class="text-sm font-bold text-white">Tambah Blok Waktu</h3>
-        <button onclick="window.scheduleModule.closeModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="window.scheduleModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
       <form id="schedule-form" onsubmit="window.scheduleModule.handleFormSubmit(event)" class="space-y-3.5">
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Nama Aktivitas *</label>
-          <input type="text" id="schedule-input-activity" required placeholder="Contoh: Belajar Fisika / Coding REST API" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2.5 focus:ring-1 focus:ring-blue-500">
+        <div class="form-group">
+          <label for="schedule-input-activity">Nama Aktivitas *</label>
+          <input type="text" id="schedule-input-activity" required placeholder="Contoh: Belajar Fisika / Coding REST API" class="input">
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Kategori</label>
-          <select id="schedule-input-category" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
+        <div class="form-group">
+          <label for="schedule-input-category">Kategori</label>
+          <select id="schedule-input-category" class="input">
             <option value="TKA">TKA</option>
             <option value="Coding">Coding</option>
             <option value="School">School (Sekolah)</option>
@@ -1005,81 +1005,77 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Waktu Mulai</label>
-            <input type="time" id="schedule-input-start" required class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="schedule-input-start">Waktu Mulai</label>
+            <input type="time" id="schedule-input-start" required class="input">
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Waktu Selesai</label>
-            <input type="time" id="schedule-input-end" required class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="schedule-input-end">Waktu Selesai</label>
+            <input type="time" id="schedule-input-end" required class="input">
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Catatan / Detail</label>
-          <input type="text" id="schedule-input-notes" placeholder="e.g. Bab Termodinamika nomor 1-20" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2 focus:ring-1 focus:ring-blue-500">
+        <div class="form-group">
+          <label for="schedule-input-notes">Catatan / Detail</label>
+          <input type="text" id="schedule-input-notes" placeholder="e.g. Bab Termodinamika nomor 1-20" class="input">
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="window.scheduleModule.closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Batal</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/20">Simpan Jadwal</button>
+        <div class="modal-footer">
+          <button type="button" onclick="window.scheduleModule.closeModal()" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Jadwal</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- PROJECT MODAL -->
+  <!-- Project Modal -->
   <div id="project-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div class="modal max-w-lg space-y-4">
+      <div class="modal-header">
         <h3 id="project-modal-title" class="text-sm font-bold text-white">Buat Proyek Baru</h3>
-        <button onclick="window.projectsModule.closeModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="window.projectsModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
-      <!-- Quick Template Bar -->
       <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
         <span class="text-[11px] text-slate-400 font-medium">Template:</span>
-        <button type="button" onclick="window.projectsModule.applyTemplate('webapp')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Web App</button>
-        <button type="button" onclick="window.projectsModule.applyTemplate('mobileapp')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Mobile</button>
-        <button type="button" onclick="window.projectsModule.applyTemplate('tka')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Belajar TKA</button>
-        <button type="button" onclick="window.projectsModule.applyTemplate('portfolio')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">Portfolio</button>
+        <button type="button" onclick="window.projectsModule.applyTemplate('webapp')" class="btn btn-sm btn-secondary">Web App</button>
+        <button type="button" onclick="window.projectsModule.applyTemplate('mobileapp')" class="btn btn-sm btn-secondary">Mobile</button>
+        <button type="button" onclick="window.projectsModule.applyTemplate('tka')" class="btn btn-sm btn-secondary">Belajar TKA</button>
+        <button type="button" onclick="window.projectsModule.applyTemplate('portfolio')" class="btn btn-sm btn-secondary">Portfolio</button>
       </div>
 
       <form id="project-form" onsubmit="window.projectsModule.handleFormSubmit(event)" class="space-y-3.5">
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Judul Proyek *</label>
-          <input type="text" id="project-input-title" required placeholder="Contoh: Student Life Manager / Bank Soal TKA" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2.5 focus:ring-1 focus:ring-blue-500">
+        <div class="form-group">
+          <label for="project-input-title">Judul Proyek *</label>
+          <input type="text" id="project-input-title" required placeholder="Contoh: StudentFlow Web App" class="input">
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Deskripsi Proyek</label>
-          <textarea id="project-input-description" rows="2" placeholder="Tujuan, fitur utama, atau cakupan proyek..." 
-                    class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2 focus:ring-1 focus:ring-blue-500"></textarea>
+        <div class="form-group">
+          <label for="project-input-description">Deskripsi Proyek</label>
+          <textarea id="project-input-description" rows="2" placeholder="Tujuan, fitur utama, cakupan..." class="input"></textarea>
         </div>
 
         <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Kategori</label>
-            <select id="project-input-category" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="project-input-category">Kategori</label>
+            <select id="project-input-category" class="input">
               <option value="Coding">Coding</option>
               <option value="TKA">TKA</option>
               <option value="School">School</option>
               <option value="Personal">Personal</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Prioritas</label>
-            <select id="project-input-priority" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="project-input-priority">Prioritas</label>
+            <select id="project-input-priority" class="input">
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Status Kolom</label>
-            <select id="project-input-status" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="project-input-status">Status Kolom</label>
+            <select id="project-input-status" class="input">
               <option value="backlog">Backlog</option>
               <option value="todo">To Do</option>
               <option value="inprogress">In Progress</option>
@@ -1090,69 +1086,65 @@
         </div>
 
         <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Estimasi Jam</label>
-            <input type="number" id="project-input-esthours" min="0" step="0.5" value="10" 
-                   class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="project-input-esthours">Estimasi Jam</label>
+            <input type="number" id="project-input-esthours" min="0" step="0.5" value="10" class="input">
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Jam Terpakai</label>
-            <input type="number" id="project-input-loggedhours" min="0" step="0.5" value="0" 
-                   class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="project-input-loggedhours">Jam Terpakai</label>
+            <input type="number" id="project-input-loggedhours" min="0" step="0.5" value="0" class="input">
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Target Selesai</label>
-            <input type="date" id="project-input-duedate" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="project-input-duedate">Target Selesai</label>
+            <input type="date" id="project-input-duedate" class="input">
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Tags (pisahkan koma)</label>
-          <input type="text" id="project-input-tags" placeholder="e.g. VanillaJS, PWA, Tailwind" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2">
+        <div class="form-group">
+          <label for="project-input-tags">Tags (pisahkan koma)</label>
+          <input type="text" id="project-input-tags" placeholder="VanillaJS, PWA, Tailwind" class="input">
         </div>
 
-        <!-- Links Editor -->
         <div class="pt-2 border-t border-slate-800">
           <div class="flex items-center justify-between mb-2">
-            <label class="text-xs text-slate-300 font-semibold flex items-center gap-1.5">
+            <label class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
               <i class="fa-solid fa-link text-emerald-400"></i> Lampiran Tautan / Link
             </label>
-            <button type="button" onclick="window.projectsModule.addLinkField()" class="text-[11px] text-emerald-400 hover:underline">
+            <button type="button" onclick="window.projectsModule.addLinkField()" class="text-[11px] text-emerald-400 hover:underline font-semibold">
               + Tambah Link
             </button>
           </div>
           <div id="project-modal-links-container" class="space-y-2 max-h-36 overflow-y-auto"></div>
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="window.projectsModule.closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Batal</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/20">Simpan Proyek</button>
+        <div class="modal-footer">
+          <button type="button" onclick="window.projectsModule.closeModal()" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary bg-emerald-600 hover:bg-emerald-500">Simpan Proyek</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- FINANCE TRANSACTION MODAL -->
+  <!-- Finance Transaction Modal -->
   <div id="finance-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-        <h3 id="finance-modal-title" class="text-sm font-bold text-white">Catat Transaksi</h3>
-        <button onclick="window.financeModule.closeTransactionModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal max-w-md space-y-4">
+      <div class="modal-header">
+        <h3 id="finance-modal-title" class="text-sm font-bold text-white">Catat Transaksi Keuangan</h3>
+        <button onclick="window.financeModule.closeTransactionModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
       <form id="finance-form" onsubmit="window.financeModule.handleTransactionSubmit(event)" class="space-y-3.5">
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Tipe Transaksi</label>
-            <select id="finance-input-type" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
+          <div class="form-group">
+            <label for="finance-input-type">Tipe Transaksi</label>
+            <select id="finance-input-type" class="input">
               <option value="expense">Pengeluaran (Expense)</option>
               <option value="income">Pemasukan (Income)</option>
             </select>
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Kategori</label>
-            <select id="finance-input-category" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
+          <div class="form-group">
+            <label for="finance-input-category">Kategori</label>
+            <select id="finance-input-category" class="input">
               <option value="Food">Food / Makanan</option>
               <option value="Study">Study / Buku TKA</option>
               <option value="Coding">Coding / Domain / Tools</option>
@@ -1160,26 +1152,25 @@
               <option value="Entertainment">Entertainment</option>
               <option value="Savings">Savings / Tabungan</option>
               <option value="Uang Saku">Uang Saku</option>
-              <option value="Freelance">Freelance / Hadiah</option>
+              <option value="Freelance">Freelance</option>
               <option value="Other">Lainnya</option>
             </select>
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Nominal (Rp) *</label>
-          <input type="number" id="finance-input-amount" min="1000" step="500" required placeholder="50000" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2.5 focus:ring-1 focus:ring-blue-500 font-mono text-base">
+        <div class="form-group">
+          <label for="finance-input-amount">Nominal (Rp) *</label>
+          <input type="number" id="finance-input-amount" min="1000" step="500" required placeholder="50000" class="input font-mono text-base font-bold">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Tanggal</label>
-            <input type="date" id="finance-input-date" required class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="finance-input-date">Tanggal</label>
+            <input type="date" id="finance-input-date" required class="input">
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Metode Bayar</label>
-            <select id="finance-input-payment" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+          <div class="form-group">
+            <label for="finance-input-payment">Metode Bayar</label>
+            <select id="finance-input-payment" class="input">
               <option value="Cash">Cash / Tunai</option>
               <option value="QRIS">QRIS</option>
               <option value="Transfer">Transfer Bank</option>
@@ -1188,90 +1179,79 @@
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Keterangan / Catatan</label>
-          <input type="text" id="finance-input-notes" placeholder="Contoh: Beli paket try out / makan siang" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2">
+        <div class="form-group">
+          <label for="finance-input-notes">Keterangan / Catatan</label>
+          <input type="text" id="finance-input-notes" placeholder="Contoh: Beli paket try out / makan siang" class="input">
         </div>
 
-        <div class="flex items-center gap-2 pt-1">
-          <input type="checkbox" id="finance-input-recurring" class="rounded bg-slate-800 border-slate-700 text-pink-500">
-          <label for="finance-input-recurring" class="text-xs text-slate-300">Transaksi berulang bulanan</label>
-        </div>
-
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="window.financeModule.closeTransactionModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Batal</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold shadow-lg shadow-pink-600/20">Simpan Transaksi</button>
+        <div class="modal-footer">
+          <button type="button" onclick="window.financeModule.closeTransactionModal()" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary bg-pink-600 hover:bg-pink-500">Simpan Transaksi</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- FINANCIAL GOAL MODAL -->
+  <!-- Financial Goal Modal -->
   <div id="goal-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div class="modal max-w-md space-y-4">
+      <div class="modal-header">
         <h3 id="goal-modal-title" class="text-sm font-bold text-white">Target Tabungan Baru</h3>
-        <button onclick="window.financeModule.closeGoalModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="window.financeModule.closeGoalModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
       <form id="goal-form" onsubmit="window.financeModule.handleGoalSubmit(event)" class="space-y-3.5">
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Nama Target *</label>
-          <input type="text" id="goal-input-name" required placeholder="Contoh: Beli Laptop Kuliah M2 / Biaya Try Out" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2.5">
+        <div class="form-group">
+          <label for="goal-input-name">Nama Target *</label>
+          <input type="text" id="goal-input-name" required placeholder="Contoh: Beli Laptop Kuliah M2" class="input">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Target Nominal (Rp)</label>
-            <input type="number" id="goal-input-target" min="10000" step="50000" required placeholder="5000000" 
-                   class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3 py-2 font-mono">
+          <div class="form-group">
+            <label for="goal-input-target">Target Nominal (Rp)</label>
+            <input type="number" id="goal-input-target" min="10000" step="50000" required placeholder="5000000" class="input font-mono">
           </div>
-          <div>
-            <label class="block text-xs text-slate-300 font-semibold mb-1">Terkumpul Saat Ini (Rp)</label>
-            <input type="number" id="goal-input-current" min="0" step="10000" value="0" 
-                   class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3 py-2 font-mono">
+          <div class="form-group">
+            <label for="goal-input-current">Terkumpul Saat Ini (Rp)</label>
+            <input type="number" id="goal-input-current" min="0" step="10000" value="0" class="input font-mono">
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Target Tanggal Tercapai</label>
-          <input type="date" id="goal-input-date" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2">
+        <div class="form-group">
+          <label for="goal-input-date">Target Tanggal</label>
+          <input type="date" id="goal-input-date" class="input">
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Catatan</label>
-          <input type="text" id="goal-input-notes" placeholder="e.g. Alokasi sisa uang jajan 20rb per hari" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2">
+        <div class="form-group">
+          <label for="goal-input-notes">Catatan</label>
+          <input type="text" id="goal-input-notes" placeholder="Alokasi tabungan harian..." class="input">
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="window.financeModule.closeGoalModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Batal</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-lg shadow-emerald-600/20">Simpan Target</button>
+        <div class="modal-footer">
+          <button type="button" onclick="window.financeModule.closeGoalModal()" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary bg-emerald-600 hover:bg-emerald-500">Simpan Target</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- HABIT MODAL -->
+  <!-- Habit Modal -->
   <div id="habit-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div class="modal max-w-sm space-y-4">
+      <div class="modal-header">
         <h3 class="text-sm font-bold text-white">Tambah Kebiasaan (Habit)</h3>
-        <button onclick="window.habitsModule.closeModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="window.habitsModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
       <form id="habit-form" onsubmit="window.habitsModule.handleFormSubmit(event)" class="space-y-3.5">
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Nama Kebiasaan *</label>
-          <input type="text" id="habit-input-name" required placeholder="Contoh: Drill 20 Soal TKA / Push Commit Git" 
-                 class="w-full bg-slate-800 border border-slate-700 text-slate-100 text-xs rounded-xl px-3.5 py-2.5">
+        <div class="form-group">
+          <label for="habit-input-name">Nama Kebiasaan *</label>
+          <input type="text" id="habit-input-name" required placeholder="Contoh: Drill 20 Soal TKA / Push Commit Git" class="input">
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Kategori</label>
-          <select id="habit-input-category" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
+        <div class="form-group">
+          <label for="habit-input-category">Kategori</label>
+          <select id="habit-input-category" class="input">
             <option value="TKA">TKA</option>
             <option value="Coding">Coding</option>
             <option value="Personal">Personal / Kesehatan</option>
@@ -1279,10 +1259,10 @@
           </select>
         </div>
 
-        <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">Ikon FontAwesome</label>
-          <select id="habit-input-icon" class="w-full bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2.5">
-            <option value="fa-book-open">Buku (Belajar)</option>
+        <div class="form-group">
+          <label for="habit-input-icon">Ikon FontAwesome</label>
+          <select id="habit-input-icon" class="input">
+            <option value="fa-book-open">Buku (Belajar TKA)</option>
             <option value="fa-code-branch">Git Branch (Coding)</option>
             <option value="fa-sun">Matahari (Bangun Pagi)</option>
             <option value="fa-bottle-water">Air Minum</option>
@@ -1291,47 +1271,50 @@
           </select>
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-          <button type="button" onclick="window.habitsModule.closeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Batal</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold">Simpan Habit</button>
+        <div class="modal-footer">
+          <button type="button" onclick="window.habitsModule.closeModal()" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary bg-amber-600 hover:bg-amber-500">Simpan Habit</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- IMPORT CONFIRMATION MODAL -->
+  <!-- Import Confirmation Modal -->
   <div id="import-confirm-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+    <div class="modal max-w-sm space-y-4">
+      <div class="modal-header">
         <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-file-import text-blue-400"></i> Konfirmasi Impor Data
+          <i class="fa-solid fa-file-import text-indigo-400"></i> Konfirmasi Impor Data
         </h3>
-        <button onclick="window.settingsModule.closeImportModal()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+        <button onclick="window.settingsModule.closeImportModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
-      <p class="text-xs text-slate-300">Pilih metode impor data JSON:</p>
+      <p class="text-xs text-slate-300">Pilih metode pemulihan data cadangan JSON:</p>
 
       <div class="space-y-2 pt-1">
-        <button onclick="window.settingsModule.confirmImport('replace')" class="w-full p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 hover:bg-rose-500/20 text-left text-xs font-semibold">
+        <button onclick="window.settingsModule.confirmImport('replace')" class="w-full p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 hover:bg-rose-500/20 text-left text-xs font-semibold transition-all">
           <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-arrows-rotate"></i> Timpa Semua Data (Replace)</div>
-          <span class="text-[10px] text-slate-400 font-normal">Hapus data saat ini dan ganti seluruhnya dengan data file cadangan.</span>
+          <span class="text-[10px] text-slate-400 font-normal">Hapus data saat ini dan ganti seluruhnya dengan isi file cadangan.</span>
         </button>
 
-        <button onclick="window.settingsModule.confirmImport('merge')" class="w-full p-3 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-300 hover:bg-blue-500/20 text-left text-xs font-semibold">
+        <button onclick="window.settingsModule.confirmImport('merge')" class="w-full p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/20 text-left text-xs font-semibold transition-all">
           <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-code-merge"></i> Gabungkan Data (Merge)</div>
-          <span class="text-[10px] text-slate-400 font-normal">Gabungkan data baru dengan data yang sudah ada tanpa menghapus.</span>
+          <span class="text-[10px] text-slate-400 font-normal">Tambahkan item baru ke dalam daftar tanpa menghapus data lama.</span>
         </button>
       </div>
 
-      <div class="flex justify-end pt-2">
-        <button type="button" onclick="window.settingsModule.closeImportModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">Batal</button>
+      <div class="modal-footer">
+        <button type="button" onclick="window.settingsModule.closeImportModal()" class="btn btn-secondary">Batal</button>
       </div>
     </div>
   </div>
 
-  <!-- Application Logic Modules -->
-  <script src="js/storage.js"></script>
+  <!-- Application Modular Scripts in Dependency Order -->
+  <script src="js/utils.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/backup.js"></script>
   <script src="js/notifications.js"></script>
+  <script src="js/router.js"></script>
   <script src="js/todo.js"></script>
   <script src="js/schedule.js"></script>
   <script src="js/projects.js"></script>

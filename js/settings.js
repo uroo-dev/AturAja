@@ -1,9 +1,11 @@
 /**
- * Settings Module - Preferences, Theme, Color Customization, Notification Times & Data Backup/Reset
+ * Settings & User Profile Module - Editable Profile, Avatar Upload, Theme & Accent Customizer, Schedule Defaults
  */
 
 class SettingsModule {
-  constructor() {}
+  constructor() {
+    this.pendingImportJSON = null;
+  }
 
   init() {
     this.bindEvents();
@@ -11,200 +13,267 @@ class SettingsModule {
   }
 
   bindEvents() {
-    // Theme toggle
-    const themeSelect = document.getElementById('setting-theme-select');
-    if (themeSelect) {
-      themeSelect.addEventListener('change', (e) => {
-        this.setTheme(e.target.value);
+    // Profile Form
+    const profileForm = document.getElementById('profile-form');
+    if (profileForm) {
+      profileForm.addEventListener('submit', (e) => this.handleProfileSubmit(e));
+    }
+
+    // Avatar Input
+    const avatarInput = document.getElementById('avatar-input');
+    if (avatarInput) {
+      avatarInput.addEventListener('change', (e) => this.handleAvatarUpload(e));
+    }
+
+    // Theme Toggle Buttons
+    const themeButtons = document.querySelectorAll('.theme-toggle-btn');
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        themeButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        this.setTheme(btn.dataset.theme);
+      });
+    });
+
+    // Accent Color Picker & Dots
+    const accentInput = document.getElementById('accent-color');
+    if (accentInput) {
+      accentInput.addEventListener('input', (e) => this.setAccentColor(e.target.value));
+    }
+
+    const colorDots = document.querySelectorAll('.color-dot');
+    colorDots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        colorDots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        const color = dot.dataset.color;
+        if (accentInput) accentInput.value = color;
+        this.setAccentColor(color);
+      });
+    });
+
+    // Toggles (Notifications & Sound)
+    const notifToggle = document.getElementById('notifications-toggle');
+    if (notifToggle) {
+      notifToggle.addEventListener('change', (e) => {
+        window.state.updateProfile({ notificationsEnabled: e.target.checked });
+        if (e.target.checked) window.notifications.requestPermission();
       });
     }
 
-    // Export JSON
-    const exportBtn = document.getElementById('setting-export-btn');
-    if (exportBtn) {
-      exportBtn.addEventListener('click', () => {
-        window.storage.exportJSON();
-        window.notifications.showToast('Data berhasil diekspor ke file JSON.', 'success');
+    const soundToggle = document.getElementById('sound-toggle');
+    if (soundToggle) {
+      soundToggle.addEventListener('change', (e) => {
+        window.state.updateProfile({ soundEnabled: e.target.checked });
+        Utils.showToast(e.target.checked ? 'Suara notifikasi diaktifkan' : 'Suara notifikasi dinonaktifkan', { type: 'info' });
       });
     }
 
-    // Import JSON
-    const importInput = document.getElementById('setting-import-file');
-    if (importInput) {
-      importInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
+    // Daily Schedule Defaults Inputs
+    const wakeInput = document.getElementById('wake-time');
+    const sleepInput = document.getElementById('sleep-time');
+    const codingHrsInput = document.getElementById('coding-hours');
+    const studyHrsInput = document.getElementById('study-hours');
 
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          const content = event.target.result;
-          const validation = window.storage.validateJSON(content);
-          if (!validation.valid) {
-            window.notifications.showToast('Gagal: ' + validation.error, 'danger');
-            return;
-          }
+    [wakeInput, sleepInput, codingHrsInput, studyHrsInput].forEach(inp => {
+      if (inp) {
+        inp.addEventListener('change', () => {
+          window.state.updateProfile({
+            wakeTime: wakeInput ? wakeInput.value : '04:30',
+            sleepTime: sleepInput ? sleepInput.value : '22:00',
+            dailyCodingHours: codingHrsInput ? parseFloat(codingHrsInput.value) : 2.0,
+            weeklyStudyHours: studyHrsInput ? parseFloat(studyHrsInput.value) : 20
+          });
+          Utils.showToast('Jadwal harian diperbarui.', { type: 'success' });
+        });
+      }
+    });
 
-          // Open Import Confirmation Modal
-          this.openImportModal(content);
-        };
-        reader.readAsText(file);
-        importInput.value = ''; // Reset
-      });
-    }
-
-    // Reset Data
-    const resetBtn = document.getElementById('setting-reset-btn');
-    if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        if (confirm('PERINGATAN: Semua data (tugas, jadwal, proyek, keuangan) akan direset ke data default bawaan. Lanjutkan?')) {
-          window.storage.resetAllData();
-          window.notifications.showToast('Data berhasil direset ke pengaturan awal.', 'info');
-          setTimeout(() => location.reload(), 800);
-        }
-      });
-    }
-
-    // Test Notification
-    const testNotifBtn = document.getElementById('setting-test-notif-btn');
-    if (testNotifBtn) {
-      testNotifBtn.addEventListener('click', async () => {
+    // Test Notification Button
+    const testBtn = document.getElementById('test-notification-btn');
+    if (testBtn) {
+      testBtn.addEventListener('click', async () => {
         const granted = await window.notifications.requestPermission();
         if (granted) {
-          window.notifications.sendSystemNotification('🔔 Uji Coba Notifikasi', {
-            body: 'Notifikasi Student Life Manager berfungsi dengan sempurna!'
+          window.notifications.sendSystemNotification('🔔 Uji Coba StudentFlow', {
+            body: 'Notifikasi browser & efek suara berfungsi optimal!'
           });
-          window.notifications.showToast('Notifikasi uji coba dikirim.', 'success');
+          Utils.showToast('Uji notifikasi berhasil dikirim.', { type: 'success' });
         }
       });
     }
-  }
 
-  getSettings() {
-    const data = window.storage.getData();
-    return data.settings || {};
+    // Export / Import / Reset
+    const exportBtn = document.getElementById('export-data-btn');
+    if (exportBtn) exportBtn.addEventListener('click', () => window.backupModule.exportJSON());
+
+    const importBtn = document.getElementById('import-data-btn');
+    const importFileInput = document.getElementById('import-file');
+    if (importBtn && importFileInput) {
+      importBtn.addEventListener('click', () => importFileInput.click());
+      importFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          this.openImportModal(event.target.result);
+        };
+        reader.readAsText(file);
+        importFileInput.value = '';
+      });
+    }
+
+    const resetBtn = document.getElementById('reset-all-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        if (confirm('PERINGATAN: Semua data tugas, jadwal, proyek, keuangan & profil akan direset permanen ke bawaan. Lanjutkan?')) {
+          window.state.resetAll();
+          Utils.showToast('Data berhasil direset ke setelan awal.', { type: 'info' });
+          setTimeout(() => location.reload(), 700);
+        }
+      });
+    }
   }
 
   render() {
-    const settings = this.getSettings();
+    const profile = window.state.getProfile();
 
-    // Set Theme
-    const themeSelect = document.getElementById('setting-theme-select');
-    if (themeSelect) themeSelect.value = settings.theme || 'dark';
-    this.applyTheme(settings.theme || 'dark');
+    // Populate profile inputs
+    const nameInp = document.getElementById('user-name');
+    const emailInp = document.getElementById('user-email');
+    const schoolInp = document.getElementById('user-school');
+    const gradeInp = document.getElementById('user-grade');
+    const avatarImg = document.getElementById('avatar-preview');
+    const headerAvatar = document.getElementById('header-user-avatar');
+    const headerName = document.getElementById('header-user-name');
 
-    // Morning and Evening Times
-    const morningInput = document.getElementById('setting-morning-time');
-    const eveningInput = document.getElementById('setting-evening-time');
-    const offsetInput = document.getElementById('setting-due-offset');
+    if (nameInp) nameInp.value = profile.name || '';
+    if (emailInp) emailInp.value = profile.email || '';
+    if (schoolInp) schoolInp.value = profile.school || '';
+    if (gradeInp) gradeInp.value = profile.grade || '12';
 
-    if (morningInput) morningInput.value = settings.morningSummaryTime || '07:00';
-    if (eveningInput) eveningInput.value = settings.eveningReviewTime || '20:30';
-    if (offsetInput) offsetInput.value = settings.dueReminderOffsetMinutes || 30;
+    if (avatarImg) {
+      avatarImg.src = profile.avatar || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="%234F46E5"/><text x="50" y="62" font-size="36" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">' + (profile.name ? profile.name.charAt(0).toUpperCase() : 'S') + '</text></svg>';
+    }
 
-    this.renderCategoryColorPickers();
-  }
+    if (headerAvatar) {
+      headerAvatar.src = avatarImg ? avatarImg.src : '';
+    }
+    if (headerName) {
+      headerName.textContent = profile.name || 'Siswa Kelas 12';
+    }
 
-  renderCategoryColorPickers() {
-    const container = document.getElementById('setting-category-colors-container');
-    if (!container) return;
-
-    const settings = this.getSettings();
-    const colors = settings.categoryColors || DEFAULT_CATEGORY_COLORS;
-
-    let html = '<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">';
-    Object.keys(colors).forEach(cat => {
-      html += `
-        <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/50">
-          <span class="text-xs font-semibold text-slate-200">${cat}</span>
-          <input type="color" value="${colors[cat]}" 
-                 onchange="window.settingsModule.updateCategoryColor('${cat}', this.value)"
-                 class="w-7 h-7 rounded-lg border-0 cursor-pointer bg-transparent">
-        </div>
-      `;
+    // Theme
+    this.applyTheme(profile.theme || 'dark');
+    const themeBtns = document.querySelectorAll('.theme-toggle-btn');
+    themeBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.theme === profile.theme);
     });
-    html += '</div>';
 
-    container.innerHTML = html;
+    // Accent Color
+    this.applyAccentColor(profile.accentColor || '#4F46E5');
+    const accentInput = document.getElementById('accent-color');
+    if (accentInput) accentInput.value = profile.accentColor || '#4F46E5';
+
+    // Toggles
+    const notifToggle = document.getElementById('notifications-toggle');
+    const soundToggle = document.getElementById('sound-toggle');
+    if (notifToggle) notifToggle.checked = !!profile.notificationsEnabled;
+    if (soundToggle) soundToggle.checked = !!profile.soundEnabled;
+
+    // Schedule Defaults
+    const wakeInput = document.getElementById('wake-time');
+    const sleepInput = document.getElementById('sleep-time');
+    const codingHrsInput = document.getElementById('coding-hours');
+    const studyHrsInput = document.getElementById('study-hours');
+
+    if (wakeInput) wakeInput.value = profile.wakeTime || '04:30';
+    if (sleepInput) sleepInput.value = profile.sleepTime || '22:00';
+    if (codingHrsInput) codingHrsInput.value = profile.dailyCodingHours || 2.0;
+    if (studyHrsInput) studyHrsInput.value = profile.weeklyStudyHours || 20;
   }
 
-  updateCategoryColor(cat, color) {
-    const data = window.storage.getData();
-    if (!data.settings.categoryColors) data.settings.categoryColors = {};
-    data.settings.categoryColors[cat] = color;
-    window.storage.saveData();
-    window.notifications.showToast(`Warna kategori ${cat} diperbarui.`, 'success');
-    
-    // Rerender active views
-    if (window.todoModule) window.todoModule.render();
-    if (window.scheduleModule) window.scheduleModule.render();
-    if (window.projectsModule) window.projectsModule.render();
-    if (window.dashboardModule) window.dashboardModule.render();
+  handleProfileSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('user-name').value.trim();
+    const email = document.getElementById('user-email').value.trim();
+    const school = document.getElementById('user-school').value.trim();
+    const grade = document.getElementById('user-grade').value;
+
+    window.state.updateProfile({ name, email, school, grade });
+    Utils.showToast('👤 Profil berhasil disimpan!', { type: 'success' });
+    this.render();
   }
 
-  saveNotificationPreferences() {
-    const morningInput = document.getElementById('setting-morning-time');
-    const eveningInput = document.getElementById('setting-evening-time');
-    const offsetInput = document.getElementById('setting-due-offset');
+  handleAvatarUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
 
-    const data = window.storage.getData();
-    data.settings.morningSummaryTime = morningInput ? morningInput.value : '07:00';
-    data.settings.eveningReviewTime = eveningInput ? eveningInput.value : '20:30';
-    data.settings.dueReminderOffsetMinutes = offsetInput ? parseInt(offsetInput.value) : 30;
+    if (file.size > 2 * 1024 * 1024) {
+      Utils.showToast('Ukuran foto profil maksimal 2MB!', { type: 'danger' });
+      return;
+    }
 
-    window.storage.saveData();
-    window.notifications.showToast('Pengaturan notifikasi disimpan.', 'success');
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+      window.state.updateProfile({ avatar: base64 });
+      this.render();
+      Utils.showToast('Foto profil diperbarui!', { type: 'success' });
+    };
+    reader.readAsDataURL(file);
   }
 
   setTheme(theme) {
-    const data = window.storage.getData();
-    data.settings.theme = theme;
-    window.storage.saveData();
+    window.state.updateProfile({ theme });
     this.applyTheme(theme);
+    Utils.showToast(`Tema ${theme === 'dark' ? 'Gelap' : 'Terang'} aktif`, { type: 'info' });
   }
 
   applyTheme(theme) {
     const root = document.documentElement;
     if (theme === 'light') {
-      root.classList.add('light-theme');
+      root.setAttribute('data-theme', 'light');
       root.classList.remove('dark');
     } else {
-      root.classList.remove('light-theme');
+      root.setAttribute('data-theme', 'dark');
       root.classList.add('dark');
     }
+  }
+
+  setAccentColor(color) {
+    window.state.updateProfile({ accentColor: color });
+    this.applyAccentColor(color);
+  }
+
+  applyAccentColor(color) {
+    document.documentElement.style.setProperty('--primary', color);
+    document.documentElement.style.setProperty('--primary-dark', color);
   }
 
   openImportModal(jsonString) {
     this.pendingImportJSON = jsonString;
     const modal = document.getElementById('import-confirm-modal');
-    if (modal) {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
+    if (modal) modal.classList.remove('hidden');
   }
 
   closeImportModal() {
     const modal = document.getElementById('import-confirm-modal');
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
+    if (modal) modal.classList.add('hidden');
     this.pendingImportJSON = null;
   }
 
   confirmImport(mode) {
     if (!this.pendingImportJSON) return;
-
-    const result = window.storage.importJSON(this.pendingImportJSON, mode);
+    const res = window.backupModule.importJSON(this.pendingImportJSON, mode);
     this.closeImportModal();
-
-    if (result.success) {
-      window.notifications.showToast(result.message, 'success');
+    if (res.success) {
+      Utils.showToast(res.message, { type: 'success' });
       setTimeout(() => location.reload(), 600);
     } else {
-      window.notifications.showToast('Gagal: ' + result.message, 'danger');
+      Utils.showToast('Gagal: ' + res.message, { type: 'danger' });
     }
   }
 }
 
-// Global instance
 window.settingsModule = new SettingsModule();

@@ -1,0 +1,96 @@
+/* CSS Custom Properties & Design Tokens - Warm, Human-crafted 2026 UI */
+:root {
+  /* Primary - Warm Indigo */
+  --primary: #4F46E5;
+  --primary-light: #818CF8;
+  --primary-dark: #3730A3;
+  --primary-rgb: 79, 70, 229;
+  
+  /* Secondary - Coral / Amber Warmth */
+  --secondary: #F97316;
+  --secondary-light: #FB923C;
+  --secondary-dark: #EA580C;
+  --secondary-rgb: 249, 115, 22;
+  
+  /* Success - Natural Leaf Green */
+  --success: #10B981;
+  --success-light: #34D399;
+  --success-rgb: 16, 185, 129;
+  
+  /* Warning - Warm Honey Amber */
+  --warning: #F59E0B;
+  --warning-light: #FBBF24;
+  
+  /* Danger - Tomato / Persimmon Red */
+  --danger: #EF4444;
+  --danger-light: #F87171;
+
+  /* Accent Purple */
+  --purple: #8B5CF6;
+  --purple-light: #A78BFA;
+  
+  /* Neutrals - Dark Mode (Default) */
+  --bg-primary: #0C0F17;
+  --bg-secondary: #131926;
+  --bg-tertiary: #1C2436;
+  --bg-card: rgba(19, 25, 38, 0.85);
+  --bg-card-hover: rgba(28, 36, 54, 0.95);
+  --border-color: rgba(60, 72, 98, 0.55);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --input-bg: #151C2C;
+  
+  /* Shadows - Soft, organic */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 10px -1px rgba(0, 0, 0, 0.3), 0 2px 5px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 25px -4px rgba(0, 0, 0, 0.4), 0 4px 10px -4px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px -2px rgba(var(--primary-rgb), 0.35);
+  
+  /* Border radius - Organic curvature */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-full: 9999px;
+  
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Merriweather', 'Lora', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  --sidebar-w: 270px;
+  --topbar-h: 68px;
+  --bottombar-h: 68px;
+}
+
+/* Light Mode (Warm White & Warm Stone) */
+[data-theme="light"] {
+  --bg-primary: #FAF8F5;
+  --bg-secondary: #F3EFEA;
+  --bg-tertiary: #E8E2D9;
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-hover: #FFFFFF;
+  --border-color: #E2DBD0;
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --text-primary: #231F1C;
+  --text-secondary: #5C554F;
+  --text-muted: #8F877F;
+  --input-bg: #FFFFFF;
+  --shadow-sm: 0 1px 3px 0 rgba(40, 30, 20, 0.06);
+  --shadow-md: 0 4px 12px -2px rgba(40, 30, 20, 0.08);
+  --shadow-lg: 0 14px 28px -4px rgba(40, 30, 20, 0.1);
+  --shadow-glow: 0 0 20px -2px rgba(var(--primary-rgb), 0.2);
+}
