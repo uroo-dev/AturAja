@@ -946,33 +946,33 @@
 
   <!-- FLOATING CURVED BOTTOM NAVIGATION BAR WITH CENTER DPS FAB (Mobile View) -->
   <nav class="curved-bottom-nav" aria-label="Bottom Navigation">
-    <!-- Item 1: Home (Aktif - Indikator Titik) -->
-    <button data-nav-target="dashboard" class="bottom-nav-btn active">
+    <!-- Item 1: Beranda / Dashboard -->
+    <button data-nav-target="dashboard" class="bottom-nav-btn active" title="Beranda">
       <i class="fa-solid fa-house text-base"></i>
-      <span>Home</span>
+      <span>Beranda</span>
     </button>
 
-    <!-- Item 2: Search -->
-    <button data-nav-target="todo" class="bottom-nav-btn">
-      <i class="fa-solid fa-magnifying-glass text-base"></i>
-      <span>Search</span>
+    <!-- Item 2: List Tugas & Setoran -->
+    <button data-nav-target="todo" class="bottom-nav-btn" title="List Tugas & Setoran">
+      <i class="fa-solid fa-list-check text-base"></i>
+      <span>Tugas</span>
     </button>
 
     <!-- Item 3: Center Floating Action Button (FAB Logo DPS) -->
-    <button onclick="window.app.toggleQuickActionModal()" class="center-fab-btn" title="Quick Action (DPS FAB)">
+    <button onclick="window.app.toggleQuickActionModal()" class="center-fab-btn" title="Tambah / Aksi Cepat (DPS FAB)">
       <img src="assets/logo.svg" alt="DPS Logo" class="w-7 h-7 object-contain drop-shadow">
     </button>
 
-    <!-- Item 4: Favorites / Bookmark -->
-    <button data-nav-target="projects" class="bottom-nav-btn">
-      <i class="fa-solid fa-bookmark text-base"></i>
-      <span>Favorites</span>
+    <!-- Item 4: Materi & Proyek -->
+    <button data-nav-target="projects" class="bottom-nav-btn" title="Materi & Proyek">
+      <i class="fa-solid fa-folder-open text-base"></i>
+      <span>Materi</span>
     </button>
 
-    <!-- Item 5: Profile -->
-    <button data-nav-target="settings" class="bottom-nav-btn">
-      <i class="fa-solid fa-user text-base"></i>
-      <span>Profile</span>
+    <!-- Item 5: Profil & Pengaturan -->
+    <button data-nav-target="settings" class="bottom-nav-btn" title="Profil & Pengaturan">
+      <i class="fa-solid fa-sliders text-base"></i>
+      <span>Pengaturan</span>
     </button>
   </nav>
 
