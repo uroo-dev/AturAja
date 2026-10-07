@@ -212,70 +212,69 @@
             </div>
 
             <div class="grid grid-cols-4 gap-2 sm:gap-4">
-              <!-- Item 1: Kategori Kelas (Modul Pembelajaran & Kategori) -->
-              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group" title="Kategori Kelas - Modul Pembelajaran & Kategori" aria-label="Kategori Kelas">
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#0D2240] to-[#163A66] text-white shadow-md ring-2 ring-[#2589FE]/50 group-hover:ring-[#2589FE]">
-                  <i class="fa-solid fa-graduation-cap"></i>
+              <!-- Item 1: List Tugas & Setoran (Todo CRUD & Subtasks) -->
+              <button onclick="window.router.navigate('todo')" class="menu-grid-btn group" title="Buka List Tugas & Setoran" aria-label="List Tugas">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#10B981] to-[#059669] text-white shadow-md">
+                  <i class="fa-solid fa-list-check"></i>
                 </div>
-                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Kategori<br>Kelas</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">List<br>Tugas</span>
               </button>
 
-              <!-- Item 2: Materi (Materi & Proyek Belajar / Coding) -->
-              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group" title="Materi - Materi & Proyek Belajar / Coding" aria-label="Materi">
+              <!-- Item 2: Jadwal Harian (Time Blocking 04:00 - 23:00) -->
+              <button onclick="window.router.navigate('schedule')" class="menu-grid-btn group" title="Buka Jadwal Belajar Harian (04:00 - 23:00)" aria-label="Jadwal Harian">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#06B6D4] to-[#0284C7] text-white shadow-md">
+                  <i class="fa-regular fa-calendar-days"></i>
+                </div>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Jadwal<br>Harian</span>
+              </button>
+
+              <!-- Item 3: Materi & Proyek (Kanban Boards & Modul) -->
+              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group" title="Buka Materi & Proyek Belajar / Coding" aria-label="Materi & Proyek">
                 <span class="menu-badge-new">NEW</span>
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white shadow-md">
                   <i class="fa-solid fa-folder-open"></i>
                 </div>
-                <span class="menu-label">Materi</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Materi<br>Proyek</span>
               </button>
 
-              <!-- Item 3: Diskusi (Ruang Diskusi / Sesi Belajar) -->
-              <button onclick="window.router.navigate('focus')" class="menu-grid-btn group" title="Diskusi - Ruang Diskusi / Sesi Belajar" aria-label="Diskusi">
-                <span class="menu-badge-count">8</span>
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#6366F1] to-[#4F46E5] text-white">
-                  <i class="fa-solid fa-comments"></i>
+              <!-- Item 4: Timer Fokus (Pomodoro & Deep Work) -->
+              <button onclick="window.router.navigate('focus')" class="menu-grid-btn group" title="Buka Timer Fokus & Pomodoro" aria-label="Timer Fokus">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#6366F1] to-[#4F46E5] text-white shadow-md">
+                  <i class="fa-solid fa-stopwatch"></i>
                 </div>
-                <span class="menu-label">Diskusi</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Timer<br>Fokus</span>
               </button>
 
-              <!-- Item 4: List Setoran (List Tugas & Setoran Harian) -->
-              <button onclick="window.router.navigate('todo')" class="menu-grid-btn group" title="List Setoran - List Tugas & Setoran Harian" aria-label="List Setoran">
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#10B981] to-[#059669] text-white">
-                  <i class="fa-solid fa-clipboard-check"></i>
+              <!-- Item 5: Keuangan (Catatan Uang Saku & Tabungan) -->
+              <button onclick="window.router.navigate('finance')" class="menu-grid-btn group" title="Buka Rekapan Keuangan & Tabungan" aria-label="Keuangan">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] text-white shadow-md">
+                  <i class="fa-solid fa-wallet"></i>
                 </div>
-                <span class="menu-label">List<br>Setoran</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Catatan<br>Keuangan</span>
               </button>
 
-              <!-- Item 5: Remin Today (Pengingat & Pusat Notifikasi) -->
-              <button onclick="window.notifications.openNotificationModal()" class="menu-grid-btn group" title="Remin Today - Pengingat & Pusat Notifikasi" aria-label="Remin Today">
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#F43F5E] to-[#BE123C] text-white">
-                  <i class="fa-solid fa-bullhorn"></i>
+              <!-- Item 6: Target Kebiasaan (Habit Tracker & Streaks) -->
+              <button onclick="window.habitsModule.openModal()" class="menu-grid-btn group" title="Tambah / Kelola Target Kebiasaan (Habit Tracker)" aria-label="Target Kebiasaan">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#EC4899] to-[#BE185D] text-white shadow-md">
+                  <i class="fa-solid fa-fire"></i>
                 </div>
-                <span class="menu-label">Remin<br>Today</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Target<br>Habit</span>
               </button>
 
-              <!-- Item 6: Jadwal Seminar (Jadwal Belajar & Seminar 04:00 - 23:00) -->
-              <button onclick="window.router.navigate('schedule')" class="menu-grid-btn group" title="Jadwal Seminar - Jadwal Belajar & Seminar (04:00 - 23:00)" aria-label="Jadwal Seminar">
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#06B6D4] to-[#0284C7] text-white">
-                  <i class="fa-regular fa-calendar-check"></i>
+              <!-- Item 7: Notifikasi & Alarm (Pusat Pengingat) -->
+              <button onclick="window.notifications.openNotificationModal()" class="menu-grid-btn group" title="Buka Pusat Notifikasi & Pengingat" aria-label="Pusat Notifikasi">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#F43F5E] to-[#BE123C] text-white shadow-md">
+                  <i class="fa-solid fa-bell"></i>
                 </div>
-                <span class="menu-label">Jadwal<br>Seminar</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Pusat<br>Notifikasi</span>
               </button>
 
-              <!-- Item 7: Rekapan (Rekapan Keuangan & Tabungan) -->
-              <button onclick="window.router.navigate('finance')" class="menu-grid-btn group" title="Rekapan - Rekapan Keuangan & Tabungan" aria-label="Rekapan">
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] text-white">
-                  <i class="fa-solid fa-chart-pie"></i>
+              <!-- Item 8: Pengaturan (Profil, Backup & Tema) -->
+              <button onclick="window.router.navigate('settings')" class="menu-grid-btn group" title="Buka Profil, Backup Data & Pengaturan" aria-label="Pengaturan">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#0D2240] to-[#163A66] text-white shadow-md ring-2 ring-[#2589FE]/40 group-hover:ring-[#2589FE]">
+                  <i class="fa-solid fa-sliders"></i>
                 </div>
-                <span class="menu-label">Rekapan</span>
-              </button>
-
-              <!-- Item 8: Lainnya (Profil, Backup & Pengaturan) -->
-              <button onclick="window.router.navigate('settings')" class="menu-grid-btn group" title="Lainnya - Profil, Backup & Pengaturan" aria-label="Lainnya">
-                <div class="menu-icon-wrapper bg-gradient-to-br from-[#64748B] to-[#334155] text-white">
-                  <i class="fa-solid fa-shapes"></i>
-                </div>
-                <span class="menu-label">Lainnya</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Profil &<br>Setelan</span>
               </button>
             </div>
           </div>
