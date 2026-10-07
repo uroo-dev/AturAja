@@ -16,6 +16,7 @@ class PomodoroModule {
   init() {
     this.bindEvents();
     this.render();
+    this.updateHeaderToggle();
   }
 
   bindEvents() {
@@ -26,6 +27,22 @@ class PomodoroModule {
     if (startBtn) startBtn.addEventListener('click', () => this.start());
     if (pauseBtn) pauseBtn.addEventListener('click', () => this.pause());
     if (resetBtn) resetBtn.addEventListener('click', () => this.reset());
+
+    // Header Focus Toggle Switch
+    const headerToggle = document.getElementById('header-focus-toggle');
+    if (headerToggle) {
+      headerToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleFocusMode();
+      });
+      headerToggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.toggleFocusMode();
+        }
+      });
+    }
 
     const modeBtns = document.querySelectorAll('.pomodoro-mode-btn');
     modeBtns.forEach(btn => {
@@ -67,6 +84,8 @@ class PomodoroModule {
     if (startBtn) startBtn.classList.add('hidden');
     if (pauseBtn) pauseBtn.classList.remove('hidden');
 
+    this.updateHeaderToggle();
+
     this.timerInterval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
@@ -85,12 +104,15 @@ class PomodoroModule {
     const pauseBtn = document.getElementById('pomodoro-pause-btn');
     if (startBtn) startBtn.classList.remove('hidden');
     if (pauseBtn) pauseBtn.classList.add('hidden');
+
+    this.updateHeaderToggle();
   }
 
   reset() {
     this.pause();
     this.timeLeft = this.timerDuration;
     this.renderDisplay();
+    this.updateHeaderToggle();
   }
 
   completeSession() {

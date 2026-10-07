@@ -46,6 +46,14 @@ class NotificationService {
     } catch (e) {}
   }
 
+  showToast(message, type = 'info', duration = 4000) {
+    Utils.showToast(message, { type, duration });
+  }
+
+  playChime(soundType = 'info') {
+    Utils.playSound(soundType);
+  }
+
   addNotificationToCenter(title, body, type = 'info') {
     const item = {
       id: Utils.generateId('notif'),

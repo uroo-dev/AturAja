@@ -146,7 +146,7 @@
         <!-- Header Actions: Focus ON/OFF Toggle & Notification Bell -->
         <div class="flex items-center gap-2 sm:gap-3">
           <!-- Focus Mode ON/OFF Pill Toggle -->
-          <div class="toggle-switch" onclick="window.pomodoroModule.toggleFocusMode()" title="Toggle Status Mode Fokus">
+          <div id="header-focus-toggle" class="toggle-switch cursor-pointer" onclick="window.pomodoroModule && window.pomodoroModule.toggleFocusMode()" role="button" tabindex="0" title="Toggle Status Mode Fokus (Belajar / Coding)">
             <span id="header-toggle-off" class="toggle-switch-btn active">OFF</span>
             <span id="header-toggle-on" class="toggle-switch-btn">ON</span>
           </div>
