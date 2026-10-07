@@ -212,16 +212,16 @@
             </div>
 
             <div class="grid grid-cols-4 gap-2 sm:gap-4">
-              <!-- Item 1: Kategori Kelas (Active Dark Blue Squircle with Bright Neon Accent) -->
-              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group">
+              <!-- Item 1: Kategori Kelas (Modul Pembelajaran & Kategori) -->
+              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group" title="Kategori Kelas - Modul Pembelajaran & Kategori" aria-label="Kategori Kelas">
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#0D2240] to-[#163A66] text-white shadow-md ring-2 ring-[#2589FE]/50 group-hover:ring-[#2589FE]">
                   <i class="fa-solid fa-graduation-cap"></i>
                 </div>
                 <span class="menu-label font-bold text-[#0D2240] dark:text-white">Kategori<br>Kelas</span>
               </button>
 
-              <!-- Item 2: Materi (NEW badge) -->
-              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group">
+              <!-- Item 2: Materi (Materi & Proyek Belajar / Coding) -->
+              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group" title="Materi - Materi & Proyek Belajar / Coding" aria-label="Materi">
                 <span class="menu-badge-new">NEW</span>
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white">
                   <i class="fa-solid fa-folder-open"></i>
@@ -229,8 +229,8 @@
                 <span class="menu-label">Materi</span>
               </button>
 
-              <!-- Item 3: Diskusi (Badge 8) -->
-              <button onclick="window.router.navigate('focus')" class="menu-grid-btn group">
+              <!-- Item 3: Diskusi (Ruang Diskusi / Sesi Belajar) -->
+              <button onclick="window.router.navigate('focus')" class="menu-grid-btn group" title="Diskusi - Ruang Diskusi / Sesi Belajar" aria-label="Diskusi">
                 <span class="menu-badge-count">8</span>
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#6366F1] to-[#4F46E5] text-white">
                   <i class="fa-solid fa-comments"></i>
@@ -238,40 +238,40 @@
                 <span class="menu-label">Diskusi</span>
               </button>
 
-              <!-- Item 4: List Setoran -->
-              <button onclick="window.router.navigate('todo')" class="menu-grid-btn group">
+              <!-- Item 4: List Setoran (List Tugas & Setoran Harian) -->
+              <button onclick="window.router.navigate('todo')" class="menu-grid-btn group" title="List Setoran - List Tugas & Setoran Harian" aria-label="List Setoran">
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#10B981] to-[#059669] text-white">
                   <i class="fa-solid fa-clipboard-check"></i>
                 </div>
                 <span class="menu-label">List<br>Setoran</span>
               </button>
 
-              <!-- Item 5: Remin Today -->
-              <button onclick="window.notifications.openNotificationModal()" class="menu-grid-btn group">
+              <!-- Item 5: Remin Today (Pengingat & Pusat Notifikasi) -->
+              <button onclick="window.notifications.openNotificationModal()" class="menu-grid-btn group" title="Remin Today - Pengingat & Pusat Notifikasi" aria-label="Remin Today">
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#F43F5E] to-[#BE123C] text-white">
                   <i class="fa-solid fa-bullhorn"></i>
                 </div>
                 <span class="menu-label">Remin<br>Today</span>
               </button>
 
-              <!-- Item 6: Jadwal Seminar / Belajar -->
-              <button onclick="window.router.navigate('schedule')" class="menu-grid-btn group">
+              <!-- Item 6: Jadwal Seminar (Jadwal Belajar & Seminar 04:00 - 23:00) -->
+              <button onclick="window.router.navigate('schedule')" class="menu-grid-btn group" title="Jadwal Seminar - Jadwal Belajar & Seminar (04:00 - 23:00)" aria-label="Jadwal Seminar">
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#06B6D4] to-[#0284C7] text-white">
                   <i class="fa-regular fa-calendar-check"></i>
                 </div>
                 <span class="menu-label">Jadwal<br>Seminar</span>
               </button>
 
-              <!-- Item 7: Rekapan -->
-              <button onclick="window.router.navigate('finance')" class="menu-grid-btn group">
+              <!-- Item 7: Rekapan (Rekapan Keuangan & Tabungan) -->
+              <button onclick="window.router.navigate('finance')" class="menu-grid-btn group" title="Rekapan - Rekapan Keuangan & Tabungan" aria-label="Rekapan">
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] text-white">
                   <i class="fa-solid fa-chart-pie"></i>
                 </div>
                 <span class="menu-label">Rekapan</span>
               </button>
 
-              <!-- Item 8: Lainnya -->
-              <button onclick="window.router.navigate('settings')" class="menu-grid-btn group">
+              <!-- Item 8: Lainnya (Profil, Backup & Pengaturan) -->
+              <button onclick="window.router.navigate('settings')" class="menu-grid-btn group" title="Lainnya - Profil, Backup & Pengaturan" aria-label="Lainnya">
                 <div class="menu-icon-wrapper bg-gradient-to-br from-[#64748B] to-[#334155] text-white">
                   <i class="fa-solid fa-shapes"></i>
                 </div>
