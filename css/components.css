@@ -45,11 +45,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 1rem 0.5rem;
+  padding: 0.625rem 0.25rem;
   border-radius: var(--radius-lg);
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-clay-sm);
+  background: transparent;
+  border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
@@ -58,71 +57,60 @@
 }
 
 .menu-grid-btn:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: var(--shadow-clay-md);
-  border-color: var(--accent-blue);
+  transform: translateY(-4px) scale(1.04);
+}
+
+.menu-grid-btn:hover .menu-icon-wrapper {
+  transform: scale(1.08);
+  box-shadow: 0 10px 22px rgba(13, 34, 64, 0.18), inset 0 2px 2px rgba(255, 255, 255, 0.8);
 }
 
 .menu-grid-btn:active {
-  transform: translateY(0) scale(0.97);
+  transform: translateY(0) scale(0.96);
 }
 
-.menu-grid-btn.active-category {
-  background: var(--primary-dark-1);
-  border-color: var(--accent-blue);
-  color: #FFFFFF !important;
-  box-shadow: 0 8px 20px rgba(13, 34, 64, 0.25);
-}
-
-.menu-grid-btn.active-category .menu-icon-wrapper {
-  background: var(--accent-blue);
-  color: #FFFFFF;
-}
-
-.menu-grid-btn.active-category .menu-label {
-  color: #FFFFFF;
-  font-weight: 700;
-}
-
-/* 3D Glossy Icon Wrapper */
+/* 3D Glossy Icon Wrapper (Soft, Raised Squircle) */
 .menu-icon-wrapper {
-  width: 3.25rem;
-  height: 3.25rem;
-  border-radius: var(--radius-md);
+  width: 3.35rem;
+  height: 3.35rem;
+  border-radius: 1.15rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.35rem;
   position: relative;
-  box-shadow: 0 6px 14px rgba(13, 34, 64, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.7);
-  transition: all 0.2s ease;
+  box-shadow: 0 8px 18px rgba(13, 34, 64, 0.12), inset 0 2px 2px rgba(255, 255, 255, 0.65), inset 0 -2px 3px rgba(0, 0, 0, 0.12);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .menu-label {
-  font-size: 0.75rem;
+  font-size: 0.725rem;
   font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.25;
+  transition: color 0.15s ease;
 }
 
 /* Badges for Menu Items */
 .menu-badge-new {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 0px;
+  right: 8px;
   background: linear-gradient(135deg, #EF4444, #F97316);
   color: #FFFFFF;
-  font-size: 0.625rem;
+  font-size: 0.6rem;
   font-weight: 800;
-  padding: 0.15rem 0.4rem;
+  padding: 0.12rem 0.38rem;
   border-radius: var(--radius-full);
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+  border: 1.5px solid #FFFFFF;
+  z-index: 2;
 }
 
 .menu-badge-count {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 0px;
+  right: 8px;
   background: var(--accent-blue);
   color: #FFFFFF;
   font-size: 0.65rem;
@@ -133,7 +121,21 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(37, 137, 254, 0.4);
+  box-shadow: 0 2px 8px rgba(37, 137, 254, 0.5);
+  border: 1.5px solid #FFFFFF;
+  z-index: 2;
+}
+
+/* Ustuwar Course Horizontal Cards */
+.ustuwar-card {
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ustuwar-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-clay-md);
 }
 
 /* 4. BUTTONS & CTA */

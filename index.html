@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- FontAwesome 6 CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -58,7 +58,7 @@
   <div id="toast-container" aria-live="polite"></div>
 
   <div class="app-wrapper flex">
-    
+
     <!-- Sidebar (Desktop View) -->
     <aside class="sidebar fixed top-0 bottom-0 left-0 w-64 bg-white dark:bg-[#0D2240] border-r border-[#E2EBF5] dark:border-[#1F385C] p-5 z-40 hidden lg:flex flex-col shadow-lg">
       <!-- Brand & Community Header -->
@@ -92,7 +92,7 @@
         </button>
 
         <button data-nav-target="projects" class="nav-link">
-          <i class="fa-solid fa-folder-kanban w-5 text-center text-base"></i>
+          <i class="fa-solid fa-list-check w-5 text-center text-base"></i>
           <span>Materi & Proyek</span>
         </button>
 
@@ -125,7 +125,7 @@
 
     <!-- Main Content Area -->
     <div class="main-content flex-1 flex flex-col min-w-0 pb-28 lg:pb-10">
-      
+
       <!-- Top Bar: DPS Community Style Header -->
       <header class="topbar sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between bg-[#0D2240] text-white shadow-md h-18">
         <!-- User Avatar & Greeting -->
@@ -134,7 +134,7 @@
             <img id="header-user-avatar" src="assets/icon.png" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-[#2589FE] object-cover shadow-md group-hover:scale-105 transition-transform">
             <span class="absolute bottom-0 right-0 w-3 h-3 bg-[#00E676] border-2 border-[#0D2240] rounded-full"></span>
           </button>
-          
+
           <div>
             <h2 class="text-sm sm:text-base font-extrabold text-white tracking-tight leading-tight flex items-center gap-1">
               Halo <span id="header-greeting-name">Rizki</span>, 👋
@@ -166,7 +166,7 @@
 
         <!-- PAGE 1: HOME / DASHBOARD (DPS COMMUNITY STYLE) -->
         <section id="tab-dashboard" class="tab-panel space-y-6">
-          
+
           <!-- HERO PROGRESS CARD (Dark Blue Gradient + Neon Green Progress) -->
           <div class="hero-gradient-card">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
@@ -202,117 +202,208 @@
             </div>
           </div>
 
-          <!-- MENU UTAMA: 8 ITEMS GRID (3D Soft & Glossy Clay Icons) -->
-          <div class="space-y-3">
-            <h3 class="text-sm font-extrabold text-[#0F172A] dark:text-white px-1">Menu Utama</h3>
-            
-            <div class="grid grid-cols-4 gap-2.5 sm:gap-4">
-              <!-- Item 1: Kategori Kelas (Active) -->
-              <button onclick="window.router.navigate('todo')" class="menu-grid-btn active-category">
-                <div class="menu-icon-wrapper bg-[#2589FE] text-white">
-                  <i class="fa-solid fa-book-bookmark"></i>
+          <!-- MENU UTAMA: KONTANER CARD PUTIH DENGAN GRID 8 ITEM 3D GLOSSY -->
+          <div class="clay-card p-4 sm:p-6 bg-white dark:bg-[#0D2240] rounded-3xl space-y-4 shadow-sm">
+            <div class="flex items-center justify-between px-1">
+              <h3 class="text-sm sm:text-base font-extrabold text-[#0F172A] dark:text-white flex items-center gap-2">
+                Menu Utama
+              </h3>
+              <span class="text-[11px] font-semibold text-[#2589FE] bg-[#2589FE]/10 dark:bg-[#2589FE]/20 px-2.5 py-0.5 rounded-full">DPS Community</span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-2 sm:gap-4">
+              <!-- Item 1: Kategori Kelas (Active Dark Blue Squircle with Bright Neon Accent) -->
+              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#0D2240] to-[#163A66] text-white shadow-md ring-2 ring-[#2589FE]/50 group-hover:ring-[#2589FE]">
+                  <i class="fa-solid fa-graduation-cap"></i>
                 </div>
-                <span class="menu-label">Kategori<br>Kelas</span>
+                <span class="menu-label font-bold text-[#0D2240] dark:text-white">Kategori<br>Kelas</span>
               </button>
 
               <!-- Item 2: Materi (NEW badge) -->
-              <button onclick="window.router.navigate('projects')" class="menu-grid-btn">
+              <button onclick="window.router.navigate('projects')" class="menu-grid-btn group">
                 <span class="menu-badge-new">NEW</span>
-                <div class="menu-icon-wrapper bg-amber-500/15 text-amber-500">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white">
                   <i class="fa-solid fa-folder-open"></i>
                 </div>
                 <span class="menu-label">Materi</span>
               </button>
 
               <!-- Item 3: Diskusi (Badge 8) -->
-              <button onclick="window.router.navigate('focus')" class="menu-grid-btn">
+              <button onclick="window.router.navigate('focus')" class="menu-grid-btn group">
                 <span class="menu-badge-count">8</span>
-                <div class="menu-icon-wrapper bg-indigo-500/15 text-indigo-500">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#6366F1] to-[#4F46E5] text-white">
                   <i class="fa-solid fa-comments"></i>
                 </div>
                 <span class="menu-label">Diskusi</span>
               </button>
 
               <!-- Item 4: List Setoran -->
-              <button onclick="window.router.navigate('todo')" class="menu-grid-btn">
-                <div class="menu-icon-wrapper bg-emerald-500/15 text-emerald-500">
+              <button onclick="window.router.navigate('todo')" class="menu-grid-btn group">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#10B981] to-[#059669] text-white">
                   <i class="fa-solid fa-clipboard-check"></i>
                 </div>
                 <span class="menu-label">List<br>Setoran</span>
               </button>
 
               <!-- Item 5: Remin Today -->
-              <button onclick="window.notifications.openNotificationModal()" class="menu-grid-btn">
-                <div class="menu-icon-wrapper bg-rose-500/15 text-rose-500">
+              <button onclick="window.notifications.openNotificationModal()" class="menu-grid-btn group">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#F43F5E] to-[#BE123C] text-white">
                   <i class="fa-solid fa-bullhorn"></i>
                 </div>
                 <span class="menu-label">Remin<br>Today</span>
               </button>
 
               <!-- Item 6: Jadwal Seminar / Belajar -->
-              <button onclick="window.router.navigate('schedule')" class="menu-grid-btn">
-                <div class="menu-icon-wrapper bg-purple-500/15 text-purple-500">
+              <button onclick="window.router.navigate('schedule')" class="menu-grid-btn group">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#06B6D4] to-[#0284C7] text-white">
                   <i class="fa-regular fa-calendar-check"></i>
                 </div>
                 <span class="menu-label">Jadwal<br>Seminar</span>
               </button>
 
               <!-- Item 7: Rekapan -->
-              <button onclick="window.router.navigate('finance')" class="menu-grid-btn">
-                <div class="menu-icon-wrapper bg-teal-500/15 text-teal-500">
-                  <i class="fa-solid fa-chart-simple"></i>
+              <button onclick="window.router.navigate('finance')" class="menu-grid-btn group">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#8B5CF6] to-[#6D28D9] text-white">
+                  <i class="fa-solid fa-chart-pie"></i>
                 </div>
                 <span class="menu-label">Rekapan</span>
               </button>
 
               <!-- Item 8: Lainnya -->
-              <button onclick="window.router.navigate('settings')" class="menu-grid-btn">
-                <div class="menu-icon-wrapper bg-slate-500/15 text-slate-500">
-                  <i class="fa-solid fa-sliders"></i>
+              <button onclick="window.router.navigate('settings')" class="menu-grid-btn group">
+                <div class="menu-icon-wrapper bg-gradient-to-br from-[#64748B] to-[#334155] text-white">
+                  <i class="fa-solid fa-shapes"></i>
                 </div>
                 <span class="menu-label">Lainnya</span>
               </button>
             </div>
           </div>
 
-          <!-- SECTION: KATEGORI KELAS / MODUL BELAJAR (Horizontal Cards) -->
+          <!-- SECTION: KATEGORI KELAS (Horizontal Slider Cards) -->
           <div class="space-y-3">
             <div class="flex items-center justify-between px-1">
-              <h3 class="text-sm font-extrabold text-[#0F172A] dark:text-white">Kategori Kelas</h3>
-              <button onclick="window.router.navigate('projects')" class="text-xs font-bold text-[#2589FE] hover:underline">Lihat Semua</button>
+              <div>
+                <h3 class="text-sm sm:text-base font-extrabold text-[#0F172A] dark:text-white">Kategori Kelas</h3>
+                <p class="text-[11px] text-[#64748B] dark:text-slate-300">Modul pembelajaran dan target materi kamu</p>
+              </div>
+              <button onclick="window.router.navigate('projects')" class="text-xs font-bold text-[#2589FE] hover:underline flex items-center gap-1">
+                <span>Lihat Semua</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </button>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <!-- Card Ustuwar 1: Active 75% -->
-              <div class="clay-card p-4 space-y-2 border-l-4 border-l-[#2589FE]">
+            <!-- Horizontal Slider Cards -->
+            <div class="flex gap-3 sm:gap-4 overflow-x-auto pb-3 pt-1 scrollbar-none snap-x -mx-1 px-1">
+              
+              <!-- Card Ustuwar 1: Active / Berjalan (75%) -->
+              <div onclick="window.router.navigate('projects')" class="ustuwar-card snap-start flex-shrink-0 w-64 sm:w-72 clay-card p-4 space-y-3 cursor-pointer hover:border-[#2589FE] transition-all group">
                 <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#2589FE]/10 text-[#2589FE]">Berjalan</span>
-                  <span class="text-xs font-mono font-bold text-[#00E676]">75%</span>
+                  <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#0D2240] to-[#2589FE] flex items-center justify-center text-white text-lg shadow-sm group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-atom"></i>
+                  </div>
+                  <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-[#00E676]/15 text-[#00A854] dark:text-[#00E676] border border-[#00E676]/30">
+                    ● Berjalan
+                  </span>
                 </div>
-                <h4 class="text-sm font-bold text-[#0F172A] dark:text-white truncate">Ustuwar 1: Fisika Mekanika</h4>
-                <p class="text-xs text-[#64748B]">*5 Materi Pembelajaran</p>
-                <div class="w-full bg-[#E2EBF5] dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                  <div class="bg-gradient-to-r from-[#2589FE] to-[#00E676] h-1.5 rounded-full" style="width: 75%;"></div>
+                <div>
+                  <h4 class="text-sm font-extrabold text-[#0F172A] dark:text-white group-hover:text-[#2589FE] transition-colors">Ustuwar 1: Fisika Mekanika</h4>
+                  <p class="text-xs text-[#64748B] dark:text-slate-300 mt-0.5 flex items-center gap-1.5 font-medium">
+                    <i class="fa-regular fa-circle-play text-[10px] text-[#2589FE]"></i> 5 Materi Pembelajaran
+                  </p>
+                </div>
+                <div class="space-y-1 pt-1">
+                  <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-[#64748B] dark:text-slate-400 font-medium">Progres</span>
+                    <span class="font-extrabold font-mono text-[#00A854] dark:text-[#00E676]">75%</span>
+                  </div>
+                  <div class="w-full bg-[#E2EBF5] dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#2589FE] to-[#00E676] h-2 rounded-full transition-all duration-700" style="width: 75%;"></div>
+                  </div>
                 </div>
               </div>
 
-              <!-- Card Ustuwar 2: Locked 🔒 -->
-              <div class="clay-card p-4 space-y-2 opacity-80 border-l-4 border-l-slate-400">
+              <!-- Card Ustuwar 2: Terkunci 🔒 -->
+              <div class="ustuwar-card snap-start flex-shrink-0 w-64 sm:w-72 clay-card p-4 space-y-3 opacity-90 relative overflow-hidden">
                 <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Terkunci 🔒</span>
+                  <div class="w-10 h-10 rounded-2xl bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-slate-500 text-lg shadow-sm">
+                    <i class="fa-solid fa-flask-vial"></i>
+                  </div>
+                  <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-700">
+                    🔒 Terkunci
+                  </span>
                 </div>
-                <h4 class="text-sm font-bold text-[#0F172A] dark:text-white truncate">Ustuwar 2: Termodinamika</h4>
-                <p class="text-xs text-[#64748B]">*8 Materi Terjadwal</p>
+                <div>
+                  <h4 class="text-sm font-extrabold text-[#0F172A] dark:text-white">Ustuwar 2: Termodinamika & Gelombang</h4>
+                  <p class="text-xs text-[#64748B] dark:text-slate-300 mt-0.5 flex items-center gap-1.5 font-medium">
+                    <i class="fa-regular fa-clock text-[10px]"></i> 8 Materi Terjadwal
+                  </p>
+                </div>
+                <div class="space-y-1 pt-1">
+                  <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-[#64748B] dark:text-slate-400 font-medium">Syarat</span>
+                    <span class="text-slate-500 font-semibold">Selesaikan Ustuwar 1</span>
+                  </div>
+                  <div class="w-full bg-[#E2EBF5] dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div class="bg-slate-300 dark:bg-slate-700 h-2 rounded-full" style="width: 0%;"></div>
+                  </div>
+                </div>
               </div>
 
-              <!-- Card Ustuwar 3: Advanced -->
-              <div class="clay-card p-4 space-y-2 border-l-4 border-l-purple-500">
+              <!-- Card Ustuwar 3: Tingkat Lanjut -->
+              <div onclick="window.router.navigate('projects')" class="ustuwar-card snap-start flex-shrink-0 w-64 sm:w-72 clay-card p-4 space-y-3 cursor-pointer hover:border-purple-500 transition-all group">
                 <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-600">Tingkat Lanjut</span>
+                  <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-700 to-indigo-500 flex items-center justify-center text-white text-lg shadow-sm group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-code"></i>
+                  </div>
+                  <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-600 dark:text-purple-400 border border-purple-500/30">
+                    ★ Tingkat Lanjut
+                  </span>
                 </div>
-                <h4 class="text-sm font-bold text-[#0F172A] dark:text-white truncate">Ustuwar 3: Coding Fullstack</h4>
-                <p class="text-xs text-[#64748B]">*10 Modul Portfolio</p>
+                <div>
+                  <h4 class="text-sm font-extrabold text-[#0F172A] dark:text-white group-hover:text-purple-500 transition-colors">Ustuwar 3: Coding Fullstack & AI</h4>
+                  <p class="text-xs text-[#64748B] dark:text-slate-300 mt-0.5 flex items-center gap-1.5 font-medium">
+                    <i class="fa-solid fa-layer-group text-[10px] text-purple-500"></i> 10 Modul Portofolio
+                  </p>
+                </div>
+                <div class="space-y-1 pt-1">
+                  <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-[#64748B] dark:text-slate-400 font-medium">Progres</span>
+                    <span class="font-extrabold font-mono text-purple-600 dark:text-purple-400">40%</span>
+                  </div>
+                  <div class="w-full bg-[#E2EBF5] dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-600 to-indigo-500 h-2 rounded-full" style="width: 40%;"></div>
+                  </div>
+                </div>
               </div>
+
+              <!-- Card Ustuwar 4: Tryout & Evaluasi -->
+              <div onclick="window.router.navigate('todo')" class="ustuwar-card snap-start flex-shrink-0 w-64 sm:w-72 clay-card p-4 space-y-3 cursor-pointer hover:border-amber-500 transition-all group">
+                <div class="flex items-center justify-between">
+                  <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-500 flex items-center justify-center text-white text-lg shadow-sm group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-trophy"></i>
+                  </div>
+                  <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                    Segera Rilis
+                  </span>
+                </div>
+                <div>
+                  <h4 class="text-sm font-extrabold text-[#0F172A] dark:text-white group-hover:text-amber-500 transition-colors">Ustuwar 4: Tryout Akbar TKA</h4>
+                  <p class="text-xs text-[#64748B] dark:text-slate-300 mt-0.5 flex items-center gap-1.5 font-medium">
+                    <i class="fa-regular fa-file-lines text-[10px] text-amber-500"></i> 12 Paket Soal & Bahas
+                  </p>
+                </div>
+                <div class="space-y-1 pt-1">
+                  <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-[#64748B] dark:text-slate-400 font-medium">Jadwal</span>
+                    <span class="text-amber-500 font-semibold">Minggu Ini</span>
+                  </div>
+                  <div class="w-full bg-[#E2EBF5] dark:bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div class="bg-amber-500 h-2 rounded-full" style="width: 15%;"></div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -702,7 +793,7 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
+
             <!-- Profile Form -->
             <div class="clay-card space-y-4">
               <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
@@ -756,7 +847,7 @@
               <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
                 <i class="fa-solid fa-palette text-amber-500"></i> 🎨 Appearance & Themes
               </h3>
-              
+
               <div class="space-y-4">
                 <div>
                   <label class="block text-xs font-bold text-[#64748B] mb-2">Tema Tampilan</label>
@@ -864,7 +955,7 @@
       <i class="fa-solid fa-magnifying-glass text-base"></i>
       <span>Search</span>
     </button>
-    
+
     <!-- Center Floating Action Button (FAB Logo) -->
     <button onclick="window.app.toggleQuickActionModal()" class="center-fab-btn" title="Quick Action (DPS FAB)">
       <i class="fa-solid fa-bolt text-lg"></i>
