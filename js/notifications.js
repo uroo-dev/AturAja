@@ -87,20 +87,45 @@ class NotificationService {
     if (!modal || !container) return;
 
     if (this.notificationsHistory.length === 0) {
-      container.innerHTML = '<p class="text-xs text-slate-400 text-center py-8">Tidak ada riwayat notifikasi.</p>';
-    } else {
-      container.innerHTML = this.notificationsHistory.map(n => `
-        <div class="p-3.5 rounded-2xl ${n.read ? 'bg-slate-800/40 opacity-70' : 'bg-slate-800/90 border border-indigo-500/30'} flex items-start gap-3 transition-all">
-          <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm mt-0.5">
-            <i class="fa-solid fa-bell"></i>
+      container.innerHTML = `
+        <div class="text-center py-10 space-y-2">
+          <div class="w-12 h-12 mx-auto rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center text-xl">
+            <i class="fa-regular fa-bell-slash"></i>
           </div>
-          <div class="flex-1 min-w-0">
-            <h5 class="text-xs font-bold text-slate-100">${Utils.escapeHTML(n.title)}</h5>
-            <p class="text-xs text-slate-300 mt-0.5">${Utils.escapeHTML(n.body)}</p>
-            <span class="text-[10px] text-slate-400 font-mono mt-1 block">${new Date(n.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} • ${Utils.formatDateIndo(n.timestamp.split('T')[0])}</span>
-          </div>
+          <p class="text-xs text-[#64748B] dark:text-slate-400 font-medium">Belum ada riwayat notifikasi.</p>
         </div>
-      `).join('');
+      `;
+    } else {
+      const typeIcons = {
+        success: { icon: 'fa-solid fa-circle-check', color: 'bg-emerald-500/15 text-emerald-500 border-emerald-500/30' },
+        warning: { icon: 'fa-solid fa-circle-exclamation', color: 'bg-amber-500/15 text-amber-500 border-amber-500/30' },
+        danger: { icon: 'fa-solid fa-triangle-exclamation', color: 'bg-rose-500/15 text-rose-500 border-rose-500/30' },
+        info: { icon: 'fa-solid fa-bell', color: 'bg-[#2589FE]/15 text-[#2589FE] border-[#2589FE]/30' }
+      };
+
+      container.innerHTML = this.notificationsHistory.map(n => {
+        const typeCfg = typeIcons[n.type] || typeIcons.info;
+        const timeStr = new Date(n.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        const dateStr = Utils.formatDateIndo(n.timestamp.split('T')[0]);
+
+        return `
+          <div class="p-3.5 rounded-2xl ${n.read ? 'bg-slate-50 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50 opacity-80' : 'bg-white dark:bg-slate-800 border-2 border-[#2589FE]/40 shadow-sm'} flex items-start gap-3 transition-all">
+            <div class="w-9 h-9 rounded-xl ${typeCfg.color} border flex items-center justify-center text-sm mt-0.5 flex-shrink-0 shadow-sm">
+              <i class="${typeCfg.icon}"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2">
+                <h5 class="text-xs font-extrabold text-[#0D2240] dark:text-white truncate">${Utils.escapeHTML(n.title)}</h5>
+                ${!n.read ? '<span class="w-2 h-2 rounded-full bg-[#00E676] flex-shrink-0"></span>' : ''}
+              </div>
+              <p class="text-xs text-[#64748B] dark:text-slate-300 mt-0.5 leading-relaxed">${Utils.escapeHTML(n.body)}</p>
+              <span class="text-[10px] text-slate-400 dark:text-slate-400 font-mono mt-1.5 flex items-center gap-1">
+                <i class="fa-regular fa-clock text-[9px]"></i> ${timeStr} • ${dateStr}
+              </span>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     modal.classList.remove('hidden');

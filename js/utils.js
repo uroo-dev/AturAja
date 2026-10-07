@@ -118,31 +118,72 @@ class Utils {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
+    const type = options.type || 'info';
+    const duration = options.duration || (options.action ? 6500 : 3800);
+
+    const typeConfig = {
+      success: {
+        icon: 'fa-solid fa-circle-check',
+        iconBg: 'bg-[#00E676]/20 text-[#00E676]',
+        title: options.title || 'Berhasil!'
+      },
+      danger: {
+        icon: 'fa-solid fa-triangle-exclamation',
+        iconBg: 'bg-rose-500/20 text-rose-400',
+        title: options.title || 'Perhatian / Gagal'
+      },
+      warning: {
+        icon: 'fa-solid fa-circle-exclamation',
+        iconBg: 'bg-amber-500/20 text-amber-400',
+        title: options.title || 'Peringatan'
+      },
+      info: {
+        icon: 'fa-solid fa-circle-info',
+        iconBg: 'bg-[#2589FE]/20 text-[#2589FE]',
+        title: options.title || 'Informasi'
+      }
+    };
+
+    const cfg = typeConfig[type] || typeConfig.info;
+
     const toast = document.createElement('div');
-    toast.className = 'toast';
+    toast.className = `toast-item toast-${type}`;
     
     let actionBtnHtml = '';
     if (options.action) {
-      actionBtnHtml = `<button class="toast-action-btn" id="toast-action-${Date.now()}">${options.action.text}</button>`;
+      actionBtnHtml = `<button class="btn btn-sm btn-primary py-1 px-3 text-xs rounded-full shadow-sm whitespace-nowrap toast-action-btn">${options.action.text}</button>`;
     }
 
     toast.innerHTML = `
-      <div class="flex items-center gap-2 min-w-0">
-        <span class="text-sm font-semibold">${message}</span>
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex items-start gap-3 min-w-0">
+          <div class="w-8 h-8 rounded-xl ${cfg.iconBg} flex-shrink-0 flex items-center justify-center text-sm shadow-sm mt-0.5">
+            <i class="${cfg.icon}"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <h5 class="text-xs font-extrabold text-white leading-tight">${cfg.title}</h5>
+            <p class="text-xs text-slate-200 mt-0.5 font-medium leading-relaxed">${message}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          ${actionBtnHtml}
+          <button class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition-colors" onclick="this.closest('.toast-item').remove()" title="Tutup">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
       </div>
-      <div class="flex items-center gap-2">
-        ${actionBtnHtml}
-        <button class="text-slate-400 hover:text-slate-800 p-1" onclick="this.closest('.toast').remove()">
-          <i class="fa-solid fa-xmark text-xs"></i>
-        </button>
-      </div>
+      <div class="toast-progress-bar" style="transition-duration: ${duration}ms;"></div>
     `;
 
     container.appendChild(toast);
-    Utils.playSound(options.type || 'info');
+    Utils.playSound(type);
 
+    // Trigger shrink animation on progress bar
     requestAnimationFrame(() => {
-      toast.classList.add('toast-visible');
+      const pBar = toast.querySelector('.toast-progress-bar');
+      if (pBar) {
+        pBar.style.width = '0%';
+      }
     });
 
     if (options.action) {
@@ -155,11 +196,12 @@ class Utils {
       }
     }
 
-    const duration = options.duration || 3800;
-    setTimeout(() => {
-      toast.classList.remove('toast-visible');
-      setTimeout(() => toast.remove(), 300);
+    const timer = setTimeout(() => {
+      toast.classList.add('toast-exit');
+      setTimeout(() => toast.remove(), 250);
     }, duration);
+
+    toast.addEventListener('mouseenter', () => clearTimeout(timer));
   }
 
   // --- CALENDAR INTEGRATION (.ICS & GOOGLE CALENDAR) ---
