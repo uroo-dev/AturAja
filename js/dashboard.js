@@ -12,12 +12,61 @@ class DashboardModule {
   }
 
   render() {
+    this.renderProfile();
+    this.renderHeroProgress();
     this.renderQuote();
     this.renderMetrics();
     this.renderCurrentTimeBlock();
     this.renderUpcomingDeadlines();
     this.renderHabitsQuickView();
     this.renderCharts();
+  }
+
+  renderProfile() {
+    const state = window.state.getState();
+    const profile = state.profile || { name: 'Rizki', school: 'Kelas 12 - Pejuang SNBT' };
+    
+    const greetEl = document.getElementById('header-greeting-name');
+    const subEl = document.getElementById('header-user-subtitle');
+    const sideEl = document.getElementById('sidebar-user-name');
+
+    if (greetEl) greetEl.textContent = profile.name || 'Rizki';
+    if (subEl) subEl.textContent = profile.school || 'Member DPS Community';
+    if (sideEl) sideEl.textContent = profile.name ? `${profile.name} (DPS)` : 'Member DPS Community';
+  }
+
+  renderHeroProgress() {
+    const state = window.state.getState();
+    const todos = state.todos || [];
+    const totalTodos = todos.length;
+    const completedTodos = todos.filter(t => t.status === 'completed').length;
+    
+    let percent = 0;
+    if (totalTodos > 0) {
+      percent = Math.round((completedTodos / totalTodos) * 100);
+    } else {
+      percent = 75; // default initial demo progress
+    }
+
+    const percentEl = document.getElementById('hero-progress-percent');
+    const textEl = document.getElementById('hero-progress-text');
+    const barEl = document.getElementById('hero-progress-bar');
+    
+    if (percentEl) percentEl.textContent = `${percent}%`;
+    if (textEl) {
+      if (totalTodos > 0) {
+        textEl.textContent = `${completedTodos} dari ${totalTodos} Tugas/Materi Selesai`;
+      } else {
+        textEl.textContent = '3 dari 5 Materi Selesai';
+      }
+    }
+    if (barEl) barEl.style.width = `${percent}%`;
+
+    // Update SVG stroke-dasharray
+    const donutEl = document.querySelector('.hero-gradient-card svg path.text-\\[\\#00E676\\]');
+    if (donutEl) {
+      donutEl.setAttribute('stroke-dasharray', `${percent}, 100`);
+    }
   }
 
   renderQuote() {

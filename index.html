@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark" class="dark">
+<html lang="id" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>StudentFlow — Production Ready Student Life Manager</title>
-  <meta name="description" content="Manajemen Produktivitas Siswa Kelas 12: Coding, TKA Saintek/Soshum, Jadwal & Keuangan">
-  <meta name="theme-color" content="#0C0F17">
+  <title>StudentFlow — DPS Community Student Life Manager</title>
+  <meta name="description" content="Aplikasi Pembelajaran & Produktivitas Siswa Kelas 12: Coding, TKA Saintek/Soshum, Jadwal & Keuangan">
+  <meta name="theme-color" content="#0D2240">
 
   <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="./manifest.json">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
   <link rel="icon" type="image/png" href="assets/icon.png">
 
-  <!-- Google Fonts: Inter, Merriweather, JetBrains Mono -->
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- FontAwesome 6 CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -32,68 +32,73 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            serif: ['Merriweather', 'serif'],
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace']
+          },
+          colors: {
+            dpsPrimary: '#0D2240',
+            dpsPrimaryLight: '#163A66',
+            dpsAccentBlue: '#2589FE',
+            dpsAccentGreen: '#00E676',
+            dpsBg: '#EDF3F9'
           }
         }
       }
     }
   </script>
 
-  <!-- Custom Stylesheets (Modular) -->
+  <!-- Modular Stylesheets -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-[#0C0F17] text-slate-100 min-h-screen">
+<body class="bg-[#EDF3F9] dark:bg-[#091322] text-[#0F172A] dark:text-[#F8FAFC] min-h-screen transition-colors duration-200">
 
-  <!-- Toast Notification Container -->
+  <!-- Toast Container -->
   <div id="toast-container" aria-live="polite"></div>
 
   <div class="app-wrapper flex">
     
     <!-- Sidebar (Desktop View) -->
-    <aside class="sidebar fixed top-0 bottom-0 left-0 w-64 bg-slate-900/90 border-r border-slate-800/80 p-4 z-40 hidden lg:flex flex-col backdrop-blur-xl">
-      <!-- Brand Logo & Student Profile Preview -->
-      <div class="flex items-center gap-3 px-2 py-3 mb-4">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-amber-500 p-0.5 shadow-lg shadow-indigo-500/25 flex items-center justify-center">
-          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center text-indigo-400 font-bold text-lg">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
+    <aside class="sidebar fixed top-0 bottom-0 left-0 w-64 bg-white dark:bg-[#0D2240] border-r border-[#E2EBF5] dark:border-[#1F385C] p-5 z-40 hidden lg:flex flex-col shadow-lg">
+      <!-- Brand & Community Header -->
+      <div class="flex items-center gap-3 px-1 py-2 mb-6">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#0D2240] to-[#2589FE] p-0.5 shadow-md flex items-center justify-center">
+          <img src="assets/logo.svg" alt="DPS Logo" class="w-9 h-9">
         </div>
         <div class="min-w-0 flex-1">
-          <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5 truncate">
-            StudentFlow <span class="text-[9px] font-mono bg-indigo-500/20 text-indigo-400 px-1.5 py-0.2 rounded font-bold">12th</span>
+          <h1 class="text-sm font-extrabold tracking-tight text-[#0D2240] dark:text-white flex items-center gap-1.5">
+            StudentFlow <span class="text-[9px] font-mono bg-[#2589FE]/15 text-[#2589FE] px-1.5 py-0.2 rounded-md font-bold">DPS</span>
           </h1>
-          <p class="text-[11px] text-slate-400 font-medium truncate" id="header-user-name">Arka Pratama</p>
+          <p class="text-[11px] text-[#64748B] dark:text-slate-300 font-medium truncate" id="sidebar-user-name">Member DPS Community</p>
         </div>
       </div>
 
       <!-- Navigation Links -->
-      <nav class="flex-1 space-y-1" aria-label="Main Navigation">
+      <nav class="flex-1 space-y-1.5" aria-label="Main Navigation">
         <button data-nav-target="dashboard" class="nav-link active">
-          <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
-          <span>Dashboard</span>
+          <i class="fa-solid fa-house w-5 text-center text-base"></i>
+          <span>Home / Beranda</span>
         </button>
 
         <button data-nav-target="todo" class="nav-link">
           <i class="fa-solid fa-list-check w-5 text-center text-base"></i>
-          <span>To-Do List</span>
+          <span>List Setoran & Tugas</span>
         </button>
 
         <button data-nav-target="schedule" class="nav-link">
           <i class="fa-regular fa-calendar-days w-5 text-center text-base"></i>
-          <span>Jadwal (Time Block)</span>
+          <span>Jadwal Belajar (04-23)</span>
         </button>
 
         <button data-nav-target="projects" class="nav-link">
           <i class="fa-solid fa-folder-kanban w-5 text-center text-base"></i>
-          <span>Proyek (Kanban)</span>
+          <span>Materi & Proyek</span>
         </button>
 
         <button data-nav-target="finance" class="nav-link">
           <i class="fa-solid fa-wallet w-5 text-center text-base"></i>
-          <span>Keuangan</span>
+          <span>Rekapan Keuangan</span>
         </button>
 
         <button data-nav-target="focus" class="nav-link">
@@ -108,227 +113,303 @@
       </nav>
 
       <!-- Sidebar Footer -->
-      <div class="pt-4 border-t border-slate-800/80 space-y-2.5">
-        <div id="autosave-badge" class="text-[11px] text-slate-400 font-mono flex items-center gap-1.5 px-2">
-          <i class="fa-solid fa-cloud-arrow-up text-emerald-400"></i> LocalStorage Aktif
+      <div class="pt-4 border-t border-[#E2EBF5] dark:border-[#1F385C] space-y-3">
+        <div id="autosave-badge" class="text-[11px] text-[#64748B] dark:text-slate-400 font-mono flex items-center gap-1.5 px-2">
+          <i class="fa-solid fa-cloud-arrow-up text-[#00E676]"></i> LocalStorage Aktif
         </div>
-        <button onclick="window.backupModule.exportJSON()" class="btn btn-secondary w-full py-2 text-xs font-semibold">
-          <i class="fa-solid fa-download mr-1.5"></i> Backup JSON
+        <button onclick="window.backupModule.exportJSON()" class="btn btn-secondary w-full py-2 text-xs font-bold rounded-2xl">
+          <i class="fa-solid fa-download mr-1 text-[#2589FE]"></i> Backup Data JSON
         </button>
       </div>
     </aside>
 
-    <!-- Main Content Container -->
-    <div class="main-content flex-1 flex flex-col min-w-0">
+    <!-- Main Content Area -->
+    <div class="main-content flex-1 flex flex-col min-w-0 pb-28 lg:pb-10">
       
-      <!-- Top Navigation Bar -->
-      <header class="topbar sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between border-b border-slate-800/80 bg-slate-900/70 backdrop-blur-md h-16">
+      <!-- Top Bar: DPS Community Style Header -->
+      <header class="topbar sticky top-0 z-30 px-4 sm:px-6 flex items-center justify-between bg-[#0D2240] text-white shadow-md h-18">
+        <!-- User Avatar & Greeting -->
         <div class="flex items-center gap-3">
-          <div class="lg:hidden flex items-center gap-2">
-            <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
-              <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-            <span class="font-bold text-sm tracking-tight text-white">StudentFlow</span>
-          </div>
-          <div class="hidden sm:block text-xs font-medium text-slate-400">
-            <span class="text-slate-200 font-semibold">Target UTBK/TKA 2025</span> • Portfolio Coding Kelas 12
+          <button onclick="window.router.navigate('settings')" class="relative group cursor-pointer focus:outline-none">
+            <img id="header-user-avatar" src="assets/icon.png" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-[#2589FE] object-cover shadow-md group-hover:scale-105 transition-transform">
+            <span class="absolute bottom-0 right-0 w-3 h-3 bg-[#00E676] border-2 border-[#0D2240] rounded-full"></span>
+          </button>
+          
+          <div>
+            <h2 class="text-sm sm:text-base font-extrabold text-white tracking-tight leading-tight flex items-center gap-1">
+              Halo <span id="header-greeting-name">Rizki</span>, 👋
+            </h2>
+            <p class="text-[11px] text-slate-300 font-medium truncate" id="header-user-subtitle">Member DPS Community</p>
           </div>
         </div>
 
-        <div class="flex items-center gap-2.5">
-          <!-- Notification Request Button -->
-          <button onclick="window.notifications.requestPermission()" class="btn btn-ghost btn-sm text-xs font-semibold text-slate-300" title="Izin Notifikasi">
-            <i class="fa-regular fa-bell text-indigo-400"></i>
-            <span class="hidden md:inline ml-1">Notifikasi</span>
-          </button>
+        <!-- Header Actions: Focus ON/OFF Toggle & Notification Bell -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Focus Mode ON/OFF Pill Toggle -->
+          <div class="toggle-switch" onclick="window.pomodoroModule.toggleFocusMode()" title="Toggle Status Mode Fokus">
+            <span id="header-toggle-off" class="toggle-switch-btn active">OFF</span>
+            <span id="header-toggle-on" class="toggle-switch-btn">ON</span>
+          </div>
 
-          <!-- User Avatar Profile Icon (Header) -->
-          <button onclick="window.router.navigate('settings')" class="flex items-center gap-2 p-1 rounded-xl hover:bg-slate-800 transition-colors" title="Buka Profil">
-            <img id="header-user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-full border border-indigo-500/40 object-cover bg-indigo-900">
-          </button>
-
-          <!-- Quick Add Button -->
-          <button onclick="window.app.toggleQuickActionModal()" class="btn btn-primary btn-sm text-xs font-bold shadow-lg shadow-indigo-600/30">
-            <i class="fa-solid fa-plus mr-1"></i> Buat Cepat
+          <!-- Notification Bell with Red Badge -->
+          <button onclick="window.notifications.openNotificationModal()" class="relative w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all text-base shadow-sm" title="Pusat Notifikasi">
+            <i class="fa-solid fa-bell"></i>
+            <span id="header-notif-badge" class="hidden absolute -top-1 -right-1 min-w-[1.2rem] h-[1.2rem] bg-rose-500 text-white font-bold text-[10px] rounded-full flex items-center justify-center px-1 shadow-lg border-2 border-[#0D2240]">
+              1
+            </span>
           </button>
         </div>
       </header>
 
       <!-- Main Dynamic Pages Container -->
-      <main class="page-container p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+      <main class="page-container p-4 sm:p-6 max-w-5xl w-full mx-auto space-y-6">
 
-        <!-- PAGE 1: DASHBOARD -->
+        <!-- PAGE 1: HOME / DASHBOARD (DPS COMMUNITY STYLE) -->
         <section id="tab-dashboard" class="tab-panel space-y-6">
           
-          <!-- Hero Banner & Rotating Quote -->
-          <div class="card bg-gradient-to-r from-slate-900 via-slate-850 to-indigo-950 p-6 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
-            <div class="relative z-10 space-y-2">
-              <div class="flex items-center gap-2 text-xs font-bold text-indigo-400">
-                <i class="fa-solid fa-sparkles"></i> Dashboard Produktivitas
-              </div>
-              <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Selamat Datang di StudentFlow! 🚀</h2>
-              <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800/80 max-w-2xl mt-3">
-                <p id="dash-quote-text" class="text-xs sm:text-sm font-serif italic text-slate-200">
-                  "Disiplin adalah jembatan antara target dan pencapaian nyata."
-                </p>
-                <span id="dash-quote-author" class="text-[11px] font-mono text-indigo-400 font-semibold block mt-1">
-                  — Jim Rohn
-                </span>
-              </div>
-            </div>
-          </div>
+          <!-- HERO PROGRESS CARD (Dark Blue Gradient + Neon Green Progress) -->
+          <div class="hero-gradient-card">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
+              <div class="flex items-center gap-4">
+                <!-- Circular Donut Progress Ring (75%) -->
+                <div class="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center">
+                  <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                    <path class="text-white/20" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    <path class="text-[#00E676] transition-all duration-1000 ease-out" stroke-dasharray="75, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                  </svg>
+                  <span class="absolute font-extrabold font-mono text-sm sm:text-base text-white" id="hero-progress-percent">75%</span>
+                </div>
 
-          <!-- Current Active Timeblock -->
-          <div class="card p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
-                <i class="fa-regular fa-clock"></i>
-              </div>
-              <div>
-                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Jadwal Sedang Berlangsung</span>
-                <div id="dash-current-timeblock" class="text-sm font-semibold text-white">Memuat jadwal...</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4 Core Metric Stat Cards -->
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('todo')">
-              <div class="flex items-center justify-between text-slate-400 mb-2">
-                <span class="text-xs font-medium">Tugas Aktif</span>
-                <div class="w-8 h-8 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-sm">
-                  <i class="fa-solid fa-list-check"></i>
+                <!-- Text Progress -->
+                <div>
+                  <span class="text-[11px] font-bold text-[#00E676] uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check text-xs"></i> Progres Belajar Kamu
+                  </span>
+                  <h3 class="text-base sm:text-lg font-extrabold text-white mt-0.5" id="hero-progress-text">3 dari 5 Materi Selesai</h3>
+                  <div class="w-36 sm:w-48 bg-white/20 rounded-full h-1.5 mt-2 overflow-hidden">
+                    <div class="bg-gradient-to-r from-[#00E676] to-[#22C55E] h-1.5 rounded-full" id="hero-progress-bar" style="width: 75%;"></div>
+                  </div>
                 </div>
               </div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="dash-pending-todos">0</div>
-              <span class="text-[11px] text-indigo-400 hover:underline mt-1 inline-block">To-Do List &rarr;</span>
-            </div>
 
-            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('projects')">
-              <div class="flex items-center justify-between text-slate-400 mb-2">
-                <span class="text-xs font-medium">Proyek In-Progress</span>
-                <div class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
+              <!-- CTA Button Lanjut Belajar ➔ -->
+              <div class="flex sm:justify-end">
+                <button onclick="window.router.navigate('focus'); window.pomodoroModule.start();" class="btn-cta-bright">
+                  <span>Lanjut Belajar</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- MENU UTAMA: 8 ITEMS GRID (3D Soft & Glossy Clay Icons) -->
+          <div class="space-y-3">
+            <h3 class="text-sm font-extrabold text-[#0F172A] dark:text-white px-1">Menu Utama</h3>
+            
+            <div class="grid grid-cols-4 gap-2.5 sm:gap-4">
+              <!-- Item 1: Kategori Kelas (Active) -->
+              <button onclick="window.router.navigate('todo')" class="menu-grid-btn active-category">
+                <div class="menu-icon-wrapper bg-[#2589FE] text-white">
+                  <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <span class="menu-label">Kategori<br>Kelas</span>
+              </button>
+
+              <!-- Item 2: Materi (NEW badge) -->
+              <button onclick="window.router.navigate('projects')" class="menu-grid-btn">
+                <span class="menu-badge-new">NEW</span>
+                <div class="menu-icon-wrapper bg-amber-500/15 text-amber-500">
                   <i class="fa-solid fa-folder-open"></i>
                 </div>
-              </div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-white font-mono" id="dash-active-projects">0</div>
-              <span class="text-[11px] text-amber-400 hover:underline mt-1 inline-block">Kanban Board &rarr;</span>
-            </div>
+                <span class="menu-label">Materi</span>
+              </button>
 
-            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('focus')">
-              <div class="flex items-center justify-between text-slate-400 mb-2">
-                <span class="text-xs font-medium">Jam Fokus</span>
-                <div class="w-8 h-8 rounded-xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-sm">
-                  <i class="fa-solid fa-brain"></i>
+              <!-- Item 3: Diskusi (Badge 8) -->
+              <button onclick="window.router.navigate('focus')" class="menu-grid-btn">
+                <span class="menu-badge-count">8</span>
+                <div class="menu-icon-wrapper bg-indigo-500/15 text-indigo-500">
+                  <i class="fa-solid fa-comments"></i>
                 </div>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-xl sm:text-2xl font-extrabold text-purple-400 font-mono" id="dash-study-hours">0h</span>
-                <span class="text-[10px] text-slate-400 font-bold">TKA</span>
-                <span class="text-slate-600">/</span>
-                <span class="text-xl sm:text-2xl font-extrabold text-indigo-400 font-mono" id="dash-code-hours">0h</span>
-                <span class="text-[10px] text-slate-400 font-bold">Code</span>
-              </div>
-              <span class="text-[11px] text-purple-400 hover:underline mt-1 inline-block">Mulai Timer &rarr;</span>
-            </div>
+                <span class="menu-label">Diskusi</span>
+              </button>
 
-            <div class="card card-lift cursor-pointer p-4" onclick="window.router.navigate('finance')">
-              <div class="flex items-center justify-between text-slate-400 mb-2">
-                <span class="text-xs font-medium">Pengeluaran Hari Ini</span>
-                <div class="w-8 h-8 rounded-xl bg-rose-500/15 text-rose-400 flex items-center justify-center text-sm">
-                  <i class="fa-solid fa-receipt"></i>
+              <!-- Item 4: List Setoran -->
+              <button onclick="window.router.navigate('todo')" class="menu-grid-btn">
+                <div class="menu-icon-wrapper bg-emerald-500/15 text-emerald-500">
+                  <i class="fa-solid fa-clipboard-check"></i>
                 </div>
-              </div>
-              <div class="text-lg sm:text-2xl font-extrabold text-rose-400 font-mono truncate" id="dash-today-expenses">Rp 0</div>
-              <span class="text-[11px] text-rose-400 hover:underline mt-1 inline-block">Keuangan &rarr;</span>
+                <span class="menu-label">List<br>Setoran</span>
+              </button>
+
+              <!-- Item 5: Remin Today -->
+              <button onclick="window.notifications.openNotificationModal()" class="menu-grid-btn">
+                <div class="menu-icon-wrapper bg-rose-500/15 text-rose-500">
+                  <i class="fa-solid fa-bullhorn"></i>
+                </div>
+                <span class="menu-label">Remin<br>Today</span>
+              </button>
+
+              <!-- Item 6: Jadwal Seminar / Belajar -->
+              <button onclick="window.router.navigate('schedule')" class="menu-grid-btn">
+                <div class="menu-icon-wrapper bg-purple-500/15 text-purple-500">
+                  <i class="fa-regular fa-calendar-check"></i>
+                </div>
+                <span class="menu-label">Jadwal<br>Seminar</span>
+              </button>
+
+              <!-- Item 7: Rekapan -->
+              <button onclick="window.router.navigate('finance')" class="menu-grid-btn">
+                <div class="menu-icon-wrapper bg-teal-500/15 text-teal-500">
+                  <i class="fa-solid fa-chart-simple"></i>
+                </div>
+                <span class="menu-label">Rekapan</span>
+              </button>
+
+              <!-- Item 8: Lainnya -->
+              <button onclick="window.router.navigate('settings')" class="menu-grid-btn">
+                <div class="menu-icon-wrapper bg-slate-500/15 text-slate-500">
+                  <i class="fa-solid fa-sliders"></i>
+                </div>
+                <span class="menu-label">Lainnya</span>
+              </button>
             </div>
           </div>
 
-          <!-- Daily Habits Quick View -->
-          <div class="card p-5 space-y-3">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-fire text-amber-400"></i> Habit & Daily Streaks
-              </h3>
-              <button onclick="window.habitsModule.openModal()" class="text-xs text-indigo-400 hover:underline">+ Habit Baru</button>
+          <!-- SECTION: KATEGORI KELAS / MODUL BELAJAR (Horizontal Cards) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between px-1">
+              <h3 class="text-sm font-extrabold text-[#0F172A] dark:text-white">Kategori Kelas</h3>
+              <button onclick="window.router.navigate('projects')" class="text-xs font-bold text-[#2589FE] hover:underline">Lihat Semua</button>
             </div>
-            <div id="dash-habits-quick"></div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <!-- Card Ustuwar 1: Active 75% -->
+              <div class="clay-card p-4 space-y-2 border-l-4 border-l-[#2589FE]">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#2589FE]/10 text-[#2589FE]">Berjalan</span>
+                  <span class="text-xs font-mono font-bold text-[#00E676]">75%</span>
+                </div>
+                <h4 class="text-sm font-bold text-[#0F172A] dark:text-white truncate">Ustuwar 1: Fisika Mekanika</h4>
+                <p class="text-xs text-[#64748B]">*5 Materi Pembelajaran</p>
+                <div class="w-full bg-[#E2EBF5] dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                  <div class="bg-gradient-to-r from-[#2589FE] to-[#00E676] h-1.5 rounded-full" style="width: 75%;"></div>
+                </div>
+              </div>
+
+              <!-- Card Ustuwar 2: Locked 🔒 -->
+              <div class="clay-card p-4 space-y-2 opacity-80 border-l-4 border-l-slate-400">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Terkunci 🔒</span>
+                </div>
+                <h4 class="text-sm font-bold text-[#0F172A] dark:text-white truncate">Ustuwar 2: Termodinamika</h4>
+                <p class="text-xs text-[#64748B]">*8 Materi Terjadwal</p>
+              </div>
+
+              <!-- Card Ustuwar 3: Advanced -->
+              <div class="clay-card p-4 space-y-2 border-l-4 border-l-purple-500">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-600">Tingkat Lanjut</span>
+                </div>
+                <h4 class="text-sm font-bold text-[#0F172A] dark:text-white truncate">Ustuwar 3: Coding Fullstack</h4>
+                <p class="text-xs text-[#64748B]">*10 Modul Portfolio</p>
+              </div>
+            </div>
           </div>
 
-          <!-- 2 Columns: Deadlines & Category Composition -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="card p-5 space-y-4">
-              <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                  <i class="fa-regular fa-clock text-rose-400"></i> Deadline Mendatang
-                </h3>
-                <button onclick="window.router.navigate('todo')" class="text-xs text-indigo-400 hover:underline">Semua Tugas</button>
+          <!-- AKTIFITAS HARIAN & STATISTIK -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- Weekly Challenge Banner -->
+            <div class="clay-card p-5 bg-gradient-to-br from-amber-500/10 via-white to-white dark:from-slate-900 dark:to-slate-850 space-y-2">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-extrabold text-[#0F172A] dark:text-white flex items-center gap-2">
+                  🏆 Challenge Mingguan
+                </h4>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white">Baru!</span>
               </div>
-              <div id="dash-upcoming-deadlines"></div>
+              <p class="text-xs text-[#64748B] dark:text-slate-300">
+                Selesaikan 50 Soal TKA Saintek dan 1 Pull Request GitHub project sebelum hari Minggu.
+              </p>
+              <div class="pt-2 flex items-center justify-between">
+                <span class="text-xs font-mono font-bold text-amber-500">Reward: +100 Points</span>
+                <button onclick="window.router.navigate('todo')" class="btn btn-sm btn-primary">Ikuti Challenge</button>
+              </div>
             </div>
 
-            <div class="card p-5 space-y-4">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-3 border-b border-slate-800">
-                <i class="fa-solid fa-chart-pie text-indigo-400"></i> Komposisi Tugas
-              </h3>
-              <div class="h-60 relative">
+            <!-- Schedule Reminder Quick View -->
+            <div class="clay-card p-5 space-y-2">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                <h4 class="text-sm font-bold text-[#0F172A] dark:text-white flex items-center gap-2">
+                  <i class="fa-regular fa-clock text-[#2589FE]"></i> Jadwal Hari Ini
+                </h4>
+                <button onclick="window.router.navigate('schedule')" class="text-xs font-bold text-[#2589FE] hover:underline">Buka Kalender</button>
+              </div>
+              <div id="dash-current-timeblock" class="text-xs text-[#64748B]">Memuat jadwal...</div>
+            </div>
+          </div>
+
+          <!-- Charts Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="clay-card p-5 space-y-3">
+              <h4 class="text-xs font-bold text-[#0F172A] dark:text-white uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-[#2589FE]"></i> Komposisi Tugas & Materi
+              </h4>
+              <div class="h-52 relative">
                 <canvas id="chart-dash-tasks"></canvas>
               </div>
             </div>
-          </div>
 
-          <!-- Deep Work Stats Bar Chart -->
-          <div class="card p-5 space-y-4">
-            <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-3 border-b border-slate-800">
-              <i class="fa-solid fa-bolt text-amber-400"></i> Alokasi Waktu Belajar TKA vs Coding
-            </h3>
-            <div class="h-56 relative">
-              <canvas id="chart-dash-focus"></canvas>
+            <div class="clay-card p-5 space-y-3">
+              <h4 class="text-xs font-bold text-[#0F172A] dark:text-white uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-[#00E676]"></i> Jam Fokus Belajar TKA vs Coding
+              </h4>
+              <div class="h-52 relative">
+                <canvas id="chart-dash-focus"></canvas>
+              </div>
             </div>
           </div>
+
         </section>
 
-        <!-- PAGE 2: TO-DO LIST SYSTEM -->
+        <!-- PAGE 2: TO-DO LIST & LIST SETORAN -->
         <section id="tab-todo" class="tab-panel hidden space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                <i class="fa-solid fa-list-check text-indigo-400"></i> To-Do List System
+              <h2 class="text-2xl font-extrabold text-[#0D2240] dark:text-white tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-[#2589FE]"></i> List Setoran & Tugas
               </h2>
-              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Kelola tugas harian, checklist subtasks, reminder & prioritas.</p>
+              <p class="text-xs sm:text-sm text-[#64748B]">Kelola setoran harian, checklist materi, subtasks & prioritas belajar.</p>
             </div>
             <button onclick="window.todoModule.openModal()" class="btn btn-primary">
-              <i class="fa-solid fa-plus"></i>
-              <span>Tambah Tugas</span>
+              <i class="fa-solid fa-plus"></i> Tambah Tugas
             </button>
           </div>
 
-          <!-- Stat Summary Chips -->
+          <!-- Summary Chips -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div class="card p-3.5 text-center">
-              <span class="text-xs text-slate-400">Total Tugas</span>
-              <div class="text-xl font-bold font-mono text-slate-100 mt-0.5" id="todo-stat-total">0</div>
+            <div class="clay-card p-3.5 text-center">
+              <span class="text-xs text-[#64748B]">Total Tugas</span>
+              <div class="text-xl font-bold font-mono text-[#0F172A] dark:text-white mt-0.5" id="todo-stat-total">0</div>
             </div>
-            <div class="card p-3.5 text-center">
-              <span class="text-xs text-amber-400">Belum Selesai</span>
-              <div class="text-xl font-bold font-mono text-amber-400 mt-0.5" id="todo-stat-pending">0</div>
+            <div class="clay-card p-3.5 text-center">
+              <span class="text-xs text-amber-500">Belum Selesai</span>
+              <div class="text-xl font-bold font-mono text-amber-500 mt-0.5" id="todo-stat-pending">0</div>
             </div>
-            <div class="card p-3.5 text-center">
-              <span class="text-xs text-emerald-400">Selesai</span>
-              <div class="text-xl font-bold font-mono text-emerald-400 mt-0.5" id="todo-stat-completed">0</div>
+            <div class="clay-card p-3.5 text-center">
+              <span class="text-xs text-[#00E676]">Selesai</span>
+              <div class="text-xl font-bold font-mono text-[#00E676] mt-0.5" id="todo-stat-completed">0</div>
             </div>
-            <div class="card p-3.5 text-center">
-              <span class="text-xs text-rose-400">Tenggat Hari Ini</span>
-              <div class="text-xl font-bold font-mono text-rose-400 mt-0.5" id="todo-stat-today">0</div>
+            <div class="clay-card p-3.5 text-center">
+              <span class="text-xs text-rose-500">Tenggat Hari Ini</span>
+              <div class="text-xl font-bold font-mono text-rose-500 mt-0.5" id="todo-stat-today">0</div>
             </div>
           </div>
 
-          <!-- Filters & Search Toolbar -->
-          <div class="card p-4 space-y-3">
+          <!-- Filter & Search Bar -->
+          <div class="clay-card p-4 space-y-3">
             <div class="flex flex-col md:flex-row gap-3">
               <div class="flex-1 relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-                <input type="text" id="todo-search" placeholder="Cari tugas, deskripsi, atau checklist..." class="input pl-9">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+                <input type="text" id="todo-search" placeholder="Cari materi, setoran, atau catatan..." class="input pl-9">
               </div>
               <select id="todo-priority-filter" class="input md:w-48">
                 <option value="all">Semua Prioritas</option>
@@ -338,145 +419,122 @@
               </select>
             </div>
 
-            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
               <div class="flex flex-wrap items-center gap-1.5">
                 <button data-category="all" class="todo-cat-filter active btn btn-sm btn-secondary [&.active]:btn-primary">Semua</button>
                 <button data-category="TKA" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-purple-600 [&.active]:text-white">TKA</button>
-                <button data-category="Coding" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-indigo-600 [&.active]:text-white">Coding</button>
-                <button data-category="School" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-emerald-600 [&.active]:text-white">Sekolah</button>
-                <button data-category="Personal" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-amber-600 [&.active]:text-white">Personal</button>
+                <button data-category="Coding" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-[#2589FE] [&.active]:text-white">Coding</button>
+                <button data-category="School" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-[#00E676] [&.active]:text-slate-900">Sekolah</button>
+                <button data-category="Personal" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-amber-500 [&.active]:text-white">Personal</button>
                 <button data-category="Finance" class="todo-cat-filter btn btn-sm btn-secondary [&.active]:bg-pink-600 [&.active]:text-white">Finance</button>
               </div>
 
-              <div class="flex items-center bg-slate-800/80 p-0.5 rounded-xl text-xs">
-                <button data-status="all" class="todo-status-tab active px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Semua</button>
-                <button data-status="active" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Aktif</button>
-                <button data-status="today" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Hari Ini</button>
-                <button data-status="overdue" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Terlewat</button>
-                <button data-status="completed" class="todo-status-tab px-3 py-1 rounded-lg text-slate-400 [&.active]:bg-slate-700 [&.active]:text-white">Selesai</button>
+              <div class="flex items-center bg-slate-200/80 dark:bg-slate-800 p-0.5 rounded-xl text-xs">
+                <button data-status="all" class="todo-status-tab active px-3 py-1 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-white dark:[&.active]:bg-slate-700 [&.active]:shadow-sm font-bold">Semua</button>
+                <button data-status="active" class="todo-status-tab px-3 py-1 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-white dark:[&.active]:bg-slate-700 [&.active]:shadow-sm font-bold">Aktif</button>
+                <button data-status="today" class="todo-status-tab px-3 py-1 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-white dark:[&.active]:bg-slate-700 [&.active]:shadow-sm font-bold">Hari Ini</button>
+                <button data-status="completed" class="todo-status-tab px-3 py-1 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-white dark:[&.active]:bg-slate-700 [&.active]:shadow-sm font-bold">Selesai</button>
               </div>
             </div>
           </div>
 
-          <!-- Todo List Render Container -->
+          <!-- List Container -->
           <div id="todo-list-container"></div>
         </section>
 
-        <!-- PAGE 3: TIME BLOCKING SCHEDULER -->
+        <!-- PAGE 3: JADWAL (TIME BLOCKING & TEMPLATES & CALENDAR SYNC) -->
         <section id="tab-schedule" class="tab-panel hidden space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                <i class="fa-regular fa-calendar-days text-indigo-400"></i> Time Blocking Scheduler
+              <h2 class="text-2xl font-extrabold text-[#0D2240] dark:text-white tracking-tight flex items-center gap-2">
+                <i class="fa-regular fa-calendar-days text-[#2589FE]"></i> Jadwal Belajar & Seminar (04:00 - 23:00)
               </h2>
-              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Timeline harian visual (04:00 - 23:00), template jadwal, & deteksi konflik.</p>
+              <p class="text-xs sm:text-sm text-[#64748B]">Template harian siap pakai, timeline interaktif & sinkronisasi Google/Apple Calendar.</p>
             </div>
             <div class="flex items-center gap-2">
               <button onclick="window.scheduleModule.printSchedule()" class="btn btn-secondary text-xs">
                 <i class="fa-solid fa-print"></i> Cetak / PDF
               </button>
-              <button onclick="window.scheduleModule.openModal()" class="btn btn-primary text-xs">
-                <i class="fa-solid fa-plus"></i> Tambah Blok
+              <button onclick="window.scheduleModule.openTemplateModal()" class="btn btn-primary text-xs">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Template Harian
               </button>
             </div>
           </div>
 
-          <!-- Schedule Controls Bar -->
-          <div class="card p-4 flex flex-wrap items-center justify-between gap-4">
+          <!-- Date Bar -->
+          <div class="clay-card p-4 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-2">
               <button id="schedule-prev-day" class="btn-icon"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-              <input type="date" id="schedule-date-picker" class="input w-auto py-1.5 text-xs">
+              <input type="date" id="schedule-date-picker" class="input w-auto py-1.5 text-xs font-bold">
               <button id="schedule-next-day" class="btn-icon"><i class="fa-solid fa-chevron-right text-xs"></i></button>
               <button id="schedule-today-btn" class="btn btn-sm btn-secondary">Hari Ini</button>
             </div>
 
-            <h3 id="schedule-current-date-title" class="text-sm font-bold text-slate-200"></h3>
+            <h3 id="schedule-current-date-title" class="text-sm font-extrabold text-[#0D2240] dark:text-white"></h3>
 
             <div class="flex items-center gap-2">
-              <!-- Templates dropdown -->
-              <div class="relative group">
-                <button class="btn btn-sm btn-secondary flex items-center gap-1.5">
-                  <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Template <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                </button>
-                <div class="hidden group-hover:block absolute right-0 top-full mt-1 w-48 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-1 z-30">
-                  <button onclick="window.scheduleModule.applyTemplate('weekday')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-briefcase text-indigo-400"></i> Hari Sekolah (Weekday)
-                  </button>
-                  <button onclick="window.scheduleModule.applyTemplate('weekend')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-gamepad text-emerald-400"></i> Akhir Pekan (Weekend)
-                  </button>
-                  <button onclick="window.scheduleModule.applyTemplate('exam')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-file-signature text-purple-400"></i> Minggu Try Out / Ujian
-                  </button>
-                  <div class="border-t border-slate-800 my-1"></div>
-                  <button onclick="window.scheduleModule.duplicatePreviousDay()" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-copy text-amber-400"></i> Duplikat Hari Kemarin
-                  </button>
-                </div>
-              </div>
-
-              <!-- Daily / Weekly View Toggle -->
-              <div class="flex items-center bg-slate-800 p-0.5 rounded-xl text-xs">
-                <button id="schedule-view-daily" class="active px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-indigo-600 [&.active]:text-white font-semibold">Harian</button>
-                <button id="schedule-view-weekly" class="px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-indigo-600 [&.active]:text-white font-semibold">Mingguan</button>
+              <button onclick="window.scheduleModule.exportDayToCalendar()" class="btn btn-sm btn-secondary text-xs" title="Unduh file .ics">
+                <i class="fa-solid fa-calendar-arrow-down text-[#2589FE]"></i> Sync Kalender
+              </button>
+              <div class="flex items-center bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl text-xs font-bold">
+                <button id="schedule-view-daily" class="active px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-[#2589FE] [&.active]:text-white">Harian</button>
+                <button id="schedule-view-weekly" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-[#2589FE] [&.active]:text-white">Mingguan</button>
               </div>
             </div>
           </div>
 
-          <!-- Schedule Timeline Container -->
+          <!-- Timeline Container -->
           <div id="schedule-content-container"></div>
         </section>
 
-        <!-- PAGE 4: PROJECT TRACKER (KANBAN) -->
+        <!-- PAGE 4: PROYEK & MATERI (KANBAN) -->
         <section id="tab-projects" class="tab-panel hidden space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                <i class="fa-solid fa-folder-kanban text-emerald-400"></i> Project Tracker (Kanban)
+              <h2 class="text-2xl font-extrabold text-[#0D2240] dark:text-white tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-folder-kanban text-emerald-500"></i> Materi & Project Tracker
               </h2>
-              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Pantau milestone project coding & target belajar dengan WIP Limit Warning.</p>
+              <p class="text-xs sm:text-sm text-[#64748B]">Pantau milestone modul coding & target materi dengan sistem Kanban.</p>
             </div>
             <button onclick="window.projectsModule.openModal()" class="btn btn-primary bg-emerald-600 hover:bg-emerald-500">
-              <i class="fa-solid fa-plus"></i>
-              <span>Proyek Baru</span>
+              <i class="fa-solid fa-plus"></i> Proyek Baru
             </button>
           </div>
 
           <div id="project-wip-alert"></div>
 
-          <div class="card p-4 flex flex-wrap items-center justify-between gap-4">
+          <div class="clay-card p-4 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-              <label class="text-xs text-slate-400 font-medium">Kategori:</label>
-              <select id="project-filter-category" class="input w-auto py-1.5 text-xs">
+              <label class="text-xs font-bold text-[#64748B]">Kategori:</label>
+              <select id="project-filter-category" class="input w-auto py-1.5 text-xs font-bold">
                 <option value="all">Semua Kategori</option>
                 <option value="Coding">Coding</option>
                 <option value="TKA">TKA</option>
                 <option value="School">Sekolah</option>
-                <option value="Personal">Personal</option>
               </select>
             </div>
 
-            <div class="flex items-center bg-slate-800 p-0.5 rounded-xl text-xs">
-              <button id="project-view-active" class="active px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-emerald-600 [&.active]:text-white font-semibold">Aktif</button>
-              <button id="project-view-archived" class="px-3 py-1.5 rounded-lg text-slate-400 [&.active]:bg-emerald-600 [&.active]:text-white font-semibold">Arsip</button>
+            <div class="flex items-center bg-slate-200 dark:bg-slate-800 p-0.5 rounded-xl text-xs font-bold">
+              <button id="project-view-active" class="active px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-emerald-600 [&.active]:text-white">Aktif</button>
+              <button id="project-view-archived" class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-300 [&.active]:bg-emerald-600 [&.active]:text-white">Arsip</button>
             </div>
           </div>
 
           <div id="kanban-board-container"></div>
         </section>
 
-        <!-- PAGE 5: FINANCE TRACKER -->
+        <!-- PAGE 5: REKAPAN KEUANGAN -->
         <section id="tab-finance" class="tab-panel hidden space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                <i class="fa-solid fa-wallet text-pink-400"></i> Finance Tracker
+              <h2 class="text-2xl font-extrabold text-[#0D2240] dark:text-white tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-wallet text-pink-500"></i> Rekapan Keuangan & Tabungan
               </h2>
-              <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Catat uang saku, pengeluaran belajar/coding, limit anggaran & tabungan impian.</p>
+              <p class="text-xs sm:text-sm text-[#64748B]">Catat uang saku, pengeluaran belajar, limit anggaran & target laptop kuliah.</p>
             </div>
             <div class="flex items-center gap-2">
               <button onclick="window.financeModule.exportCSV()" class="btn btn-secondary text-xs">
-                <i class="fa-solid fa-file-csv text-emerald-400"></i> Export CSV
+                <i class="fa-solid fa-file-csv text-emerald-500"></i> Export CSV
               </button>
               <button onclick="window.financeModule.openTransactionModal()" class="btn btn-primary bg-pink-600 hover:bg-pink-500 text-xs">
                 <i class="fa-solid fa-plus"></i> Catat Transaksi
@@ -484,71 +542,71 @@
             </div>
           </div>
 
-          <div class="card p-4 flex flex-wrap items-center justify-between gap-3">
+          <div class="clay-card p-4 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-400 font-medium">Bulan:</span>
-              <input type="month" id="finance-month-picker" class="input w-auto py-1.5 text-xs">
+              <span class="text-xs font-bold text-[#64748B]">Bulan:</span>
+              <input type="month" id="finance-month-picker" class="input w-auto py-1.5 text-xs font-bold">
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="card p-5">
-              <div class="flex items-center justify-between text-slate-400 mb-1">
-                <span class="text-xs font-medium">Total Pemasukan</span>
-                <i class="fa-solid fa-arrow-down text-emerald-400"></i>
+            <div class="clay-card p-5">
+              <div class="flex items-center justify-between text-[#64748B] mb-1">
+                <span class="text-xs font-bold">Total Pemasukan</span>
+                <i class="fa-solid fa-arrow-down text-[#00E676]"></i>
               </div>
-              <div class="text-xl sm:text-2xl font-bold font-mono text-emerald-400" id="finance-stat-income">Rp 0</div>
+              <div class="text-xl sm:text-2xl font-extrabold font-mono text-[#00E676]" id="finance-stat-income">Rp 0</div>
             </div>
 
-            <div class="card p-5">
-              <div class="flex items-center justify-between text-slate-400 mb-1">
-                <span class="text-xs font-medium">Total Pengeluaran</span>
-                <i class="fa-solid fa-arrow-up text-rose-400"></i>
+            <div class="clay-card p-5">
+              <div class="flex items-center justify-between text-[#64748B] mb-1">
+                <span class="text-xs font-bold">Total Pengeluaran</span>
+                <i class="fa-solid fa-arrow-up text-rose-500"></i>
               </div>
-              <div class="text-xl sm:text-2xl font-bold font-mono text-rose-400" id="finance-stat-expense">Rp 0</div>
+              <div class="text-xl sm:text-2xl font-extrabold font-mono text-rose-500" id="finance-stat-expense">Rp 0</div>
             </div>
 
-            <div class="card p-5">
-              <div class="flex items-center justify-between text-slate-400 mb-1">
-                <span class="text-xs font-medium">Sisa Tabungan / Saldo</span>
-                <i class="fa-solid fa-piggy-bank text-indigo-400"></i>
+            <div class="clay-card p-5">
+              <div class="flex items-center justify-between text-[#64748B] mb-1">
+                <span class="text-xs font-bold">Sisa Tabungan / Saldo</span>
+                <i class="fa-solid fa-piggy-bank text-[#2589FE]"></i>
               </div>
-              <div class="text-xl sm:text-2xl font-bold font-mono text-indigo-400" id="finance-stat-savings">Rp 0</div>
+              <div class="text-xl sm:text-2xl font-extrabold font-mono text-[#2589FE]" id="finance-stat-savings">Rp 0</div>
             </div>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="card p-5 space-y-4">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-                <i class="fa-solid fa-chart-pie text-amber-400"></i> Batas Anggaran Bulanan
+            <div class="clay-card p-5 space-y-4">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-chart-pie text-amber-500"></i> Batas Anggaran Bulanan
               </h3>
               <div id="finance-budgets-container" class="space-y-3"></div>
             </div>
 
-            <div class="card p-5 space-y-4">
-              <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-                <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                  <i class="fa-solid fa-bullseye text-emerald-400"></i> Target Tabungan Impian
+            <div class="clay-card p-5 space-y-4">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2">
+                  <i class="fa-solid fa-bullseye text-[#00E676]"></i> Target Tabungan Impian
                 </h3>
-                <button onclick="window.financeModule.openGoalModal()" class="text-xs text-indigo-400 hover:underline">+ Target</button>
+                <button onclick="window.financeModule.openGoalModal()" class="text-xs font-bold text-[#2589FE] hover:underline">+ Target</button>
               </div>
               <div id="finance-goals-container" class="space-y-3"></div>
             </div>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="card p-5 space-y-4">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-                <i class="fa-solid fa-chart-pie text-pink-400"></i> Proporsi Pengeluaran
+            <div class="clay-card p-5 space-y-4">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-chart-pie text-pink-500"></i> Proporsi Pengeluaran
               </h3>
               <div class="h-60 relative">
                 <canvas id="chart-finance-categories"></canvas>
               </div>
             </div>
 
-            <div class="card p-5 space-y-4">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 pb-2 border-b border-slate-800">
-                <i class="fa-solid fa-chart-column text-indigo-400"></i> Tren 6 Bulan Terakhir
+            <div class="clay-card p-5 space-y-4">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-chart-column text-[#2589FE]"></i> Tren Keuangan 6 Bulan
               </h3>
               <div class="h-60 relative">
                 <canvas id="chart-finance-trend"></canvas>
@@ -556,12 +614,12 @@
             </div>
           </div>
 
-          <div class="card p-5 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
-              <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-receipt text-indigo-400"></i> Riwayat Transaksi
+          <div class="clay-card p-5 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-receipt text-[#2589FE]"></i> Riwayat Transaksi
               </h3>
-              <select id="finance-type-filter" class="input w-auto py-1.5 text-xs">
+              <select id="finance-type-filter" class="input w-auto py-1.5 text-xs font-bold">
                 <option value="all">Semua Tipe</option>
                 <option value="income">Pemasukan Saja</option>
                 <option value="expense">Pengeluaran Saja</option>
@@ -571,16 +629,16 @@
           </div>
         </section>
 
-        <!-- PAGE 6: FOCUS & POMODORO TIMER -->
+        <!-- PAGE 6: FOKUS & POMODORO -->
         <section id="tab-focus" class="tab-panel hidden space-y-6">
           <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <i class="fa-solid fa-stopwatch text-indigo-400"></i> Focus Timer (Pomodoro)
+            <h2 class="text-2xl font-extrabold text-[#0D2240] dark:text-white tracking-tight flex items-center gap-2">
+              <i class="fa-solid fa-stopwatch text-[#2589FE]"></i> Focus Timer (Pomodoro)
             </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Deep focus untuk belajar soal TKA atau sprint coding tanpa distraksi.</p>
+            <p class="text-xs sm:text-sm text-[#64748B]">Deep focus untuk belajar soal TKA atau sprint coding tanpa distraksi.</p>
           </div>
 
-          <div class="card bg-gradient-to-b from-slate-900 to-indigo-950/60 p-8 text-center max-w-xl mx-auto space-y-6 shadow-2xl rounded-3xl">
+          <div class="clay-card p-8 text-center max-w-xl mx-auto space-y-6">
             <div class="flex items-center justify-center gap-2 flex-wrap">
               <button data-mode="pomodoro" class="pomodoro-mode-btn active btn btn-sm btn-secondary [&.active]:btn-primary">Pomodoro (25m)</button>
               <button data-mode="deepWork" class="pomodoro-mode-btn btn btn-sm btn-secondary [&.active]:btn-primary">Deep Work (50m)</button>
@@ -589,29 +647,29 @@
             </div>
 
             <div class="flex items-center justify-center gap-2">
-              <span class="text-xs text-slate-400">Target Fokus:</span>
+              <span class="text-xs font-bold text-[#64748B]">Fokus:</span>
               <button data-tag="TKA" class="pomodoro-tag-btn active btn btn-sm btn-secondary [&.active]:bg-purple-600 [&.active]:text-white">
                 <i class="fa-solid fa-book-open mr-1"></i> Belajar TKA
               </button>
-              <button data-tag="Coding" class="pomodoro-tag-btn btn btn-sm btn-secondary [&.active]:bg-indigo-600 [&.active]:text-white">
+              <button data-tag="Coding" class="pomodoro-tag-btn btn btn-sm btn-secondary [&.active]:bg-[#2589FE] [&.active]:text-white">
                 <i class="fa-solid fa-code mr-1"></i> Coding Sprint
               </button>
             </div>
 
             <div class="py-4">
-              <div id="pomodoro-timer-display" class="text-6xl sm:text-7xl font-extrabold font-mono text-white tracking-wider">
+              <div id="pomodoro-timer-display" class="text-6xl sm:text-7xl font-extrabold font-mono text-[#0D2240] dark:text-white tracking-wider">
                 25:00
               </div>
-              <div class="w-full bg-slate-800 rounded-full h-2 mt-6 overflow-hidden max-w-md mx-auto">
-                <div id="pomodoro-progress-bar" class="bg-gradient-to-r from-indigo-500 to-amber-400 h-2 rounded-full transition-all duration-1000" style="width: 0%;"></div>
+              <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2 mt-6 overflow-hidden max-w-md mx-auto">
+                <div id="pomodoro-progress-bar" class="bg-gradient-to-r from-[#2589FE] to-[#00E676] h-2 rounded-full transition-all duration-1000" style="width: 0%;"></div>
               </div>
             </div>
 
             <div class="flex items-center justify-center gap-3">
-              <button id="pomodoro-start-btn" class="btn btn-primary btn-lg shadow-xl shadow-indigo-600/30">
+              <button id="pomodoro-start-btn" class="btn btn-primary btn-lg shadow-lg">
                 <i class="fa-solid fa-play"></i> Mulai Fokus
               </button>
-              <button id="pomodoro-pause-btn" class="hidden btn btn-lg bg-amber-600 hover:bg-amber-500 text-white shadow-xl shadow-amber-600/30">
+              <button id="pomodoro-pause-btn" class="hidden btn btn-lg bg-amber-500 hover:bg-amber-600 text-white shadow-lg">
                 <i class="fa-solid fa-pause"></i> Jeda
               </button>
               <button id="pomodoro-reset-btn" class="btn-icon w-12 h-12 text-base">
@@ -620,31 +678,13 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-            <div class="card p-4 text-center">
-              <span class="text-xs text-slate-400">Sesi Selesai</span>
-              <div class="text-2xl font-bold font-mono text-indigo-400 mt-1" id="pomo-stat-sessions">0</div>
-            </div>
-            <div class="card p-4 text-center">
-              <span class="text-xs text-purple-400">Total Waktu TKA</span>
-              <div class="text-2xl font-bold font-mono text-purple-400 mt-1" id="pomo-stat-study">0h</div>
-            </div>
-            <div class="card p-4 text-center">
-              <span class="text-xs text-indigo-400">Total Waktu Coding</span>
-              <div class="text-2xl font-bold font-mono text-indigo-400 mt-1" id="pomo-stat-coding">0h</div>
-            </div>
-          </div>
-
-          <!-- Habits Tracker Section -->
-          <div class="card p-6 space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-              <div>
-                <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
-                  <i class="fa-solid fa-fire text-amber-400"></i> Kebiasaan Harian & Daily Streaks
-                </h3>
-                <p class="text-xs text-slate-400 mt-0.5">Pertahankan konsistensi harian untuk hasil maksimal UTBK dan keahlian koding.</p>
-              </div>
-              <button onclick="window.habitsModule.openModal()" class="btn btn-sm btn-secondary">
+          <!-- Habit Streaks -->
+          <div class="clay-card p-6 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+              <h3 class="text-base font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-fire text-amber-500"></i> Kebiasaan Harian & Daily Streaks
+              </h3>
+              <button onclick="window.habitsModule.openModal()" class="btn btn-sm btn-secondary font-bold">
                 + Tambah Habit
               </button>
             </div>
@@ -652,31 +692,31 @@
           </div>
         </section>
 
-        <!-- PAGE 7: USER PROFILE & SETTINGS (EDITABLE EVERYTHING) -->
+        <!-- PAGE 7: PROFIL & PENGATURAN -->
         <section id="tab-settings" class="tab-panel hidden space-y-6">
-          <header class="page-header">
-            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-              <i class="fa-solid fa-sliders text-indigo-400"></i> ⚙️ Settings & User Profile
+          <div>
+            <h2 class="text-2xl font-extrabold text-[#0D2240] dark:text-white tracking-tight flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-[#2589FE]"></i> Profil & Pengaturan Aplikasi
             </h2>
-            <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Customize StudentFlow to your needs (Semua bidang dapat diedit bebas).</p>
-          </header>
+            <p class="text-xs sm:text-sm text-[#64748B]">Kelola profil siswa, preferensi tema, jadwal default, dan backup data.</p>
+          </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
-            <!-- 1. Profile Section -->
-            <div class="card space-y-4">
-              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
-                <i class="fa-solid fa-user-gear text-indigo-400"></i> 👤 User Profile
+            <!-- Profile Form -->
+            <div class="clay-card space-y-4">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-user-gear text-[#2589FE]"></i> 👤 User Profile
               </h3>
               <form id="profile-form" class="space-y-3.5">
-                <div class="flex items-center gap-4 p-3 bg-slate-900/60 rounded-2xl border border-slate-800">
-                  <img id="avatar-preview" src="" alt="Avatar Preview" class="w-16 h-16 rounded-2xl border-2 border-indigo-500/50 object-cover bg-slate-800">
+                <div class="flex items-center gap-4 p-3 bg-slate-100 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700">
+                  <img id="avatar-preview" src="assets/icon.png" alt="Avatar Preview" class="w-16 h-16 rounded-2xl border-2 border-[#2589FE] object-cover bg-slate-800">
                   <div>
                     <input type="file" id="avatar-input" accept="image/*" class="hidden">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('avatar-input').click()">
                       📷 Ubah Foto Profil
                     </button>
-                    <p class="text-[11px] text-slate-400 mt-1">Maksimal 2MB (Tersimpan di LocalStorage).</p>
+                    <p class="text-[11px] text-[#64748B] mt-1">Maksimal 2MB (Tersimpan di LocalStorage).</p>
                   </div>
                 </div>
 
@@ -686,7 +726,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="user-email">Email (Opsional)</label>
+                  <label for="user-email">Email</label>
                   <input type="email" id="user-email" class="input" placeholder="email@example.com">
                 </div>
 
@@ -697,9 +737,9 @@
                   </div>
                   <div class="form-group">
                     <label for="user-grade">Tingkat Kelas</label>
-                    <select id="user-grade" class="input">
-                      <option value="10">Kelas 10 (Fase E)</option>
-                      <option value="11">Kelas 11 (Fase F)</option>
+                    <select id="user-grade" class="input font-bold">
+                      <option value="10">Kelas 10</option>
+                      <option value="11">Kelas 11</option>
                       <option value="12" selected>Kelas 12 (Pejuang UTBK)</option>
                     </select>
                   </div>
@@ -711,50 +751,35 @@
               </form>
             </div>
 
-            <!-- 2. Appearance & Palette -->
-            <div class="card space-y-4">
-              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
-                <i class="fa-solid fa-palette text-amber-400"></i> 🎨 Appearance & Themes
+            <!-- Appearance & Theme Switcher -->
+            <div class="clay-card space-y-4">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-palette text-amber-500"></i> 🎨 Appearance & Themes
               </h3>
               
               <div class="space-y-4">
                 <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-2">Tema Tampilan</label>
+                  <label class="block text-xs font-bold text-[#64748B] mb-2">Tema Tampilan</label>
                   <div class="grid grid-cols-2 gap-2">
-                    <button class="theme-toggle-btn active btn btn-secondary text-xs" data-theme="dark">
+                    <button class="theme-toggle-btn active btn btn-secondary text-xs" data-theme="light">
+                      ☀️ Mode Terang (DPS Light)
+                    </button>
+                    <button class="theme-toggle-btn btn btn-secondary text-xs" data-theme="dark">
                       🌙 Mode Gelap (Dark)
                     </button>
-                    <button class="theme-toggle-btn btn btn-secondary text-xs" data-theme="light">
-                      ☀️ Mode Terang (Light)
-                    </button>
                   </div>
                 </div>
 
-                <div>
-                  <label class="block text-xs font-semibold text-slate-300 mb-2">Warna Aksen Utama (Accent Color)</label>
-                  <div class="flex items-center gap-3">
-                    <input type="color" id="accent-color" value="#4F46E5" class="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer">
-                    <div class="color-presets flex items-center gap-2">
-                      <button class="color-dot" data-color="#4F46E5" style="background:#4F46E5" title="Indigo"></button>
-                      <button class="color-dot" data-color="#F97316" style="background:#F97316" title="Coral Orange"></button>
-                      <button class="color-dot" data-color="#10B981" style="background:#10B981" title="Emerald Green"></button>
-                      <button class="color-dot" data-color="#8B5CF6" style="background:#8B5CF6" title="Purple"></button>
-                      <button class="color-dot" data-color="#EC4899" style="background:#EC4899" title="Pink"></button>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Notifications & Sounds -->
-                <div class="pt-3 border-t border-slate-800 space-y-3">
-                  <h4 class="text-xs font-bold text-slate-300">🔔 Notifikasi & Suara</h4>
+                <div class="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                  <h4 class="text-xs font-bold text-[#0F172A] dark:text-white">🔔 Notifikasi & Suara</h4>
                   <label class="toggle-label">
-                    <span class="text-xs text-slate-300">Aktifkan Notifikasi Browser</span>
+                    <span class="text-xs font-bold text-[#64748B]">Aktifkan Notifikasi Browser</span>
                     <input type="checkbox" id="notifications-toggle" class="toggle-input">
                     <span class="toggle-slider"></span>
                   </label>
 
                   <label class="toggle-label">
-                    <span class="text-xs text-slate-300">Efek Suara Alarm & Konfeti (Web Audio)</span>
+                    <span class="text-xs font-bold text-[#64748B]">Efek Suara Alarm Web Audio</span>
                     <input type="checkbox" id="sound-toggle" class="toggle-input" checked>
                     <span class="toggle-slider"></span>
                   </label>
@@ -766,10 +791,10 @@
               </div>
             </div>
 
-            <!-- 3. Daily Schedule Defaults -->
-            <div class="card space-y-4">
-              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
-                <i class="fa-regular fa-calendar-check text-emerald-400"></i> 📅 Daily Schedule & Goals
+            <!-- Daily Schedule & Target Settings -->
+            <div class="clay-card space-y-4">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <i class="fa-regular fa-calendar-check text-[#00E676]"></i> 📅 Target Harian & Jam Belajar
               </h3>
               <div class="space-y-3">
                 <div class="grid grid-cols-2 gap-3">
@@ -789,20 +814,20 @@
                     <input type="number" id="coding-hours" class="input" step="0.5" min="0" max="12">
                   </div>
                   <div class="form-group">
-                    <label for="study-hours">Target Belajar TKA Mingguan (Jam)</label>
+                    <label for="study-hours">Target Belajar TKA (Jam)</label>
                     <input type="number" id="study-hours" class="input" min="0" max="100">
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- 4. Data Management & Backup -->
-            <div class="card space-y-4">
-              <h3 class="text-sm font-bold text-white flex items-center gap-2 pb-2 border-b border-slate-800">
-                <i class="fa-solid fa-database text-blue-400"></i> 💾 Data Backup & Restore
+            <!-- Data Management -->
+            <div class="clay-card space-y-4">
+              <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+                <i class="fa-solid fa-database text-[#2589FE]"></i> 💾 Backup & Restore Data
               </h3>
-              <p class="text-xs text-slate-400">
-                Data Anda tersimpan 100% aman di peramban (LocalStorage) tanpa server. Selalu unduh file JSON untuk cadangan berkala.
+              <p class="text-xs text-[#64748B]">
+                Data tersimpan 100% aman di browser tanpa server. Ekspor file cadangan secara berkala.
               </p>
 
               <div class="flex flex-wrap gap-2 pt-2">
@@ -815,7 +840,7 @@
                 <input type="file" id="import-file" accept=".json" class="hidden">
               </div>
 
-              <div class="pt-3 border-t border-slate-800">
+              <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button id="reset-all-btn" class="btn btn-danger w-full text-xs">
                   🗑️ Reset Semua Data Bawaan
                 </button>
@@ -829,79 +854,151 @@
     </div>
   </div>
 
-  <!-- Mobile Bottom Navigation Bar -->
-  <nav class="bottom-nav" aria-label="Mobile Navigation">
-    <button data-nav-target="dashboard" class="bottom-nav-item active">
-      <i class="fa-solid fa-chart-pie text-base"></i>
+  <!-- FLOATING CURVED BOTTOM NAVIGATION BAR WITH CENTER BLUE FAB (Mobile View) -->
+  <nav class="curved-bottom-nav" aria-label="Bottom Navigation">
+    <button data-nav-target="dashboard" class="bottom-nav-btn active">
+      <i class="fa-solid fa-house text-base"></i>
       <span>Home</span>
     </button>
-    <button data-nav-target="todo" class="bottom-nav-item">
-      <i class="fa-solid fa-list-check text-base"></i>
-      <span>Todo</span>
+    <button data-nav-target="todo" class="bottom-nav-btn">
+      <i class="fa-solid fa-magnifying-glass text-base"></i>
+      <span>Search</span>
     </button>
-    <button data-nav-target="schedule" class="bottom-nav-item">
-      <i class="fa-regular fa-calendar-days text-base"></i>
-      <span>Jadwal</span>
+    
+    <!-- Center Floating Action Button (FAB Logo) -->
+    <button onclick="window.app.toggleQuickActionModal()" class="center-fab-btn" title="Quick Action (DPS FAB)">
+      <i class="fa-solid fa-bolt text-lg"></i>
     </button>
-    <button data-nav-target="projects" class="bottom-nav-item">
-      <i class="fa-solid fa-folder-kanban text-base"></i>
-      <span>Proyek</span>
+
+    <button data-nav-target="finance" class="bottom-nav-btn">
+      <i class="fa-regular fa-heart text-base"></i>
+      <span>Favorit</span>
     </button>
-    <button data-nav-target="finance" class="bottom-nav-item">
-      <i class="fa-solid fa-wallet text-base"></i>
-      <span>Finance</span>
-    </button>
-    <button data-nav-target="focus" class="bottom-nav-item">
-      <i class="fa-solid fa-stopwatch text-base"></i>
-      <span>Fokus</span>
-    </button>
-    <button data-nav-target="settings" class="bottom-nav-item">
-      <i class="fa-solid fa-sliders text-base"></i>
-      <span>Profil</span>
+    <button data-nav-target="settings" class="bottom-nav-btn">
+      <i class="fa-regular fa-user text-base"></i>
+      <span>Profile</span>
     </button>
   </nav>
 
-  <!-- Floating Action Button (FAB) -->
-  <button id="quick-action-fab" class="fixed bottom-20 lg:bottom-6 right-6 w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-2xl shadow-indigo-600/40 flex items-center justify-center text-xl z-40 transition-all transform hover:scale-110 active:scale-95 no-print" title="Menu Cepat (Ctrl+K)">
-    <i class="fa-solid fa-plus"></i>
-  </button>
+  <!-- ALL MODALS (CLAYMORPHIC & BEAUTIFULLY STYLED) -->
 
-  <!-- MODALS -->
+  <!-- 1. TEMPLATE PICKER MODAL (Ready-to-Use Daily Schedules) -->
+  <div id="template-picker-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
+    <div class="modal max-w-lg space-y-4">
+      <div class="modal-header">
+        <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> Template Jadwal Siap Pakai Harian
+        </h3>
+        <button onclick="window.scheduleModule.closeTemplateModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
+      </div>
 
-  <!-- Quick Action Modal -->
+      <p class="text-xs text-[#64748B]">Pilih template jadwal aktivitas untuk diterapkan ke tanggal aktif saat ini:</p>
+
+      <div class="space-y-2.5">
+        <div class="clay-card p-3.5 flex items-center justify-between gap-3 hover:border-[#2589FE] cursor-pointer" onclick="window.scheduleModule.applyDailyTemplate('weekday')">
+          <div>
+            <h4 class="text-xs font-bold text-[#0D2240] dark:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-school text-[#2589FE]"></i> Hari Sekolah SMA Kelas 12 (Weekday)
+            </h4>
+            <p class="text-[11px] text-[#64748B] mt-0.5">Belajar pagi, KBM sekolah 07:00-15:00, Coding sore, Try out malam.</p>
+          </div>
+          <button class="btn btn-sm btn-primary">Terapkan</button>
+        </div>
+
+        <div class="clay-card p-3.5 flex items-center justify-between gap-3 hover:border-purple-500 cursor-pointer" onclick="window.scheduleModule.applyDailyTemplate('tka_focus')">
+          <div>
+            <h4 class="text-xs font-bold text-[#0D2240] dark:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-book-open text-purple-500"></i> Drill Intensif Soal TKA UTBK-SNBT
+            </h4>
+            <p class="text-[11px] text-[#64748B] mt-0.5">Drill pagi, simulasi try out 150 menit, bedah pembahasan & review rumus.</p>
+          </div>
+          <button class="btn btn-sm btn-primary bg-purple-600 hover:bg-purple-700">Terapkan</button>
+        </div>
+
+        <div class="clay-card p-3.5 flex items-center justify-between gap-3 hover:border-emerald-500 cursor-pointer" onclick="window.scheduleModule.applyDailyTemplate('coding_sprint')">
+          <div>
+            <h4 class="text-xs font-bold text-[#0D2240] dark:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-code text-emerald-500"></i> Fullstack Coding Project Sprint
+            </h4>
+            <p class="text-[11px] text-[#64748B] mt-0.5">Backend REST API, Frontend Tailwind CSS, unit testing & Git push.</p>
+          </div>
+          <button class="btn btn-sm btn-primary bg-emerald-600 hover:bg-emerald-700">Terapkan</button>
+        </div>
+
+        <div class="clay-card p-3.5 flex items-center justify-between gap-3 hover:border-amber-500 cursor-pointer" onclick="window.scheduleModule.applyDailyTemplate('weekend')">
+          <div>
+            <h4 class="text-xs font-bold text-[#0D2240] dark:text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-gamepad text-amber-500"></i> Akhir Pekan Produktif (Weekend)
+            </h4>
+            <p class="text-[11px] text-[#64748B] mt-0.5">Olahraga pagi, coding milestone, simulasi akbar & istirahat.</p>
+          </div>
+          <button class="btn btn-sm btn-primary bg-amber-500 hover:bg-amber-600">Terapkan</button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" onclick="window.scheduleModule.closeTemplateModal()" class="btn btn-secondary">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. NOTIFICATION CENTER MODAL -->
+  <div id="notification-center-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
+    <div class="modal max-w-md space-y-4">
+      <div class="modal-header">
+        <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-bell text-[#2589FE]"></i> Pusat Notifikasi & Pengingat
+        </h3>
+        <button onclick="window.notifications.closeNotificationModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
+      </div>
+
+      <div class="flex items-center justify-between text-xs text-[#64748B] px-1">
+        <span>Riwayat Notifikasi Terbaru</span>
+        <button onclick="window.notifications.markAllAsRead()" class="text-[#2589FE] hover:underline font-bold">Tandai Semua Dibaca</button>
+      </div>
+
+      <div id="notification-center-list" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
+
+      <div class="modal-footer">
+        <button type="button" onclick="window.notifications.closeNotificationModal()" class="btn btn-secondary">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. QUICK ACTION MODAL -->
   <div id="quick-action-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-sm space-y-4">
       <div class="modal-header">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-bolt text-amber-400"></i> Buat Cepat (Quick Action)
+        <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-bolt text-amber-500"></i> Buat Cepat (Quick Action)
         </h3>
         <button onclick="window.app.toggleQuickActionModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
       <div class="space-y-2">
-        <button onclick="window.app.toggleQuickActionModal(); window.todoModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
-          <i class="fa-solid fa-list-check text-indigo-400 w-5"></i> Tambah Tugas (To-Do)
+        <button onclick="window.app.toggleQuickActionModal(); window.todoModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-bold">
+          <i class="fa-solid fa-list-check text-[#2589FE] w-5"></i> Tambah Tugas (To-Do)
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.scheduleModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
-          <i class="fa-regular fa-clock text-amber-400 w-5"></i> Tambah Blok Waktu
+        <button onclick="window.app.toggleQuickActionModal(); window.scheduleModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-bold">
+          <i class="fa-regular fa-clock text-amber-500 w-5"></i> Tambah Blok Waktu
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.projectsModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
-          <i class="fa-solid fa-folder-plus text-emerald-400 w-5"></i> Buat Proyek Baru
+        <button onclick="window.app.toggleQuickActionModal(); window.projectsModule.openModal()" class="btn btn-secondary w-full justify-start text-xs font-bold">
+          <i class="fa-solid fa-folder-plus text-emerald-500 w-5"></i> Buat Proyek Baru
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.financeModule.openTransactionModal()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
-          <i class="fa-solid fa-receipt text-pink-400 w-5"></i> Catat Transaksi Keuangan
+        <button onclick="window.app.toggleQuickActionModal(); window.financeModule.openTransactionModal()" class="btn btn-secondary w-full justify-start text-xs font-bold">
+          <i class="fa-solid fa-receipt text-pink-500 w-5"></i> Catat Transaksi Keuangan
         </button>
-        <button onclick="window.app.toggleQuickActionModal(); window.router.navigate('focus'); window.pomodoroModule.start()" class="btn btn-secondary w-full justify-start text-xs font-semibold">
-          <i class="fa-solid fa-play text-purple-400 w-5"></i> Mulai Timer Fokus Langsung
+        <button onclick="window.app.toggleQuickActionModal(); window.router.navigate('focus'); window.pomodoroModule.start()" class="btn btn-secondary w-full justify-start text-xs font-bold">
+          <i class="fa-solid fa-play text-purple-500 w-5"></i> Mulai Timer Fokus Langsung
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Todo Modal -->
+  <!-- 4. TODO MODAL -->
   <div id="todo-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-lg space-y-4">
       <div class="modal-header">
-        <h3 id="todo-modal-title" class="text-sm font-bold text-white">Tambah Tugas Baru</h3>
+        <h3 id="todo-modal-title" class="text-sm font-extrabold text-[#0D2240] dark:text-white">Tambah Tugas Baru</h3>
         <button onclick="window.todoModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
@@ -919,7 +1016,7 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="form-group">
             <label for="todo-input-category">Kategori</label>
-            <select id="todo-input-category" class="input">
+            <select id="todo-input-category" class="input font-bold">
               <option value="TKA">TKA (UTBK Saintek/Soshum)</option>
               <option value="Coding">Coding / Development</option>
               <option value="School">School (Sekolah)</option>
@@ -930,7 +1027,7 @@
 
           <div class="form-group">
             <label for="todo-input-priority">Prioritas</label>
-            <select id="todo-input-priority" class="input">
+            <select id="todo-input-priority" class="input font-bold">
               <option value="high">Tinggi (High)</option>
               <option value="medium">Sedang (Medium)</option>
               <option value="low">Rendah (Low)</option>
@@ -941,15 +1038,15 @@
         <div class="grid grid-cols-3 gap-3">
           <div class="form-group">
             <label for="todo-input-duedate">Tenggat Tanggal</label>
-            <input type="date" id="todo-input-duedate" class="input">
+            <input type="date" id="todo-input-duedate" class="input font-bold">
           </div>
           <div class="form-group">
             <label for="todo-input-duetime">Tenggat Jam</label>
-            <input type="time" id="todo-input-duetime" class="input">
+            <input type="time" id="todo-input-duetime" class="input font-bold">
           </div>
           <div class="form-group">
             <label for="todo-input-recurring">Pengulangan</label>
-            <select id="todo-input-recurring" class="input">
+            <select id="todo-input-recurring" class="input font-bold">
               <option value="none">Tidak</option>
               <option value="daily">Harian</option>
               <option value="weekly">Mingguan</option>
@@ -959,12 +1056,12 @@
         </div>
 
         <!-- Subtasks Checklist -->
-        <div class="pt-2 border-t border-slate-800">
+        <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
           <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-              <i class="fa-solid fa-list-check text-indigo-400"></i> Subtasks / Checklist
+            <label class="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
+              <i class="fa-solid fa-list-check text-[#2589FE]"></i> Subtasks / Checklist
             </label>
-            <button type="button" onclick="window.todoModule.addSubtaskField()" class="text-[11px] text-indigo-400 hover:underline font-semibold">
+            <button type="button" onclick="window.todoModule.addSubtaskField()" class="text-[11px] text-[#2589FE] hover:underline font-bold">
               + Tambah Langkah
             </button>
           </div>
@@ -979,11 +1076,11 @@
     </div>
   </div>
 
-  <!-- Schedule Block Modal -->
+  <!-- 5. SCHEDULE BLOCK MODAL -->
   <div id="schedule-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-md space-y-4">
       <div class="modal-header">
-        <h3 id="schedule-modal-title" class="text-sm font-bold text-white">Tambah Blok Waktu</h3>
+        <h3 id="schedule-modal-title" class="text-sm font-extrabold text-[#0D2240] dark:text-white">Tambah Blok Waktu</h3>
         <button onclick="window.scheduleModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
@@ -995,7 +1092,7 @@
 
         <div class="form-group">
           <label for="schedule-input-category">Kategori</label>
-          <select id="schedule-input-category" class="input">
+          <select id="schedule-input-category" class="input font-bold">
             <option value="TKA">TKA</option>
             <option value="Coding">Coding</option>
             <option value="School">School (Sekolah)</option>
@@ -1007,11 +1104,11 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="form-group">
             <label for="schedule-input-start">Waktu Mulai</label>
-            <input type="time" id="schedule-input-start" required class="input">
+            <input type="time" id="schedule-input-start" required class="input font-bold">
           </div>
           <div class="form-group">
             <label for="schedule-input-end">Waktu Selesai</label>
-            <input type="time" id="schedule-input-end" required class="input">
+            <input type="time" id="schedule-input-end" required class="input font-bold">
           </div>
         </div>
 
@@ -1028,20 +1125,19 @@
     </div>
   </div>
 
-  <!-- Project Modal -->
+  <!-- 6. PROJECT MODAL -->
   <div id="project-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-lg space-y-4">
       <div class="modal-header">
-        <h3 id="project-modal-title" class="text-sm font-bold text-white">Buat Proyek Baru</h3>
+        <h3 id="project-modal-title" class="text-sm font-extrabold text-[#0D2240] dark:text-white">Buat Proyek Baru</h3>
         <button onclick="window.projectsModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
       <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-        <span class="text-[11px] text-slate-400 font-medium">Template:</span>
+        <span class="text-[11px] text-[#64748B] font-bold">Template:</span>
         <button type="button" onclick="window.projectsModule.applyTemplate('webapp')" class="btn btn-sm btn-secondary">Web App</button>
         <button type="button" onclick="window.projectsModule.applyTemplate('mobileapp')" class="btn btn-sm btn-secondary">Mobile</button>
         <button type="button" onclick="window.projectsModule.applyTemplate('tka')" class="btn btn-sm btn-secondary">Belajar TKA</button>
-        <button type="button" onclick="window.projectsModule.applyTemplate('portfolio')" class="btn btn-sm btn-secondary">Portfolio</button>
       </div>
 
       <form id="project-form" onsubmit="window.projectsModule.handleFormSubmit(event)" class="space-y-3.5">
@@ -1058,16 +1154,15 @@
         <div class="grid grid-cols-3 gap-3">
           <div class="form-group">
             <label for="project-input-category">Kategori</label>
-            <select id="project-input-category" class="input">
+            <select id="project-input-category" class="input font-bold">
               <option value="Coding">Coding</option>
               <option value="TKA">TKA</option>
               <option value="School">School</option>
-              <option value="Personal">Personal</option>
             </select>
           </div>
           <div class="form-group">
             <label for="project-input-priority">Prioritas</label>
-            <select id="project-input-priority" class="input">
+            <select id="project-input-priority" class="input font-bold">
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
@@ -1075,7 +1170,7 @@
           </div>
           <div class="form-group">
             <label for="project-input-status">Status Kolom</label>
-            <select id="project-input-status" class="input">
+            <select id="project-input-status" class="input font-bold">
               <option value="backlog">Backlog</option>
               <option value="todo">To Do</option>
               <option value="inprogress">In Progress</option>
@@ -1088,15 +1183,15 @@
         <div class="grid grid-cols-3 gap-3">
           <div class="form-group">
             <label for="project-input-esthours">Estimasi Jam</label>
-            <input type="number" id="project-input-esthours" min="0" step="0.5" value="10" class="input">
+            <input type="number" id="project-input-esthours" min="0" step="0.5" value="10" class="input font-bold">
           </div>
           <div class="form-group">
             <label for="project-input-loggedhours">Jam Terpakai</label>
-            <input type="number" id="project-input-loggedhours" min="0" step="0.5" value="0" class="input">
+            <input type="number" id="project-input-loggedhours" min="0" step="0.5" value="0" class="input font-bold">
           </div>
           <div class="form-group">
             <label for="project-input-duedate">Target Selesai</label>
-            <input type="date" id="project-input-duedate" class="input">
+            <input type="date" id="project-input-duedate" class="input font-bold">
           </div>
         </div>
 
@@ -1105,12 +1200,12 @@
           <input type="text" id="project-input-tags" placeholder="VanillaJS, PWA, Tailwind" class="input">
         </div>
 
-        <div class="pt-2 border-t border-slate-800">
+        <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
           <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-              <i class="fa-solid fa-link text-emerald-400"></i> Lampiran Tautan / Link
+            <label class="text-xs font-bold text-[#64748B] flex items-center gap-1.5">
+              <i class="fa-solid fa-link text-emerald-500"></i> Lampiran Tautan / Link
             </label>
-            <button type="button" onclick="window.projectsModule.addLinkField()" class="text-[11px] text-emerald-400 hover:underline font-semibold">
+            <button type="button" onclick="window.projectsModule.addLinkField()" class="text-[11px] text-emerald-500 hover:underline font-bold">
               + Tambah Link
             </button>
           </div>
@@ -1125,11 +1220,11 @@
     </div>
   </div>
 
-  <!-- Finance Transaction Modal -->
+  <!-- 7. FINANCE MODAL -->
   <div id="finance-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-md space-y-4">
       <div class="modal-header">
-        <h3 id="finance-modal-title" class="text-sm font-bold text-white">Catat Transaksi Keuangan</h3>
+        <h3 id="finance-modal-title" class="text-sm font-extrabold text-[#0D2240] dark:text-white">Catat Transaksi Keuangan</h3>
         <button onclick="window.financeModule.closeTransactionModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
@@ -1137,22 +1232,20 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="form-group">
             <label for="finance-input-type">Tipe Transaksi</label>
-            <select id="finance-input-type" class="input">
+            <select id="finance-input-type" class="input font-bold">
               <option value="expense">Pengeluaran (Expense)</option>
               <option value="income">Pemasukan (Income)</option>
             </select>
           </div>
           <div class="form-group">
             <label for="finance-input-category">Kategori</label>
-            <select id="finance-input-category" class="input">
+            <select id="finance-input-category" class="input font-bold">
               <option value="Food">Food / Makanan</option>
               <option value="Study">Study / Buku TKA</option>
-              <option value="Coding">Coding / Domain / Tools</option>
+              <option value="Coding">Coding / Tools</option>
               <option value="Transport">Transport</option>
-              <option value="Entertainment">Entertainment</option>
               <option value="Savings">Savings / Tabungan</option>
               <option value="Uang Saku">Uang Saku</option>
-              <option value="Freelance">Freelance</option>
               <option value="Other">Lainnya</option>
             </select>
           </div>
@@ -1166,22 +1259,22 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="form-group">
             <label for="finance-input-date">Tanggal</label>
-            <input type="date" id="finance-input-date" required class="input">
+            <input type="date" id="finance-input-date" required class="input font-bold">
           </div>
           <div class="form-group">
             <label for="finance-input-payment">Metode Bayar</label>
-            <select id="finance-input-payment" class="input">
+            <select id="finance-input-payment" class="input font-bold">
               <option value="Cash">Cash / Tunai</option>
               <option value="QRIS">QRIS</option>
               <option value="Transfer">Transfer Bank</option>
-              <option value="E-Wallet">E-Wallet (GoPay/OVO/Dana)</option>
+              <option value="E-Wallet">E-Wallet</option>
             </select>
           </div>
         </div>
 
         <div class="form-group">
           <label for="finance-input-notes">Keterangan / Catatan</label>
-          <input type="text" id="finance-input-notes" placeholder="Contoh: Beli paket try out / makan siang" class="input">
+          <input type="text" id="finance-input-notes" placeholder="Contoh: Paket try out / makan siang" class="input">
         </div>
 
         <div class="modal-footer">
@@ -1192,11 +1285,11 @@
     </div>
   </div>
 
-  <!-- Financial Goal Modal -->
+  <!-- 8. GOAL MODAL -->
   <div id="goal-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-md space-y-4">
       <div class="modal-header">
-        <h3 id="goal-modal-title" class="text-sm font-bold text-white">Target Tabungan Baru</h3>
+        <h3 id="goal-modal-title" class="text-sm font-extrabold text-[#0D2240] dark:text-white">Target Tabungan Baru</h3>
         <button onclick="window.financeModule.closeGoalModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
@@ -1209,17 +1302,17 @@
         <div class="grid grid-cols-2 gap-3">
           <div class="form-group">
             <label for="goal-input-target">Target Nominal (Rp)</label>
-            <input type="number" id="goal-input-target" min="10000" step="50000" required placeholder="5000000" class="input font-mono">
+            <input type="number" id="goal-input-target" min="10000" step="50000" required placeholder="5000000" class="input font-mono font-bold">
           </div>
           <div class="form-group">
             <label for="goal-input-current">Terkumpul Saat Ini (Rp)</label>
-            <input type="number" id="goal-input-current" min="0" step="10000" value="0" class="input font-mono">
+            <input type="number" id="goal-input-current" min="0" step="10000" value="0" class="input font-mono font-bold">
           </div>
         </div>
 
         <div class="form-group">
           <label for="goal-input-date">Target Tanggal</label>
-          <input type="date" id="goal-input-date" class="input">
+          <input type="date" id="goal-input-date" class="input font-bold">
         </div>
 
         <div class="form-group">
@@ -1235,33 +1328,32 @@
     </div>
   </div>
 
-  <!-- Habit Modal -->
+  <!-- 9. HABIT MODAL -->
   <div id="habit-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-sm space-y-4">
       <div class="modal-header">
-        <h3 class="text-sm font-bold text-white">Tambah Kebiasaan (Habit)</h3>
+        <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white">Tambah Kebiasaan (Habit)</h3>
         <button onclick="window.habitsModule.closeModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
       <form id="habit-form" onsubmit="window.habitsModule.handleFormSubmit(event)" class="space-y-3.5">
         <div class="form-group">
           <label for="habit-input-name">Nama Kebiasaan *</label>
-          <input type="text" id="habit-input-name" required placeholder="Contoh: Drill 20 Soal TKA / Push Commit Git" class="input">
+          <input type="text" id="habit-input-name" required placeholder="Contoh: Drill 20 Soal TKA / Push Git" class="input">
         </div>
 
         <div class="form-group">
           <label for="habit-input-category">Kategori</label>
-          <select id="habit-input-category" class="input">
+          <select id="habit-input-category" class="input font-bold">
             <option value="TKA">TKA</option>
             <option value="Coding">Coding</option>
             <option value="Personal">Personal / Kesehatan</option>
-            <option value="School">Sekolah</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="habit-input-icon">Ikon FontAwesome</label>
-          <select id="habit-input-icon" class="input">
+          <select id="habit-input-icon" class="input font-bold">
             <option value="fa-book-open">Buku (Belajar TKA)</option>
             <option value="fa-code-branch">Git Branch (Coding)</option>
             <option value="fa-sun">Matahari (Bangun Pagi)</option>
@@ -1273,33 +1365,33 @@
 
         <div class="modal-footer">
           <button type="button" onclick="window.habitsModule.closeModal()" class="btn btn-secondary">Batal</button>
-          <button type="submit" class="btn btn-primary bg-amber-600 hover:bg-amber-500">Simpan Habit</button>
+          <button type="submit" class="btn btn-primary bg-amber-500 hover:bg-amber-600">Simpan Habit</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Import Confirmation Modal -->
+  <!-- 10. IMPORT CONFIRMATION MODAL -->
   <div id="import-confirm-modal" class="modal-overlay hidden fixed inset-0 items-center justify-center p-4">
     <div class="modal max-w-sm space-y-4">
       <div class="modal-header">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-file-import text-indigo-400"></i> Konfirmasi Impor Data
+        <h3 class="text-sm font-extrabold text-[#0D2240] dark:text-white flex items-center gap-2">
+          <i class="fa-solid fa-file-import text-[#2589FE]"></i> Konfirmasi Impor Data
         </h3>
         <button onclick="window.settingsModule.closeImportModal()" class="btn-icon"><i class="fa-solid fa-xmark text-xs"></i></button>
       </div>
 
-      <p class="text-xs text-slate-300">Pilih metode pemulihan data cadangan JSON:</p>
+      <p class="text-xs text-[#64748B]">Pilih metode pemulihan data cadangan JSON:</p>
 
       <div class="space-y-2 pt-1">
-        <button onclick="window.settingsModule.confirmImport('replace')" class="w-full p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 hover:bg-rose-500/20 text-left text-xs font-semibold transition-all">
+        <button onclick="window.settingsModule.confirmImport('replace')" class="w-full p-3 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-300 hover:bg-rose-500/20 text-left text-xs font-bold transition-all">
           <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-arrows-rotate"></i> Timpa Semua Data (Replace)</div>
-          <span class="text-[10px] text-slate-400 font-normal">Hapus data saat ini dan ganti seluruhnya dengan isi file cadangan.</span>
+          <span class="text-[10px] text-[#64748B] font-normal">Hapus data saat ini dan ganti seluruhnya dengan file cadangan.</span>
         </button>
 
-        <button onclick="window.settingsModule.confirmImport('merge')" class="w-full p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 hover:bg-indigo-500/20 text-left text-xs font-semibold transition-all">
+        <button onclick="window.settingsModule.confirmImport('merge')" class="w-full p-3 rounded-2xl bg-[#2589FE]/10 border border-[#2589FE]/30 text-[#2589FE] hover:bg-[#2589FE]/20 text-left text-xs font-bold transition-all">
           <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-code-merge"></i> Gabungkan Data (Merge)</div>
-          <span class="text-[10px] text-slate-400 font-normal">Tambahkan item baru ke dalam daftar tanpa menghapus data lama.</span>
+          <span class="text-[10px] text-[#64748B] font-normal">Tambahkan item baru tanpa menghapus data yang ada.</span>
         </button>
       </div>
 

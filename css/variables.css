@@ -1,96 +1,80 @@
-/* CSS Custom Properties & Design Tokens - Warm, Human-crafted 2026 UI */
+/* Design System & Palette Warna - Modern Skeuomorphism / Claymorphic Hybrid (DPS Community Style) */
 :root {
-  /* Primary - Warm Indigo */
-  --primary: #4F46E5;
-  --primary-light: #818CF8;
-  --primary-dark: #3730A3;
-  --primary-rgb: 79, 70, 229;
+  /* Primary Blue (Dark) */
+  --primary-dark-1: #0D2240;
+  --primary-dark-2: #163A66;
+  --primary-gradient: linear-gradient(135deg, #0D2240 0%, #163A66 100%);
   
-  /* Secondary - Coral / Amber Warmth */
-  --secondary: #F97316;
-  --secondary-light: #FB923C;
-  --secondary-dark: #EA580C;
-  --secondary-rgb: 249, 115, 22;
-  
-  /* Success - Natural Leaf Green */
-  --success: #10B981;
-  --success-light: #34D399;
-  --success-rgb: 16, 185, 129;
-  
-  /* Warning - Warm Honey Amber */
-  --warning: #F59E0B;
-  --warning-light: #FBBF24;
-  
-  /* Danger - Tomato / Persimmon Red */
-  --danger: #EF4444;
-  --danger-light: #F87171;
+  /* Accent Blue (Bright) */
+  --accent-blue: #2589FE;
+  --accent-blue-hover: #1A74E2;
+  --accent-blue-light: #EBF4FF;
+  --accent-blue-rgb: 37, 137, 254;
 
-  /* Accent Purple */
-  --purple: #8B5CF6;
-  --purple-light: #A78BFA;
+  /* Accent Green (Neon High Contrast) */
+  --accent-green: #00E676;
+  --accent-green-dark: #10B981;
+  --accent-green-light: #E6FBF2;
+  --accent-green-rgb: 0, 230, 118;
   
-  /* Neutrals - Dark Mode (Default) */
-  --bg-primary: #0C0F17;
-  --bg-secondary: #131926;
-  --bg-tertiary: #1C2436;
-  --bg-card: rgba(19, 25, 38, 0.85);
-  --bg-card-hover: rgba(28, 36, 54, 0.95);
-  --border-color: rgba(60, 72, 98, 0.55);
+  /* System Colors */
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --purple: #8B5CF6;
+  --pink: #EC4899;
+
+  /* Neutrals (DPS Light Claymorphic Theme Default) */
+  --bg-body: #EDF3F9;
+  --bg-body-soft: #F5F8FC;
+  --bg-card: #FFFFFF;
+  --bg-card-glass: rgba(255, 255, 255, 0.94);
+  --bg-subtle: #F1F6FB;
+  --border-color: #E2EBF5;
+  --border-subtle: rgba(226, 235, 245, 0.8);
+  
+  /* Text */
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --text-light: #FFFFFF;
+  
+  /* Claymorphic & Soft 3D Shadows */
+  --shadow-clay-sm: 0 4px 10px rgba(13, 34, 64, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --shadow-clay-md: 0 8px 24px rgba(13, 34, 64, 0.08), 0 2px 6px rgba(13, 34, 64, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-clay-lg: 0 16px 36px rgba(13, 34, 64, 0.12), 0 4px 12px rgba(13, 34, 64, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-blue-glow: 0 8px 25px rgba(37, 137, 254, 0.35);
+  --shadow-green-glow: 0 8px 20px rgba(0, 230, 118, 0.3);
+
+  /* Rounded UI (16px - 24px) */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --sidebar-w: 270px;
+  --bottombar-h: 74px;
+}
+
+/* Dark Theme Compatibility */
+[data-theme="dark"] {
+  --bg-body: #091322;
+  --bg-body-soft: #0D1B2E;
+  --bg-card: #13243C;
+  --bg-card-glass: rgba(19, 36, 60, 0.92);
+  --bg-subtle: #192D4A;
+  --border-color: #1F385C;
   --border-subtle: rgba(255, 255, 255, 0.08);
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
   --text-muted: #64748B;
-  --input-bg: #151C2C;
-  
-  /* Shadows - Soft, organic */
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 10px -1px rgba(0, 0, 0, 0.3), 0 2px 5px -2px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 12px 25px -4px rgba(0, 0, 0, 0.4), 0 4px 10px -4px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 20px -2px rgba(var(--primary-rgb), 0.35);
-  
-  /* Border radius - Organic curvature */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.875rem;
-  --radius-lg: 1.25rem;
-  --radius-xl: 1.75rem;
-  --radius-full: 9999px;
-  
-  /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Merriweather', 'Lora', Georgia, serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  
-  --sidebar-w: 270px;
-  --topbar-h: 68px;
-  --bottombar-h: 68px;
-}
-
-/* Light Mode (Warm White & Warm Stone) */
-[data-theme="light"] {
-  --bg-primary: #FAF8F5;
-  --bg-secondary: #F3EFEA;
-  --bg-tertiary: #E8E2D9;
-  --bg-card: rgba(255, 255, 255, 0.92);
-  --bg-card-hover: #FFFFFF;
-  --border-color: #E2DBD0;
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --text-primary: #231F1C;
-  --text-secondary: #5C554F;
-  --text-muted: #8F877F;
-  --input-bg: #FFFFFF;
-  --shadow-sm: 0 1px 3px 0 rgba(40, 30, 20, 0.06);
-  --shadow-md: 0 4px 12px -2px rgba(40, 30, 20, 0.08);
-  --shadow-lg: 0 14px 28px -4px rgba(40, 30, 20, 0.1);
-  --shadow-glow: 0 0 20px -2px rgba(var(--primary-rgb), 0.2);
+  --shadow-clay-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+  --shadow-clay-md: 0 10px 26px rgba(0, 0, 0, 0.45);
+  --shadow-clay-lg: 0 18px 40px rgba(0, 0, 0, 0.6);
 }

@@ -10,7 +10,9 @@ class BackupModule {
   exportJSON() {
     const data = window.state.getState();
     const dataStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+    const blob = new Blob([dataStr], {
+      type: 'application/json;charset=utf-8',
+    });
     const url = URL.createObjectURL(blob);
     const dateStr = new Date().toISOString().split('T')[0];
     const a = document.createElement('a');
@@ -21,17 +23,25 @@ class BackupModule {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     localStorage.setItem('studentflow_last_backup', Date.now().toString());
-    Utils.showToast('📥 Data cadangan (backup) berhasil diekspor!', { type: 'success' });
+    Utils.showToast('📥 Data cadangan (backup) berhasil diekspor!', {
+      type: 'success',
+    });
   }
 
   validateJSON(jsonString) {
     try {
       const parsed = JSON.parse(jsonString);
       if (typeof parsed !== 'object' || parsed === null) {
-        return { valid: false, error: 'Format JSON tidak valid (bukan object).' };
+        return {
+          valid: false,
+          error: 'Format JSON tidak valid (bukan object).',
+        };
       }
       if (!parsed.todos || !Array.isArray(parsed.todos)) {
-        return { valid: false, error: 'Data JSON harus memiliki array "todos".' };
+        return {
+          valid: false,
+          error: 'Data JSON harus memiliki array "todos".',
+        };
       }
       return { valid: true, data: parsed };
     } catch (e) {
@@ -58,27 +68,35 @@ class BackupModule {
         finances: imported.finances || current.finances,
         habits: imported.habits || [],
         pomodoro: imported.pomodoro || current.pomodoro,
-        settings: { ...current.settings, ...(imported.settings || {}) }
+        settings: { ...current.settings, ...(imported.settings || {}) },
       };
     } else if (mode === 'merge') {
-      const existingTodoIds = new Set(current.todos.map(t => t.id));
-      (imported.todos || []).forEach(t => {
+      const existingTodoIds = new Set(current.todos.map((t) => t.id));
+      (imported.todos || []).forEach((t) => {
         if (!existingTodoIds.has(t.id)) current.todos.push(t);
       });
 
-      const existingProjIds = new Set(current.projects.map(p => p.id));
-      (imported.projects || []).forEach(p => {
+      const existingProjIds = new Set(current.projects.map((p) => p.id));
+      (imported.projects || []).forEach((p) => {
         if (!existingProjIds.has(p.id)) current.projects.push(p);
       });
 
-      const existingTxIds = new Set((current.finances.transactions || []).map(tx => tx.id));
-      (imported.finances?.transactions || []).forEach(tx => {
+      const existingTxIds = new Set(
+        (current.finances.transactions || []).map((tx) => tx.id),
+      );
+      (imported.finances?.transactions || []).forEach((tx) => {
         if (!existingTxIds.has(tx.id)) current.finances.transactions.push(tx);
       });
     }
 
     window.state.saveState();
-    return { success: true, message: 'Data berhasil diimpor (' + (mode === 'replace' ? 'Timpa data' : 'Gabung data') + ').' };
+    return {
+      success: true,
+      message:
+        'Data berhasil diimpor (' +
+        (mode === 'replace' ? 'Timpa data' : 'Gabung data') +
+        ').',
+    };
   }
 
   setupAutoBackupReminder() {
@@ -87,13 +105,16 @@ class BackupModule {
 
     if (!lastBackup || Date.now() - parseInt(lastBackup) > sevenDays) {
       setTimeout(() => {
-        Utils.showToast('💾 Pengingat: Unduh cadangan (backup) data mingguanmu!', {
-          duration: 9000,
-          action: {
-            text: 'Ekspor Sekarang',
-            onClick: () => this.exportJSON()
-          }
-        });
+        Utils.showToast(
+          '💾 Pengingat: Unduh cadangan (backup) data mingguanmu!',
+          {
+            duration: 9000,
+            action: {
+              text: 'Ekspor Sekarang',
+              onClick: () => this.exportJSON(),
+            },
+          },
+        );
       }, 4000);
     }
   }

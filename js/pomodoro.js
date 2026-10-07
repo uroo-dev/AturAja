@@ -147,6 +147,31 @@ class PomodoroModule {
     this.renderStats();
   }
 
+  toggleFocusMode() {
+    if (this.isRunning) {
+      this.pause();
+      window.notifications.showToast('Mode Fokus dinonaktifkan', 'info');
+    } else {
+      this.start();
+      window.notifications.showToast('Mode Fokus aktif! Mulai belajar tanpa distraksi 🔥', 'success');
+    }
+    this.updateHeaderToggle();
+  }
+
+  updateHeaderToggle() {
+    const offBtn = document.getElementById('header-toggle-off');
+    const onBtn = document.getElementById('header-toggle-on');
+    if (offBtn && onBtn) {
+      if (this.isRunning) {
+        offBtn.classList.remove('active');
+        onBtn.classList.add('active');
+      } else {
+        offBtn.classList.add('active');
+        onBtn.classList.remove('active');
+      }
+    }
+  }
+
   renderDisplay() {
     const minutes = Math.floor(this.timeLeft / 60);
     const seconds = this.timeLeft % 60;
@@ -160,6 +185,8 @@ class PomodoroModule {
     const barEl = document.getElementById('pomodoro-progress-bar');
     if (barEl) barEl.style.width = `${progressPercent}%`;
 
+    this.updateHeaderToggle();
+
     // Title document
     if (this.isRunning) {
       document.title = `(${timeStr}) Focus - Student Life Manager`;
@@ -169,8 +196,8 @@ class PomodoroModule {
   }
 
   renderStats() {
-    const data = window.storage.getData();
-    const pomo = data.pomodoro || {};
+    const state = window.state ? window.state.getState() : {};
+    const pomo = state.pomodoro || {};
 
     const elSessions = document.getElementById('pomo-stat-sessions');
     const elStudyHrs = document.getElementById('pomo-stat-study');
@@ -184,3 +211,4 @@ class PomodoroModule {
 
 // Global instance
 window.pomodoroModule = new PomodoroModule();
+
